@@ -130,5 +130,6 @@ dmypy.json
 .idea/
 inference/output/
 runs/
-weights/
 useless file/
+weights/yolov5s.pt
+weights/yolov5x.pt

@@ -1,6 +1,11 @@
 # Smart_Construction
 该项目是使用 YOLOv5 来训练在智能工地安全领域中头盔目标检测的应用
 
+![](.\doc\output_1.png)
+![](.\doc\output_2.png)
+![](.\doc\output_3.png)
+![](.\doc\output_4.png)
+
 # YOLO v5训练自己数据集教程
 使用的数据集：[Safety-Helmet-Wearing-Dataset](https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset) ，感谢这位大神的开源数据集！
 > 本文结合 [YOLOv5官方教程](https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data) 来写
