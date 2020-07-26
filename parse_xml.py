@@ -5,14 +5,18 @@ from PIL import Image, ImageDraw
 from xml.dom.minidom import parse
 import numpy as np
 
-FACE_IMAGE_PATH = fr'E:\AI_Project\AI_Learning\Dataset\VOC2028\JPEGImages'
-LABELS_ROOT = fr'E:\AI_Project\AI_Learning\Dataset\VOC2028\Labels'
+FACE_IMAGE_PATH = fr'.\Dataset\VOC2028\JPEGImages'
+LABELS_ROOT = fr'.\Dataset\VOC2028\Labels'
 
 
 def convert(size, box):
-    '''
-    将标注的xml文件标注转换为darknet形的坐标
-    '''
+    """
+    将标注的 xml 文件标注转换为 darknet 形的坐标
+    :param size: 图片的尺寸： [w,h]
+    :param box: anchor box 的坐标 [左上角x,左上角y,右下角x,右下角y,]
+    :return: 转换后的 [x,y,w,h]
+    """
+
     x1 = int(box[0])
     y1 = int(box[1])
     x2 = int(box[2])
@@ -111,30 +115,30 @@ def copy_data(labels_source, img_labels_root, imgs_source, type):
         # im.show()
 
         # 复制图片
-        DICT_DIR = f'E:\AI_Project\AI_Learning\Dataset\Safety_Helmet_Train_dataset\score\images' + '\\' + type
+        DICT_DIR = f'.\Dataset\Safety_Helmet_Train_dataset\score\images' + '\\' + type
         img_dict_file = DICT_DIR + '\\' + img_name + '.jpg'
         copyfile(img_sor_file, img_dict_file)
 
         if type is not "test":
             # 复制 label
-            DICT_DIR = f'E:\AI_Project\AI_Learning\Dataset\Safety_Helmet_Train_dataset\score\labels' + '\\' + type
+            DICT_DIR = f'.\Dataset\Safety_Helmet_Train_dataset\score\labels' + '\\' + type
             img_dict_file = DICT_DIR + '\\' + img_name + '.txt'
             copyfile(label_sor_file, img_dict_file)
 
 
 if __name__ == '__main__':
-    # 生成标签
-    # root = fr"E:\AI_Project\AI_Learning\Dataset\VOC2028\Annotations"
-    # files = os.listdir(root)
-    # for file in files:
-    #     print("file name: ", file)
-    #     file_xml = file.split(".")
-    #     get_xml_data(root, file_xml[0])
+    # 首先：生成标签
+    root = fr".\Dataset\VOC2028\Annotations"
+    files = os.listdir(root)
+    for file in files:
+        print("file name: ", file)
+        file_xml = file.split(".")
+        get_xml_data(root, file_xml[0])
 
-    # 将文件进行 train 和 val 的区分
-    labels_root = rf'E:\AI_Project\AI_Learning\Dataset\VOC2028\ImageSets\Main'
-    imgs_root = rf'E:\AI_Project\AI_Learning\Dataset\VOC2028\JPEGImages'
-    img_labels_root = rf'E:\AI_Project\AI_Learning\Dataset\VOC2028\Labels'
+    # 然后：将文件进行 train 和 val 的区分
+    labels_root = rf'.\Dataset\VOC2028\ImageSets\Main'
+    imgs_root = rf'.\Dataset\VOC2028\JPEGImages'
+    img_labels_root = rf'.\Dataset\VOC2028\Labels'
     # copy_data(labels_root, img_labels_root, imgs_root, "train")
     # copy_data(labels_root, img_labels_root, imgs_root, "val")
     copy_data(labels_root, img_labels_root, imgs_root, "test")
