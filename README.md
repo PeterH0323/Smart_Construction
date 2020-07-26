@@ -1,10 +1,10 @@
 # Smart_Construction
 该项目是使用 YOLOv5 来训练在智能工地安全领域中头盔目标检测的应用
 
-![](.\doc\output_1.png)
-![](.\doc\output_2.png)
-![](.\doc\output_3.png)
-![](.\doc\output_4.png)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_1.png?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_2.png?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_3.png?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_4.png?raw=true)
 
 # YOLO v5训练自己数据集教程
 使用的数据集：[Safety-Helmet-Wearing-Dataset](https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset) ，感谢这位大神的开源数据集！
@@ -92,7 +92,7 @@ def convert(size, box):
 ### 3.文件放置规范
 文件树如下
 
-![](.\doc\File_tree.png)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/File_tree.png?raw=true)
 
 ### 4. 选择一个你需要的模型
 在文件夹 `./models` 下选择一个你需要的模型
@@ -108,7 +108,7 @@ $ python train.py --img 640 --batch 16 --epochs 5 --data ./data/custom_data.yaml
 
 ### 6.看训练之后的结果
 训练之后，会保存在 `./runs` 文件夹里面，每个 `exp` 文件里面可以看到训练的效果
-![](./runs\exp5\test_batch0_gt.jpg)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/test_batch0_gt.jpg?raw=true)
 
 # 侦测
 侦测图片会保存在 `./inferenct/output/` 文件夹下
