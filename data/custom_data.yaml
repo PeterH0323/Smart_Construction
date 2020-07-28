@@ -9,4 +9,4 @@ val: ./Dataset/Safety_Helmet_Train_dataset/score/images/val
 nc: 2
 
 # class names
-names: ['person', 'hat']
+names: ['head', 'hat']
