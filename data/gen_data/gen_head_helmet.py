@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2020/7/29 20:29
+# @Author  : PeterH
+# @Email   : peterhuang0323@outlook.com
+# @File    : data_cfg.py
+# @Software: PyCharm
+# @Brief   : 生成测试、验证、训练的图片和标签
+
 import os
 from shutil import copyfile
 
@@ -5,11 +13,18 @@ from PIL import Image, ImageDraw
 from xml.dom.minidom import parse
 import numpy as np
 
-FACE_IMAGE_PATH = fr'.\Dataset\VOC2028\JPEGImages'
-LABELS_ROOT = fr'.\Dataset\VOC2028\Labels'
+FILE_ROOT = f"E:\AI_Project\AI_Learning\Dataset" + "\\"
+
+IMAGE_SET_ROOT = FILE_ROOT + f"VOC2028\ImageSets\Main"  # 图片区分文件的路径
+IMAGE_PATH = FILE_ROOT + f"VOC2028\JPEGImages"  # 图片的位置
+ANNOTATIONS_PATH = FILE_ROOT + f"VOC2028\Annotations"  # 数据集标签文件的位置
+LABELS_ROOT = FILE_ROOT + f"VOC2028\Labels"  # 进行归一化之后的标签位置
+
+DEST_IMAGES_PATH = f"Safety_Helmet_Train_dataset\score\images"  # 区分训练集、测试集、验证集的图片目标路径
+DEST_LABELS_PATH = f"Safety_Helmet_Train_dataset\score\labels"  # 区分训练集、测试集、验证集的标签文件目标路径
 
 
-def convert(size, box):
+def cord_converter(size, box):
     """
     将标注的 xml 文件标注转换为 darknet 形的坐标
     :param size: 图片的尺寸： [w,h]
@@ -43,7 +58,7 @@ def save_file(img_jpg_file_name, size, img_box):
     file_path = open(save_file_name, "a+")
     for box in img_box:
         cls_num = 0 if box[0] == 'person' else 1
-        new_box = convert(size, box[1:])
+        new_box = cord_converter(size, box[1:])
 
         file_path.write(f"{cls_num} {new_box[0]} {new_box[1]} {new_box[2]} {new_box[3]}\n")
 
@@ -58,7 +73,7 @@ def test_dataset_box_feature(file_name, point_array):
     :param point_array: 全部的点 [建议框sx1,sy1,sx2,sy2]
     :return: None
     """
-    im = Image.open(rf"{FACE_IMAGE_PATH}\{file_name}")
+    im = Image.open(rf"{IMAGE_PATH}\{file_name}")
     imDraw = ImageDraw.Draw(im)
     for box in point_array:
         x1 = box[1]
@@ -100,9 +115,8 @@ def get_xml_data(file_path, img_xml_file):
     save_file(img_xml_file, [img_w, img_h], img_box)
 
 
-def copy_data(labels_source, img_labels_root, imgs_source, type):
-
-    file_name = labels_source + '\\' + type + ".txt"
+def copy_data(img_set_source, img_labels_root, imgs_source, type):
+    file_name = img_set_source + '\\' + type + ".txt"
     file = open(file_name)
     for line in file.readlines():
         img_name = line.strip('\n')
@@ -115,30 +129,30 @@ def copy_data(labels_source, img_labels_root, imgs_source, type):
         # im.show()
 
         # 复制图片
-        DICT_DIR = f'.\Dataset\Safety_Helmet_Train_dataset\score\images' + '\\' + type
+        DICT_DIR = FILE_ROOT + DEST_IMAGES_PATH + '\\' + type
         img_dict_file = DICT_DIR + '\\' + img_name + '.jpg'
         copyfile(img_sor_file, img_dict_file)
 
         if type is not "test":
             # 复制 label
-            DICT_DIR = f'.\Dataset\Safety_Helmet_Train_dataset\score\labels' + '\\' + type
+            DICT_DIR = FILE_ROOT + DEST_LABELS_PATH + '\\' + type
             img_dict_file = DICT_DIR + '\\' + img_name + '.txt'
             copyfile(label_sor_file, img_dict_file)
 
 
 if __name__ == '__main__':
-    # 首先：生成标签
-    root = fr".\Dataset\VOC2028\Annotations"
-    files = os.listdir(root)
-    for file in files:
-        print("file name: ", file)
-        file_xml = file.split(".")
-        get_xml_data(root, file_xml[0])
+    # 生成标签
+    # root = ANNOTATIONS_PATH
+    # files = os.listdir(root)
+    # for file in files:
+    #     print("file name: ", file)
+    #     file_xml = file.split(".")
+    #     get_xml_data(root, file_xml[0])
 
-    # 然后：将文件进行 train 和 val 的区分
-    labels_root = rf'.\Dataset\VOC2028\ImageSets\Main'
-    imgs_root = rf'.\Dataset\VOC2028\JPEGImages'
-    img_labels_root = rf'.\Dataset\VOC2028\Labels'
-    # copy_data(labels_root, img_labels_root, imgs_root, "train")
-    # copy_data(labels_root, img_labels_root, imgs_root, "val")
-    copy_data(labels_root, img_labels_root, imgs_root, "test")
+    # 将文件进行 train 和 val 的区分
+    img_set_root = IMAGE_SET_ROOT
+    imgs_root = IMAGE_PATH
+    img_labels_root = LABELS_ROOT
+    copy_data(img_set_root, img_labels_root, imgs_root, "train")
+    copy_data(img_set_root, img_labels_root, imgs_root, "val")
+    copy_data(img_set_root, img_labels_root, imgs_root, "test")
