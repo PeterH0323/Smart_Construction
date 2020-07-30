@@ -6,7 +6,7 @@ train: ./Dataset/Safety_Helmet_Train_dataset/score/images/train
 val: ./Dataset/Safety_Helmet_Train_dataset/score/images/val
 
 # number of classes
-nc: 2
+nc: 3
 
 # class names
-names: ['head', 'hat']
+names: ['head', 'helmet', 'person']
