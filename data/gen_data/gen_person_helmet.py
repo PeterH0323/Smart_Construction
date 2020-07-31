@@ -156,9 +156,9 @@ if __name__ == '__main__':
         get_xml_data(root, file_xml[0])
 
     # 将文件进行 train 和 val 的区分
-    img_set_root = IMAGE_SET_ROOT
-    imgs_root = IMAGE_PATH
-    img_labels_root = LABELS_ROOT
-    copy_data(img_set_root, img_labels_root, imgs_root, "train")
-    copy_data(img_set_root, img_labels_root, imgs_root, "val")
-    copy_data(img_set_root, img_labels_root, imgs_root, "test")
+    # img_set_root = IMAGE_SET_ROOT
+    # imgs_root = IMAGE_PATH
+    # img_labels_root = LABELS_ROOT
+    # copy_data(img_set_root, img_labels_root, imgs_root, "train")
+    # copy_data(img_set_root, img_labels_root, imgs_root, "val")
+    # copy_data(img_set_root, img_labels_root, imgs_root, "test")

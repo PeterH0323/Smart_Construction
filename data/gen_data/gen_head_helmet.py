@@ -57,7 +57,12 @@ def save_file(img_jpg_file_name, size, img_box):
     print(save_file_name)
     file_path = open(save_file_name, "a+")
     for box in img_box:
-        cls_num = 0 if box[0] == 'person' else 1
+
+        if box[0] == 'person':
+            cls_num = 1
+        else:
+            cls_num = 2
+
         new_box = cord_converter(size, box[1:])
 
         file_path.write(f"{cls_num} {new_box[0]} {new_box[1]} {new_box[2]} {new_box[3]}\n")
@@ -97,8 +102,8 @@ def get_xml_data(file_path, img_xml_file):
     img_w = img_size.getElementsByTagName("width")[0].childNodes[0].data
     img_h = img_size.getElementsByTagName("height")[0].childNodes[0].data
     img_c = img_size.getElementsByTagName("depth")[0].childNodes[0].data
-    print("img_name:", img_name)
-    print("image_info:(w,h,c)", img_w, img_h, img_c)
+    # print("img_name:", img_name)
+    # print("image_info:(w,h,c)", img_w, img_h, img_c)
     img_box = []
     for box in objects:
         cls_name = box.getElementsByTagName("name")[0].childNodes[0].data
@@ -106,7 +111,7 @@ def get_xml_data(file_path, img_xml_file):
         y1 = int(box.getElementsByTagName("ymin")[0].childNodes[0].data)
         x2 = int(box.getElementsByTagName("xmax")[0].childNodes[0].data)
         y2 = int(box.getElementsByTagName("ymax")[0].childNodes[0].data)
-        print("box:(c,xmin,ymin,xmax,ymax)", cls_name, x1, y1, x2, y2)
+        # print("box:(c,xmin,ymin,xmax,ymax)", cls_name, x1, y1, x2, y2)
         img_jpg_file_name = img_xml_file + '.jpg'
         img_box.append([cls_name, x1, y1, x2, y2])
     # print(img_box)
@@ -117,14 +122,15 @@ def get_xml_data(file_path, img_xml_file):
 
 def copy_data(img_set_source, img_labels_root, imgs_source, type):
     file_name = img_set_source + '\\' + type + ".txt"
+    print(file_name)
     file = open(file_name)
     for line in file.readlines():
         img_name = line.strip('\n')
         img_sor_file = imgs_source + '\\' + img_name + '.jpg'
         label_sor_file = img_labels_root + '\\' + img_name + '.txt'
 
-        print(img_sor_file)
-        print(label_sor_file)
+        # print(img_sor_file)
+        # print(label_sor_file)
         # im = Image.open(rf"{img_sor_file}")
         # im.show()
 
