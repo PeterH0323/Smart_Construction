@@ -125,12 +125,12 @@ $ python detect.py --source 0  # webcam
 ```
 
 
-## 检测危险区域内是否有人
+# 检测危险区域内是否有人
 
-### 危险区域标注方式
+## 危险区域标注方式
 我这里使用的是 [精灵标注助手](http://www.jinglingbiaozhu.com/) 标注，生成了对应图片的 json 文件
 
-### 执行侦测，在危险区域里面的任务会被框选出来
+## 执行侦测，在危险区域里面的任务会被框选出来
 
 侦测图片会保存在 `./inferenct/output/` 文件夹下
 
@@ -138,3 +138,7 @@ $ python detect.py --source 0  # webcam
 ```shell script
 $ python area_detect.py --source ./area_dangerous --weights ./weights/pro_helmet_head_person.pt
 ```
+
+## 效果
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/area_output_1.jpg?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/area_output_2.jpg?raw=true)
