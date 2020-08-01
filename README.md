@@ -1,10 +1,10 @@
 # Smart_Construction
 该项目是使用 YOLOv5 来训练在智能工地安全领域中头盔目标检测的应用
 
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_1.png?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_1.jpg?raw=true)
 ![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_2.jpg?raw=true)
 ![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_3.jpg?raw=true)
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_4.png?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_4.jpg?raw=true)
 
 # YOLO v5训练自己数据集教程
 使用的数据集：[Safety-Helmet-Wearing-Dataset](https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset) ，感谢这位大神的开源数据集！
@@ -122,4 +122,19 @@ $ python detect.py --source 0  # webcam
                             path/*.jpg  # glob
                             rtsp://170.93.143.139/rtplive/470011e600ef003a004ee33696235daa  # rtsp stream
                             http://112.50.243.8/PLTV/88888888/224/3221225900/1.m3u8  # http stream
+```
+
+
+## 检测危险区域内是否有人
+
+### 危险区域标注方式
+我这里使用的是 [精灵标注助手](http://www.jinglingbiaozhu.com/) 标注，生成了对应图片的 json 文件
+
+### 执行侦测，在危险区域里面的任务会被框选出来
+
+侦测图片会保存在 `./inferenct/output/` 文件夹下
+
+运行命令：
+```shell script
+$ python area_detect.py --source ./area_dangerous --weights ./weights/pro_helmet_head_person.pt
 ```
