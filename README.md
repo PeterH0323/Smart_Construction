@@ -139,7 +139,7 @@ $ python detect.py --source 0  # webcam
 $ python area_detect.py --source ./area_dangerous --weights ./weights/pro_helmet_head_person.pt
 ```
 
-## 效果：在危险区域里面的人体会被<font color=red>红色框</font>选出来
+## 效果：在危险区域里面的人体会被 *<u>红色框</u>* 选出来
 
 ![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/area_output_1.jpg?raw=true)
 ![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/area_output_2.jpg?raw=true)
