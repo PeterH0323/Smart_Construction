@@ -13,7 +13,7 @@
 """
 import os
 
-TEST_DATA_LABELS_PATH = f"E:\AI_Project\AI_Learning\Dataset\Safety_Helmet_Train_dataset\score\labels\\"
+TEST_DATA_LABELS_PATH = f"E:\AI_Project\AI_Learning\Dataset\Safety_Helmet_Train_dataset\score\labels\\test\\"
 INFER_DATA_LABELS_PATH = f"E:\AI_Project\Smart_Construction_Project\inference\output\\"
 
 
@@ -37,7 +37,7 @@ def calculate():
             infer_cls_num = len(fi.readlines())  #
             print(f"{file} infer_cls_num = {infer_cls_num}")
 
-        label_file_path = TEST_DATA_LABELS_PATH + f'test\\{file}'
+        label_file_path = TEST_DATA_LABELS_PATH + file
         with open(label_file_path) as fl:
             label_cls_num = len(fl.readlines())  #
             print(f"{file} label_cls_num = {label_cls_num}")
