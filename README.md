@@ -98,13 +98,65 @@ def convert(size, box):
 ![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/File_tree.png?raw=true)
 
 ### 1.4 选择一个你需要的模型
-在文件夹 `./models` 下选择一个你需要的模型
+在文件夹 `./models` 下选择一个你需要的模型然后复制一份出来，将文件开头的 `nc = ` 修改为数据集的分类数，下面是借鉴 `./models/yolov5s.yaml`来修改的
+
+```yaml
+# parameters
+nc: 3  # number of classes     <============ 修改这里为数据集的分类数
+depth_multiple: 0.33  # model depth multiple
+width_multiple: 0.50  # layer channel multiple
+
+# anchors
+anchors:
+  - [10,13, 16,30, 33,23]  # P3/8
+  - [30,61, 62,45, 59,119]  # P4/16
+  - [116,90, 156,198, 373,326]  # P5/32
+
+# YOLOv5 backbone
+backbone:
+  # [from, number, module, args]
+  [[-1, 1, Focus, [64, 3]],  # 0-P1/2
+   [-1, 1, Conv, [128, 3, 2]],  # 1-P2/4
+   [-1, 3, BottleneckCSP, [128]],
+   [-1, 1, Conv, [256, 3, 2]],  # 3-P3/8
+   [-1, 9, BottleneckCSP, [256]],
+   [-1, 1, Conv, [512, 3, 2]],  # 5-P4/16
+   [-1, 9, BottleneckCSP, [512]],
+   [-1, 1, Conv, [1024, 3, 2]],  # 7-P5/32
+   [-1, 1, SPP, [1024, [5, 9, 13]]],
+   [-1, 3, BottleneckCSP, [1024, False]],  # 9
+  ]
+
+# YOLOv5 head
+head:
+  [[-1, 1, Conv, [512, 1, 1]],
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 6], 1, Concat, [1]],  # cat backbone P4
+   [-1, 3, BottleneckCSP, [512, False]],  # 13
+
+   [-1, 1, Conv, [256, 1, 1]],
+   [-1, 1, nn.Upsample, [None, 2, 'nearest']],
+   [[-1, 4], 1, Concat, [1]],  # cat backbone P3
+   [-1, 3, BottleneckCSP, [256, False]],  # 17
+
+   [-1, 1, Conv, [256, 3, 2]],
+   [[-1, 14], 1, Concat, [1]],  # cat head P4
+   [-1, 3, BottleneckCSP, [512, False]],  # 20
+
+   [-1, 1, Conv, [512, 3, 2]],
+   [[-1, 10], 1, Concat, [1]],  # cat head P5
+   [-1, 3, BottleneckCSP, [1024, False]],  # 23
+
+   [[17, 20, 23], 1, Detect, [nc, anchors]],  # Detect(P3, P4, P5)
+  ]
+
+```
 
 ### 1.5 开始训练
 这里选择了 `yolov5s` 模型进行训练，权重也是基于 `yolov5s.pt` 来训练
 
 ```shell script
-python train.py --img 640 --batch 16 --epochs 5 --data ./data/custom_data.yaml --cfg ./models/yolov5s.yaml --weights ./yolov5s.pt
+python train.py --img 640 --batch 16 --epochs 1 --data ./data/custom_data.yaml --cfg ./models/custom_yolov5.yaml --weights ./weights/yolov5s.pt
 ```
 
 其中，`yolov5s.pt` 需要自行下载放在本工程的根目录即可，下载地址 [官方权重](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)
