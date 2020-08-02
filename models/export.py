@@ -6,6 +6,11 @@ Usage:
 
 import argparse
 
+import os
+import sys
+# 使用绝对路径import，对应教程的 export PYTHONPATH="$PWD"
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../")
+
 from models.common import *
 from utils import google_utils
 

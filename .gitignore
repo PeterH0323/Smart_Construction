@@ -135,3 +135,5 @@ weights/yolov5s.pt
 weights/yolov5x.pt
 weights/yolov5l.pt
 weights/yolov5m.pt
+weights/pro_helmet_head_person.onnx
+weights/pro_helmet_head_person.torchscript.pt
