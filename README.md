@@ -149,7 +149,16 @@ python area_detect.py --source ./area_dangerous --weights ./weights/pro_helmet_h
 
 
 # 4. 生成 ONNX
+## 4.1 安装 `onnx` 库
+
+```shell script
+pip install onnx
+```
+
+## 4.2 执行生成
+
 ```shell script
 python ./models/export.py --weights ./weights/pro_helmet_head_person.pt --img 640 --batch 1
 ```
+
 `onnx` 和 `torchscript` 文件会生成在 `./weights` 文件夹中
