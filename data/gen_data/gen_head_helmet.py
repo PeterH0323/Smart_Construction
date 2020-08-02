@@ -122,9 +122,9 @@ def get_xml_data(file_path, img_xml_file):
 
 def copy_data(img_set_source, img_labels_root, imgs_source, type):
     file_name = img_set_source + '\\' + type + ".txt"
-    print(file_name)
     file = open(file_name)
     for line in file.readlines():
+        print(line)
         img_name = line.strip('\n')
         img_sor_file = imgs_source + '\\' + img_name + '.jpg'
         label_sor_file = img_labels_root + '\\' + img_name + '.txt'
@@ -139,21 +139,20 @@ def copy_data(img_set_source, img_labels_root, imgs_source, type):
         img_dict_file = DICT_DIR + '\\' + img_name + '.jpg'
         copyfile(img_sor_file, img_dict_file)
 
-        if type is not "test":
-            # 复制 label
-            DICT_DIR = FILE_ROOT + DEST_LABELS_PATH + '\\' + type
-            img_dict_file = DICT_DIR + '\\' + img_name + '.txt'
-            copyfile(label_sor_file, img_dict_file)
+        # 复制 label
+        DICT_DIR = FILE_ROOT + DEST_LABELS_PATH + '\\' + type
+        img_dict_file = DICT_DIR + '\\' + img_name + '.txt'
+        copyfile(label_sor_file, img_dict_file)
 
 
 if __name__ == '__main__':
     # 生成标签
-    # root = ANNOTATIONS_PATH
-    # files = os.listdir(root)
-    # for file in files:
-    #     print("file name: ", file)
-    #     file_xml = file.split(".")
-    #     get_xml_data(root, file_xml[0])
+    root = ANNOTATIONS_PATH
+    files = os.listdir(root)
+    for file in files:
+        print("file name: ", file)
+        file_xml = file.split(".")
+        get_xml_data(root, file_xml[0])
 
     # 将文件进行 train 和 val 的区分
     img_set_root = IMAGE_SET_ROOT
