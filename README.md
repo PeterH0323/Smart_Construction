@@ -22,7 +22,7 @@
 
 ### 1.1 创建自己的数据集配置文件
 
-因为我这里只是判断 【人没有带头盔】、【人有带头盔】两种情况，基于 `data/coco128.yaml` 文件，创建自己的数据集配置文件 `custom_data.yaml`
+因为我这里只是判断 【人没有带头盔】、【人有带头盔】、【人体】 3个类别 ，基于 `data/coco128.yaml` 文件，创建自己的数据集配置文件 `custom_data.yaml`
 
 ```yaml
 
@@ -31,10 +31,10 @@ train: ./score/images/train
 val: ./score/images/val
 
 # number of classes
-nc: 2
+nc: 3
 
 # class names
-names: ['person', 'hat']
+names: ['person', 'head', 'helmet']
 ```
 
 ### 1.2 创建每个图片对应的标签文件
