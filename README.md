@@ -163,7 +163,7 @@ python train.py --img 640 --batch 16 --epochs 1 --data ./data/custom_data.yaml -
 
 ### 1.6 看训练之后的结果
 训练之后，权重会保存在 `./runs` 文件夹里面的每个 `exp` 文件里面的 `weights/best.py` ，里面还可以看到训练的效果
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/test_batch0_gt.jpg?raw=true)
+![](./doc/test_batch0_gt.jpg)
 
 # 2. 侦测
 侦测图片会保存在 `./inferenct/output/` 文件夹下

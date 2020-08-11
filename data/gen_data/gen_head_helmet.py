@@ -7,6 +7,7 @@
 # @Brief   : 生成测试、验证、训练的图片和标签
 
 import os
+from pathlib import Path
 from shutil import copyfile
 
 from PIL import Image, ImageDraw
@@ -20,8 +21,8 @@ IMAGE_PATH = FILE_ROOT + f"VOC2028\JPEGImages"  # 图片的位置
 ANNOTATIONS_PATH = FILE_ROOT + f"VOC2028\Annotations"  # 数据集标签文件的位置
 LABELS_ROOT = FILE_ROOT + f"VOC2028\Labels"  # 进行归一化之后的标签位置
 
-DEST_IMAGES_PATH = f"Safety_Helmet_Train_dataset\score\images"  # 区分训练集、测试集、验证集的图片目标路径
-DEST_LABELS_PATH = f"Safety_Helmet_Train_dataset\score\labels"  # 区分训练集、测试集、验证集的标签文件目标路径
+DEST_IMAGES_PATH = f"Safety_Helmet_Train_dataset\\score\\images"  # 区分训练集、测试集、验证集的图片目标路径
+DEST_LABELS_PATH = f"Safety_Helmet_Train_dataset\\score\\labels"  # 区分训练集、测试集、验证集的标签文件目标路径
 
 
 def cord_converter(size, box):
@@ -123,6 +124,19 @@ def get_xml_data(file_path, img_xml_file):
 def copy_data(img_set_source, img_labels_root, imgs_source, type):
     file_name = img_set_source + '\\' + type + ".txt"
     file = open(file_name)
+
+    # 判断文件夹是否存在，不存在则创建
+    root_file = Path(FILE_ROOT + DEST_IMAGES_PATH + '\\' + type)
+    if not root_file.exists():
+        print(f"Path {root_file} is not exit")
+        os.makedirs(root_file)
+
+    root_file = Path(FILE_ROOT + DEST_LABELS_PATH + '\\' + type)
+    if not root_file.exists():
+        print(f"Path {root_file} is not exit")
+        os.makedirs(root_file)
+
+    # 遍历文件夹
     for line in file.readlines():
         print(line)
         img_name = line.strip('\n')
