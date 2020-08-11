@@ -1,10 +1,10 @@
 # Smart_Construction
 该项目是使用 YOLOv5 来训练在智能工地安全领域中头盔目标检测的应用
 
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_1.jpg?raw=true)
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_2.jpg?raw=true)
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_3.jpg?raw=true)
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_4.jpg?raw=true)
+![](./doc/output_1.jpg)
+![](./doc/output_2.jpg)
+![](./doc/output_3.jpg)
+![](./doc/output_4.jpg)
 
 # 1.YOLO v5训练自己数据集教程
 使用的数据集：[Safety-Helmet-Wearing-Dataset](https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset) ，感谢这位大神的开源数据集！
@@ -95,7 +95,7 @@ def convert(size, box):
 ### 1.3 文件放置规范
 文件树如下
 
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/File_tree.png?raw=true)
+![](./doc/File_tree.png)
 
 ### 1.4 选择一个你需要的模型
 在文件夹 `./models` 下选择一个你需要的模型然后复制一份出来，将文件开头的 `nc = ` 修改为数据集的分类数，下面是借鉴 `./models/yolov5s.yaml`来修改的
@@ -196,8 +196,8 @@ python area_detect.py --source ./area_dangerous --weights ./weights/pro_helmet_h
 
 ## 3.3 效果：在危险区域里面的人体会被 *红色框* 选出来
 
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/area_output_1.jpg?raw=true)
-![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/area_output_2.jpg?raw=true)
+![](./doc/area_output_1.jpg)
+![](./doc/area_output_2.jpg)
 
 
 # 4. 生成 ONNX
