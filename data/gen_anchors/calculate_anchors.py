@@ -54,14 +54,14 @@ if __name__ == '__main__':
     count = 1
     best_accuracy = 0
     best_anchors = []
+    best_ratios = []
 
     for i in range(30):
         anchors_tmp = []
         clusters = kmeans(train_boxes, k=CLUSTERS)
         idx = clusters[:, 0].argsort()
         clusters = clusters[idx]
-
-        print(clusters)
+        # print(clusters)
 
         for j in range(CLUSTERS):
             anchor = [round(clusters[j][0] * 640, 2), round(clusters[j][1] * 640, 2)]
@@ -81,7 +81,9 @@ if __name__ == '__main__':
         if temp_accuracy > best_accuracy:
             best_accuracy = temp_accuracy
             best_anchors = anchors_tmp
+            best_ratios = ratios
 
     anchors_txt.write("Best Accuracy = " + str(round(best_accuracy, 2)) + '%' + "\r\n")
-    anchors_txt.write("Best Anchors = " + str(best_anchors))
+    anchors_txt.write("Best Anchors = " + str(best_anchors) + "\r\n")
+    anchors_txt.write("Best Ratios = " + str(best_ratios))
     anchors_txt.close()
