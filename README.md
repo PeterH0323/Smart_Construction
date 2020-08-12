@@ -15,7 +15,7 @@
 
 ```text
     Python >= 3.7
-    Pytorch >= 1.5
+    Pytorch == 1.5.x
 ```
 
 ## 训练自己的数据

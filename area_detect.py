@@ -119,7 +119,7 @@ def detect(save_img=False):
             # Save results (image with detections)
             if save_img:
                 draw_area_dangerous(im0, Path(p).name)  # 画上危险区域框
-                
+
                 if dataset.mode == 'images':
                     cv2.imwrite(save_path, im0)
                 else:
