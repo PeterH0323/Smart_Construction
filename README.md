@@ -1,5 +1,9 @@
 # Smart_Construction
 该项目是使用 YOLOv5 来训练在智能工地安全领域中头盔目标检测的应用
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_1.jpg?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_2.jpg?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_3.jpg?raw=true)
+![](https://github.com/PeterH0323/Smart_Construction/blob/master/doc/output_4.jpg?raw=true)
 
 ![](./doc/output_1.jpg)
 ![](./doc/output_2.jpg)
