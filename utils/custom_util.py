@@ -60,7 +60,7 @@ def draw_poly_area_dangerous(img, img_name):
     """
 
     area_poly = np.array(load_poly_area_data(img_name), np.int32)
-    cv2.polylines(img, [area_poly], isClosed=True, color=(0, 0, 255), thickness=1, lineType=cv2.LINE_AA)
+    cv2.polylines(img, [area_poly], isClosed=True, color=(0, 0, 255), thickness=3, lineType=cv2.LINE_AA)
 
 
 def is_ray_intersects_segment(poi, s_poi, e_poi):
