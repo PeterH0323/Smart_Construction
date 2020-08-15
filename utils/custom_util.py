@@ -80,19 +80,17 @@ def is_poi_in_poly(pt, poly):
         vertx.append(item[0])
         verty.append(item[1])
 
-    i = 0
     j = nvert - 1
-    c = 0
+    res = False
     for i in range(nvert):
-        # and (vertx[i]<=testx or  verty[j] <=testy)
         if (verty[j] - verty[i]) == 0:
             j = i
             continue
         x = (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i]
-        if (((verty[i] > testy) != (verty[j] > testy)) and (testx < x)):
-            c = not c
-        j = copy.deepcopy(i)
-    return c
+        if ((verty[i] > testy) != (verty[j] > testy)) and (testx < x):
+            res = not res
+        j = i
+    return res
 
 
 def person_in_poly_area_dangerous(xyxy, img_name):
