@@ -1,1 +1,37 @@
-{"path":"E:\\AI_Project\\Smart_Construction_Project\\area_dangerous\\1.jpg","outputs":{"object":[{"name":"dangerous","bndbox":{"xmin":484,"ymin":111,"xmax":620,"ymax":290}}]},"time_labeled":1596282882403,"labeled":true,"size":{"width":1023,"height":682,"depth":3}}
+{
+  "path": "E:\\AI_Project\\Smart_Construction_Project\\area_dangerous\\1.jpg",
+  "outputs": {
+    "object": [
+      {
+        "name": "dangerous",
+        "polygon": {
+          "x1": 402,
+          "y1": 234,
+          "x2": 497,
+          "y2": 182,
+          "x3": 499,
+          "y3": 305,
+          "x4": 537,
+          "y4": 313,
+          "x5": 542,
+          "y5": 355,
+          "x6": 719,
+          "y6": 317,
+          "x7": 727,
+          "y7": 432,
+          "x8": 451,
+          "y8": 459,
+          "x9": 364,
+          "y9": 456
+        }
+      }
+    ]
+  },
+  "time_labeled": 1597469158861,
+  "labeled": true,
+  "size": {
+    "width": 1023,
+    "height": 682,
+    "depth": 3
+  }
+}

@@ -3,7 +3,7 @@ import argparse
 import torch.backends.cudnn as cudnn
 
 from models.experimental import *
-from utils.custom_util import person_in_area_dangerous, draw_area_dangerous
+from utils.custom_util import *
 from utils.datasets import *
 from utils.utils import *
 
@@ -101,7 +101,7 @@ def detect(save_img=False):
                         label = '%s %.2f' % (names[int(cls)], conf)
                         if names[int(cls)] == "person":
                             # 判断是否在危险区域内
-                            if person_in_area_dangerous(xyxy, Path(p).name) == 1:
+                            if person_in_poly_area_dangerous(xyxy, Path(p).name) == True:
                                 # 返回 1 表明是在危险区域，框住人
                                 plot_one_box(xyxy, im0, label=label, color=colors[int(cls)], line_thickness=3)
                         else:
@@ -118,7 +118,7 @@ def detect(save_img=False):
 
             # Save results (image with detections)
             if save_img:
-                draw_area_dangerous(im0, Path(p).name)  # 画上危险区域框
+                draw_poly_area_dangerous(im0, Path(p).name)  # 画上危险区域框
 
                 if dataset.mode == 'images':
                     cv2.imwrite(save_path, im0)
