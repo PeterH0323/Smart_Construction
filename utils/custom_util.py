@@ -5,6 +5,7 @@
 # @File    : custom_util.py
 # @Software: PyCharm
 # @Brief   : 检测危险区域里面的人
+import copy
 import json
 import os
 from pathlib import Path
@@ -63,50 +64,35 @@ def draw_poly_area_dangerous(img, img_name):
     cv2.polylines(img, [area_poly], isClosed=True, color=(0, 0, 255), thickness=3, lineType=cv2.LINE_AA)
 
 
-def is_ray_intersects_segment(poi, s_poi, e_poi):
+def is_poi_in_poly(pt, poly):
     """
-    正确计算射线与每条边是否相交。并且规定线段与射线重叠或者射线经过线段下端点属于不相交。首先排除掉不相交的情况,
-    备注：输入都是 [x,y]->[lng,lat] 格式数组
-    :param poi:判断点
-    :param s_poi:边起点
-    :param e_poi:边终点
-    :return: True -> 合格点
+    判断点是否在多边形内部的 pnpoly 算法
+    :param pt: 点坐标 [x,y]
+    :param poly: 点多边形坐标 [[x1,y1],[x2,y2],...]
+    :return: 点是否在多边形之内
     """
-    if s_poi[1] == e_poi[1]:  # 排除与射线平行、重合，线段首尾端点重合的情况
-        return False
-    if s_poi[1] > poi[1] and e_poi[1] > poi[1]:  # 线段在射线上边
-        return False
-    if s_poi[1] < poi[1] and e_poi[1] < poi[1]:  # 线段在射线下边
-        return False
-    if s_poi[1] == poi[1] and e_poi[1] > poi[1]:  # 交点为下端点，对应spoint
-        return False
-    if e_poi[1] == poi[1] and s_poi[1] > poi[1]:  # 交点为下端点，对应epoint
-        return False
-    if s_poi[0] < poi[0] and e_poi[1] < poi[1]:  # 线段在射线左边
-        return False
+    nvert = len(poly)
+    vertx = []
+    verty = []
+    testx = pt[0]
+    testy = pt[1]
+    for item in poly:
+        vertx.append(item[0])
+        verty.append(item[1])
 
-    xseg = e_poi[0] - (e_poi[0] - s_poi[0]) * (e_poi[1] - poi[1]) / (e_poi[1] - s_poi[1])  # 求交
-    if xseg < poi[0]:  # 交点在射线起点的左侧
-        return False
-    return True  # 排除上述情况之后
-
-
-def is_poi_in_poly(poi, poly):
-    # 输入：点，多边形三维数组
-    # poly=[[[x1,y1],[x2,y2],……,[xn,yn],[x1,y1]],[[w1,t1],……[wk,tk]]] 三维数组
-
-    # 可以先判断点是否在外包矩形内
-    # if not isPoiWithinBox(poi,mbr=[[0,0],[180,90]]): return False
-    # 但算最小外包矩形本身需要循环边，会造成开销，本处略去
-    sinsc = 0  # 交点个数
-    for epoly in poly:  # 循环每条边的曲线->each polygon 是二维数组[[x1,y1],…[xn,yn]]
-        for i in range(len(epoly) - 1):  # [0,len-1]
-            s_poi = epoly[i]
-            e_poi = epoly[i + 1]
-            if is_ray_intersects_segment(poi, s_poi, e_poi):
-                sinsc += 1  # 有交点就加1
-
-    return True if sinsc % 2 == 1 else False
+    i = 0
+    j = nvert - 1
+    c = 0
+    for i in range(nvert):
+        # and (vertx[i]<=testx or  verty[j] <=testy)
+        if (verty[j] - verty[i]) == 0:
+            j = i
+            continue
+        x = (vertx[j] - vertx[i]) * (testy - verty[i]) / (verty[j] - verty[i]) + vertx[i]
+        if (((verty[i] > testy) != (verty[j] > testy)) and (testx < x)):
+            c = not c
+        j = copy.deepcopy(i)
+    return c
 
 
 def person_in_poly_area_dangerous(xyxy, img_name):
@@ -131,7 +117,7 @@ def person_in_poly_area_dangerous(xyxy, img_name):
     object_cx = object_x1 + (object_w / 2)
     object_cy = object_y1 + (object_h / 2)
 
-    return is_poi_in_poly([object_cx, object_cy], [area_poly])
+    return is_poi_in_poly([object_cx, object_cy], area_poly)
 
 
 if __name__ == '__main__':
