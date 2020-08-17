@@ -4,7 +4,7 @@
 # @Email   : peterhuang0323@outlook.com
 # @File    : merge_data.py
 # @Software: PyCharm
-# @Brief   : 将旧的数据集使用 yolov5 检测人体，合入已有的安全帽标签
+# @Brief   : 将自己的数据集使用 yolov5 检测出人体，合入自己数据集生成的安全帽标签
 # 使用命令 python detect.py --save-txt --source 图片路径， 可以在 output 中看到每个图片的 txt 标签文件
 
 import os
