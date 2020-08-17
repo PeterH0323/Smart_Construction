@@ -23,7 +23,7 @@
 
 ### 1.1 创建自己的数据集配置文件
 
-因为我这里只是判断 【人没有带头盔】、【人有带头盔】、【人体】 3个类别 ，基于 `data/coco128.yaml` 文件，创建自己的数据集配置文件 `custom_data.yaml`
+因为我这里只是判断 【人没有带安全帽】、【人有带安全帽】、【人体】 3个类别 ，基于 `data/coco128.yaml` 文件，创建自己的数据集配置文件 `custom_data.yaml`
 
 ```yaml
 
@@ -233,7 +233,7 @@ python ./models/export.py --weights ./weights/pro_helmet_head_person.pt --img 64
 # 5. 增加数据集的分类
 关于增加数据集分类的方法：
 
-`SHWD` 数据集里面没有 `person` 的类别，我是先用 `yolov5x.pt` 加上 `yolov5x.yaml` ，使用指令检测出人体
+`SHWD` 数据集里面没有 `person` 的类别，先将现有的自己的数据集执行脚本生成 yolov5 需要的标签文件 `.txt`，之后再用 `yolov5x.pt` 加上 `yolov5x.yaml` ，使用指令检测出人体
 
 ```shell script
 python detect.py --save-txt --source ./自己数据集的文件目录 --weights ./weights/yolov5x.pt
