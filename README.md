@@ -8,6 +8,7 @@
 
 # 1.YOLO v5训练自己数据集教程
 使用的数据集：[Safety-Helmet-Wearing-Dataset](https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset) ，感谢这位大神的开源数据集！
+
 > 本文结合 [YOLOv5官方教程](https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data) 来写
 
 ## 环境准备
@@ -228,3 +229,16 @@ python ./models/export.py --weights ./weights/pro_helmet_head_person.pt --img 64
 ```
 
 `onnx` 和 `torchscript` 文件会生成在 `./weights` 文件夹中
+
+# 5. 增加数据集的分类
+关于增加数据集分类的方法：
+
+`SHWD` 数据集里面没有 `person` 的类别，我是先用 `yolov5x.pt` 加上 `yolov5x.yaml` ，使用指令检测出人体
+
+```shell script
+python detect.py --save-txt --source ./自己数据集的文件目录 --weights ./weights/yolov5x.pt
+```
+
+`yolov5` 会推理出所有的分类，并在 `inference/output` 中生成对应图片的 `.txt` 标签文件；
+
+修改 `./data/gen_data/merge_data.py` 中的自己数据集标签所在的路径，执行这个python脚本，会进行 `person` 类型的合并 
