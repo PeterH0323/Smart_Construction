@@ -16,7 +16,7 @@
 |头|0.889|0.883|0.871|
 |安全帽|0.917|0.921|0.917|
 
-对应的权重文件：[百度云](https://pan.baidu.com/s/1ELPhtW-Q4G8UqEr4YrV_5A), 提取码: b981
+对应的权重文件：[百度云](https://pan.baidu.com/s/1ELPhtW-Q4G8UqEr4YrV_5A), 提取码: `b981`
 
 ### yolov5m 为基础训练，`epoch = 100`
 |分类|P|R|mAP0.5|
@@ -26,7 +26,7 @@
 |头|0.9|0.911|0.9|
 |安全帽|0.913|0.929|0.916|
 
-对应的权重文件：[百度云](https://pan.baidu.com/s/10hlKrgpxVsw4d_vHnPHwEA), 提取码: psst
+对应的权重文件：[百度云](https://pan.baidu.com/s/10hlKrgpxVsw4d_vHnPHwEA), 提取码: `psst`
 
 
 ### yolov5l 为基础训练，`epoch = 100`
@@ -37,7 +37,7 @@
 |头|0.893|0.913|0.901|
 |安全帽|0.927|0.929|0.919|
 
-对应的权重文件：[百度云](https://pan.baidu.com/s/1iMZkRNXY1fowpQCcapFDqw), 提取码: a66e
+对应的权重文件：[百度云](https://pan.baidu.com/s/1iMZkRNXY1fowpQCcapFDqw), 提取码: `a66e`
 
 # 1.YOLO v5训练自己数据集教程
 使用的数据集：[Safety-Helmet-Wearing-Dataset](https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset) ，感谢这位大神的开源数据集！
