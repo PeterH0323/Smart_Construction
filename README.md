@@ -280,3 +280,10 @@ python detect.py --save-txt --source ./自己数据集的文件目录 --weights 
 修改 `./data/gen_data/merge_data.py` 中的自己数据集标签所在的路径，执行这个python脚本，会进行 `person` 类型的合并 
 
 **如果帮到您请给个 star ✨✨✨，您的 star 是我最大的鼓励！**
+
+**如果能帮到您的项目快速落地，可以 buy me a coffee ☕**
+![](./doc/BuyMeACoffee.jpg)
+
+
+也可以加我的 WeChat 和我一起探讨更多的可能！
+![](./doc/WeChat.jpg)
