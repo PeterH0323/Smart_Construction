@@ -1,7 +1,7 @@
 **如果帮到您请给个 star ✨✨✨，您的 star 是我最大的鼓励！**
 
 # Smart_Construction
-该项目是使用 YOLOv5 来训练在智能工地安全领域中头盔目标检测的应用
+该项目是使用 `YOLOv5 v2.x` 来训练在智能工地安全领域中头盔目标检测的应用, 先来一波演示！
 ![](./doc/output_1.jpg)
 ![](./doc/output_2.jpg)
 ![](./doc/output_3.jpg)
@@ -18,6 +18,8 @@
 
 对应的**权重文件**：[百度云](https://pan.baidu.com/s/1ELPhtW-Q4G8UqEr4YrV_5A)，提取码: `b981`
 
+---
+
 ### yolov5m 为基础训练，`epoch = 100`
 |分类|P|R|mAP0.5|
 |---|---|---|---|
@@ -28,6 +30,7 @@
 
 对应的**权重文件**：[百度云](https://pan.baidu.com/s/10hlKrgpxVsw4d_vHnPHwEA)，提取码: `psst`
 
+---
 
 ### yolov5l 为基础训练，`epoch = 100`
 |分类|P|R|mAP0.5|
@@ -38,6 +41,8 @@
 |安全帽|0.927|0.929|0.919|
 
 对应的**权重文件**：[百度云](https://pan.baidu.com/s/1iMZkRNXY1fowpQCcapFDqw)，提取码: `a66e`
+
+---
 
 # 1.YOLO v5训练自己数据集教程
 使用的数据集：[Safety-Helmet-Wearing-Dataset](https://github.com/njvisionpower/Safety-Helmet-Wearing-Dataset) ，感谢这位大神的开源数据集！
@@ -55,7 +60,10 @@
 ## 训练自己的数据
 
 #### 提示：
-关于增加数据集分类的方法，请看【5. 增加数据集的分类】
+**关于增加数据集分类的方法，请看【5. 增加数据集的分类】**
+
+---
+
 
 ### 1.1 创建自己的数据集配置文件
 
@@ -134,7 +142,7 @@ def convert(size, box):
 
 ![](./doc/File_tree.png)
 
-### 1.4 聚类得出先验框（可选）
+### 1.4 聚类得出先验框（Yolov5 内部已做适配，可选）
 使用代码 `./data/gen_anchors/clauculate_anchors.py` ，修改数据集的路径
 ```python
 FILE_ROOT = r"xxx" # 根路径
@@ -148,7 +156,7 @@ Best Accuracy = 79.72%
 Best Anchors = [[14.74, 27.64], [23.48, 46.04], [28.88, 130.0], [39.33, 148.07], [52.62, 186.18], [62.33, 279.11], [85.19, 237.87], [88.0, 360.89], [145.33, 514.67]]
 ```
 
-### 1.5 选择一个你需要的模型
+### 1.5 选择一个您需要的模型
 在文件夹 `./models` 下选择一个你需要的模型然后复制一份出来，将文件开头的 `nc = ` 修改为数据集的分类数，下面是借鉴 `./models/yolov5s.yaml`来修改的
 
 ```yaml
@@ -230,6 +238,11 @@ python detect.py --source   0  # webcam
                             http://112.50.243.8/PLTV/88888888/224/3221225900/1.m3u8  # http stream
 ```
 
+例如使用我的 `s` 权重检测图片，可以运行以下命令，侦测图片会保存在 `./inferenct/output/` 文件夹下
+
+```bash
+python detect.py --source 图片路径 --weights ./weights/helmet_head_person_s.pt
+```
 
 # 3. 检测危险区域内是否有人
 
