@@ -57,6 +57,9 @@
     Pytorch == 1.5.x
 ```
 
+## 官方权重
+我已上传到一份到百度云：[下载链接](https://pan.baidu.com/s/1dHp1Vzz16ah4YRNRU4NgGQ) , 密码: `g1gp`
+
 ## 训练自己的数据
 
 #### 提示：
