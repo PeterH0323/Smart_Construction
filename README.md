@@ -87,6 +87,8 @@ names: ['person', 'head', 'helmet']
 
 ### 1.2 创建每个图片对应的标签文件
 
+你可以使用 `data/gen_data/gen_head_helmet.py` 来将` VOC` 的数据集转换成 `YOLOv5` 训练需要用到的格式。
+
 使用标注工具类似于 [Labelbox](https://labelbox.com/) 、[CVAT](https://github.com/opencv/cvat) 、[精灵标注助手](http://www.jinglingbiaozhu.com/) 标注之后，需要生成每个图片对应的 `.txt` 文件，其规范如下：
 - 每一行都是一个目标
 - 类别序号是零索引开始的（从0开始）
