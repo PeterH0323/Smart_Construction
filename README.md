@@ -291,7 +291,7 @@ python ./models/export.py --weights ./weights/helmet_head_person_s.pt --img 640 
 `SHWD` 数据集里面没有 `person` 的类别，先将现有的自己的数据集执行脚本生成 yolov5 需要的标签文件 `.txt`，之后再用 `yolov5x.pt` 加上 `yolov5x.yaml` ，使用指令检测出人体
 
 ```shell script
-python detect.py --save-txt --source ./自己数据集的文件目录 --weights ./weights/yolov5x.pt
+python detect.py --save-txt --source 自己数据集的文件目录 --weights ./weights/yolov5x.pt
 ```
 
 `yolov5` 会推理出所有的分类，并在 `inference/output` 中生成对应图片的 `.txt` 标签文件；
