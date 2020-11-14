@@ -147,23 +147,21 @@ def convert(size, box):
 
 ![](./doc/File_tree.png)
 
-[^_^]:
+### 1.4 聚类得出先验框（Yolov5 内部已做适配，可选）
+使用代码 `./data/gen_anchors/clauculate_anchors.py` ，修改数据集的路径
+```python
+FILE_ROOT = r"xxx" # 根路径
+ANNOTATION_ROOT = r"xxx"  # 数据集标签文件夹路径
+ANNOTATION_PATH = FILE_ROOT + ANNOTATION_ROOT
+```
+跑完会生成一个文件 `anchors.txt`，里面有得出的建议先验框：
+```text
+Best Accuracy = 79.72%
 
-    ### 1.4 聚类得出先验框（Yolov5 内部已做适配，可选）
-    使用代码 `./data/gen_anchors/clauculate_anchors.py` ，修改数据集的路径
-    ```python
-    FILE_ROOT = r"xxx" # 根路径
-    ANNOTATION_ROOT = r"xxx"  # 数据集标签文件夹路径
-    ANNOTATION_PATH = FILE_ROOT + ANNOTATION_ROOT
-    ```
-    跑完会生成一个文件 `anchors.txt`，里面有得出的建议先验框：
-    ```text
-    Best Accuracy = 79.72%
+Best Anchors = [[14.74, 27.64], [23.48, 46.04], [28.88, 130.0], [39.33, 148.07], [52.62, 186.18], [62.33, 279.11], [85.19, 237.87], [88.0, 360.89], [145.33, 514.67]]
+```
 
-    Best Anchors = [[14.74, 27.64], [23.48, 46.04], [28.88, 130.0], [39.33, 148.07], [52.62, 186.18], [62.33, 279.11], [85.19, 237.87], [88.0, 360.89], [145.33, 514.67]]
-    ```
-
-### 1.4 选择一个您需要的模型
+### 1.5 选择一个您需要的模型
 在文件夹 `./models` 下选择一个你需要的模型然后复制一份出来，将文件开头的 `nc = ` 修改为数据集的分类数，下面是借鉴 `./models/yolov5s.yaml`来修改的
 
 ```yaml
@@ -218,7 +216,7 @@ head:
 
 ```
 
-### 1.5 开始训练
+### 1.6 开始训练
 这里选择了 `yolov5s` 模型进行训练，权重也是基于 `yolov5s.pt` 来训练
 
 ```shell script
@@ -227,7 +225,7 @@ python train.py --img 640 --batch 16 --epochs 10 --data ./data/custom_data.yaml 
 
 其中，`yolov5s.pt` 需要自行下载放在本工程的根目录即可，下载地址 [官方权重](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)
 
-### 1.6 看训练之后的结果
+### 1.7 看训练之后的结果
 训练之后，权重会保存在 `./runs` 文件夹里面的每个 `exp` 文件里面的 `weights/best.py` ，里面还可以看到训练的效果
 ![](./doc/test_batch0_gt.jpg)
 
