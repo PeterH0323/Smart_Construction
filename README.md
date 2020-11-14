@@ -1,7 +1,7 @@
 **如果帮到您请给个 star ✨✨✨，您的 star 是我最大的鼓励！**
 
 # Smart_Construction
-该项目是使用 `YOLOv5 v2.x` 来训练在智能工地安全领域中头盔目标检测的应用, 先来一波演示！
+该项目是使用 `YOLOv5 v2.x` 的程序来训练在智能工地安全领域中头盔目标检测的应用, 先来一波演示！
 ![](./doc/output_1.jpg)
 ![](./doc/output_2.jpg)
 ![](./doc/output_3.jpg)
