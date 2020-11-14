@@ -405,8 +405,8 @@ def train(hyp, tb_writer, opt, device):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--cfg', type=str, default='models/yolov5x.yaml', help='model.yaml path')
-    parser.add_argument('--data', type=str, default='data/coco128.yaml', help='data.yaml path')
+    parser.add_argument('--cfg', type=str, default='models/custom_yolov5.yaml', help='model.yaml path')
+    parser.add_argument('--data', type=str, default='data/custom_data.yaml', help='data.yaml path')
     parser.add_argument('--hyp', type=str, default='', help='hyp.yaml path (optional)')
     parser.add_argument('--epochs', type=int, default=300)
     parser.add_argument('--batch-size', type=int, default=16, help="Total batch size for all gpus.")
@@ -420,7 +420,7 @@ if __name__ == '__main__':
     parser.add_argument('--evolve', action='store_true', help='evolve hyperparameters')
     parser.add_argument('--bucket', type=str, default='', help='gsutil bucket')
     parser.add_argument('--cache-images', action='store_true', help='cache images for faster training')
-    parser.add_argument('--weights', type=str, default='', help='initial weights path')
+    parser.add_argument('--weights', type=str, default='weights\yolov5m.pt', help='initial weights path')
     parser.add_argument('--name', default='', help='renames results.txt to results_name.txt if supplied')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     parser.add_argument('--multi-scale', action='store_true', help='vary img-size +/- 50%%')

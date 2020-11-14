@@ -145,8 +145,8 @@ def detect(save_img=False):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--weights', nargs='+', type=str, default='./weights/yolov5x.pt', help='model.pt path(s)')
-    parser.add_argument('--source', type=str, default=f'inference/images', help='source')  # file/folder, 0 for webcam
+    parser.add_argument('--weights', nargs='+', type=str, default='./weights/helmet_head_person_m.pt', help='model.pt path(s)')
+    parser.add_argument('--source', type=str, default=f'./area_dangerous', help='source')  # file/folder, 0 for webcam
     parser.add_argument('--output', type=str, default='inference/output', help='output folder')  # output folder
     parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.4, help='object confidence threshold')
