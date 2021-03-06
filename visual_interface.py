@@ -5,6 +5,7 @@
 # @File    : visual_interface.py
 # @Software: PyCharm
 # @Brief   :
+from pathlib import Path
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -23,7 +24,6 @@ CODE_VER = "V0.1"
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-
         self.setupUi(self)
         self.setWindowTitle("VAT ROLL COMPARE LABEL TOOL" + " " + CODE_VER)
         self.showMaximized()
@@ -50,6 +50,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.video_length = 0
 
         '''加载模型'''
+        self.project_root = Path.cwd()
         self.parameter_agnostic_nms = False
         self.parameter_augment = False
         self.parameter_classes = None
@@ -57,9 +58,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.parameter_device = ''
         self.parameter_img_size = 640
         self.parameter_iou_thres = 0.5
-        self.parameter_output = 'inference/output'
+        self.parameter_output = self.project_root.joinpath(r'inference/output')
         self.parameter_save_txt = False
-        self.parameter_source = './area_dangerous'
+        self.parameter_source = ''
         self.parameter_update = False
         self.parameter_view_img = False
         self.parameter_weights = ['./weights/helmet_head_person_m.pt']
@@ -72,14 +73,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         self.parameter_source = QFileDialog.getOpenFileUrl()[0]
         self.input_player.setMedia(QMediaContent(self.parameter_source))  # 选取视频文件
+        self.parameter_source = self.parameter_source.toLocalFile()  # 将 Qurl 路径转为 本地路径str
         self.input_player.pause()  # 显示媒体
         # self.output_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
 
     def predict_button_click(self):
-        self.predict_model.detect(self.parameter_output, self.parameter_source, self.parameter_view_img,
-                                  self.parameter_save_txt, self.parameter_img_size, self.parameter_augment,
-                                  self.parameter_conf_thres, self.parameter_iou_thres, self.parameter_classes,
-                                  self.parameter_agnostic_nms, self.parameter_update)
+        predict_file = self.predict_model.detect(self.parameter_output, self.parameter_source, self.parameter_view_img,
+                                                 self.parameter_save_txt, self.parameter_img_size,
+                                                 self.parameter_augment,
+                                                 self.parameter_conf_thres, self.parameter_iou_thres,
+                                                 self.parameter_classes,
+                                                 self.parameter_agnostic_nms, self.parameter_update)
+        self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(predict_file)))  # 选取视频文件
+        self.output_player.pause()  # 显示媒体
 
     def change_slide_bar(self, position):
         """

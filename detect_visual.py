@@ -153,11 +153,13 @@ class YOLOPredict(object):
                         vid_writer.write(im0)
 
         if save_txt or save_img:
-            print('Results saved to %s' % os.getcwd() + os.sep + out)
+            print('Results saved to %s' % str(out))
             if platform == 'darwin' and not update:  # MacOS
                 os.system('open ' + save_path)
 
         print('Done. (%.3fs)' % (time.time() - t0))
+
+        return save_path
 
 
 if __name__ == '__main__':
@@ -174,12 +176,13 @@ if __name__ == '__main__':
     parameter_update = False
     parameter_view_img = False
     parameter_weights = ['./weights/helmet_head_person_m.pt']
-    with torch.no_grad():
-        predict = YOLOPredict(parameter_device, parameter_weights, parameter_img_size)
-        predict.detect(parameter_output, parameter_source, parameter_view_img, parameter_save_txt,
-                       parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres,
-                       parameter_classes, parameter_agnostic_nms, parameter_update)
+    predict = YOLOPredict(parameter_device, parameter_weights, parameter_img_size)
 
-        # detect(parameter_output, parameter_source, parameter_weights, parameter_view_img, parameter_save_txt,
-        #        parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres, parameter_classes,
-        #        parameter_agnostic_nms, parameter_device, parameter_update)
+    # with torch.no_grad():
+    predict.detect(parameter_output, parameter_source, parameter_view_img, parameter_save_txt,
+                   parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres,
+                   parameter_classes, parameter_agnostic_nms, parameter_update)
+
+    # detect(parameter_output, parameter_source, parameter_weights, parameter_view_img, parameter_save_txt,
+    #        parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres, parameter_classes,
+    #        parameter_agnostic_nms, parameter_device, parameter_update)
