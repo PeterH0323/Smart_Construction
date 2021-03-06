@@ -124,15 +124,17 @@ class PredictHandlerThread(QThread):
             split_message = message.split(" ")
 
             # 设置进度条
-            percent = split_message[2][1:-1].split("/")  # 提取图片的序号
-            value = int((int(percent[0]) / int(percent[1])) * 100)
-            value = value if (int(percent[1]) - int(percent[0])) > 2 else 100
-            self.predict_progressBar.setValue(value)
+            if "video" in message:
+                percent = split_message[2][1:-1].split("/")  # 提取图片的序号
+                value = int((int(percent[0]) / int(percent[1])) * 100)
+                value = value if (int(percent[1]) - int(percent[0])) > 2 else 100
+                self.predict_progressBar.setValue(value)
+            else:
+                self.predict_progressBar.setValue(100)
 
             # 设置 FPS
             second_count = 1 / float(split_message[-1][1:-2])
             self.fps_label.setText(f"--> {second_count:.1f} FPS")
-
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
