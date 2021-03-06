@@ -87,7 +87,7 @@ class YOLOPredict(object):
             save_img = True
             dataset = LoadImages(source, img_size=imgsz)
 
-        for path, img, im0s, vid_cap in dataset:
+        for path, img, im0s, vid_cap, info_str, in dataset:
             img = torch.from_numpy(img).to(self.device)
             img = img.half() if self.half else img.float()  # uint8 to fp16/32
             img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -137,7 +137,7 @@ class YOLOPredict(object):
                 print('%sDone. (%.3fs)' % (s, t2 - t1))  # 打印每张图片的推理信息
 
                 # 保存推理信息
-                self.predict_info = '%sDone. (%.3fs)' % (s, t2 - t1)
+                self.predict_info = info_str + '%sDone. (%.3fs)' % (s, t2 - t1)
 
                 # Stream results
                 if view_img:

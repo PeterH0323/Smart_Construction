@@ -32,11 +32,17 @@ class PredictDataHandlerThread(QThread):
 
     def run(self):
         self.running = True
+        over_time = 0
         while self.running:
             if self.predict_model.predict_info != "":
                 self.predict_message_trigger.emit(self.predict_model.predict_info)
                 self.predict_model.predict_info = ""
+                over_time = 0
             time.sleep(0.01)
+            over_time += 1
+
+            if over_time > 100000:
+                self.running = False
 
 
 class PredictHandlerThread(QThread):
@@ -88,12 +94,13 @@ class PredictHandlerThread(QThread):
                                                              self.parameter_classes,
                                                              self.parameter_agnostic_nms,
                                                              self.parameter_update)
-        self.predict_data_handler_thread.running = False
 
         if self.output_predict_file != "":
             # 将 str 路径转为 QUrl 并显示
             self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.output_predict_file)))  # 选取视频文件
             self.output_player.pause()  # 显示媒体
+
+        # self.predict_data_handler_thread.running = False
 
     @pyqtSlot(str)
     def add_messages(self, message):
