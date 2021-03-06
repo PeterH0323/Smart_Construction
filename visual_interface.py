@@ -19,6 +19,9 @@ CODE_VER = "V0.1"
 
 
 class PredictDataHandlerThread(QThread):
+    """
+    打印信息的线程
+    """
     predict_message_trigger = pyqtSignal(str)
 
     def __init__(self, predict_model):
@@ -46,8 +49,11 @@ class PredictDataHandlerThread(QThread):
 
 
 class PredictHandlerThread(QThread):
+    """
+    进行模型推理的线程
+    """
 
-    def __init__(self, output_player, predict_info_plainTextEdit):
+    def __init__(self, output_player, predict_info_plainTextEdit, predict_progressBar):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
@@ -68,9 +74,10 @@ class PredictHandlerThread(QThread):
         self.parameter_weights = ['./weights/helmet_head_person_m.pt']
         self.predict_model = YOLOPredict(self.parameter_device, self.parameter_weights, self.parameter_img_size)
         self.output_predict_file = ""
-        # 播放插件
+        # 传入的QT插件
         self.output_player = output_player
         self.predict_info_plainTextEdit = predict_info_plainTextEdit
+        self.predict_progressBar = predict_progressBar
 
         # 创建显示进程
         self.predict_data_handler_thread = PredictDataHandlerThread(self.predict_model)
@@ -82,6 +89,8 @@ class PredictHandlerThread(QThread):
 
     def run(self):
         self.predict_data_handler_thread.start()
+
+        self.predict_progressBar.setValue(0)  # 进度条清零
 
         self.output_predict_file = self.predict_model.detect(self.parameter_output,
                                                              self.parameter_source,
@@ -106,6 +115,16 @@ class PredictHandlerThread(QThread):
     def add_messages(self, message):
         if message != "":
             self.predict_info_plainTextEdit.appendPlainText(message)
+
+            if ":" not in message:
+                # 跳过无用字符
+                return
+
+            # 设置进度条
+            percent = message.split(" ")[2][1:-1].split("/")  # 提取图片的序号
+            value = int((int(percent[0]) / int(percent[1])) * 100)
+            value = value if (int(percent[1]) - int(percent[0])) > 2 else 100
+            self.predict_progressBar.setValue(value)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -137,15 +156,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.video_length = 0
 
         # 推理使用另外一线程
-        self.predict_handler_thread = PredictHandlerThread(self.output_player, self.predict_info_plainTextEdit)
-        # self.predict_handler_thread.predict_message_trigger.connect(self.add_messages)
-        # self.predict_handler_thread.started.connect(self.predict_data_handler_thread.thread_started)
-        # self.predict_handler_thread.finished.connect(self.predict_data_handler_thread.thread_finished)
-
-    # @pyqtSlot(str)
-    # def add_messages(self, message):
-    #     if message != "":
-    #         self.predict_info_plainTextEdit.appendPlainText(message)
+        self.predict_handler_thread = PredictHandlerThread(self.output_player,
+                                                           self.predict_info_plainTextEdit,
+                                                           self.predict_progressBar)
 
     def import_media(self):
         """
@@ -165,6 +178,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.output_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
 
     def predict_button_click(self):
+        """
+        推理按钮
+        :return:
+        """
+        # 启动线程去调用
         self.predict_handler_thread.start()
 
     def change_slide_bar(self, position):

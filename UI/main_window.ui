@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>120</y>
-      <width>511</width>
-      <height>481</height>
+      <y>110</y>
+      <width>501</width>
+      <height>491</height>
      </rect>
     </property>
     <property name="title">
@@ -36,6 +36,24 @@
         </size>
        </property>
       </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>推理进度：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="predict_progressBar">
+         <property name="value">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">
@@ -89,32 +107,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="play_pushButton">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>670</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>播放</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pause_pushButton">
-    <property name="geometry">
-     <rect>
-      <x>630</x>
-      <y>670</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>暂停</string>
-    </property>
-   </widget>
    <widget class="QPlainTextEdit" name="predict_info_plainTextEdit">
     <property name="geometry">
      <rect>
@@ -123,45 +115,6 @@
       <width>951</width>
       <height>81</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QProgressBar" name="predict_progressBar">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>80</y>
-      <width>118</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="value">
-     <number>24</number>
-    </property>
-   </widget>
-   <widget class="QSlider" name="video_horizontalSlider">
-    <property name="geometry">
-     <rect>
-      <x>540</x>
-      <y>630</y>
-      <width>160</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QLabel" name="video_percent_label">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>630</y>
-      <width>61</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>0 %</string>
     </property>
    </widget>
    <widget class="QLabel" name="author_label">
@@ -189,6 +142,58 @@
     <property name="text">
      <string>TextLabel</string>
     </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>660</y>
+      <width>158</width>
+      <height>25</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="play_pushButton">
+       <property name="text">
+        <string>播放</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pause_pushButton">
+       <property name="text">
+        <string>暂停</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>610</y>
+      <width>251</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QSlider" name="video_horizontalSlider">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="video_percent_label">
+       <property name="text">
+        <string>0 %</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
