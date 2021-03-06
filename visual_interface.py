@@ -8,11 +8,14 @@
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-from PyQt5.QtWidgets import QApplication, QMainWindow  # QMainWindow, QApplication, QDialog, QWidget, QMessageBox
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtMultimediaWidgets import QVideoWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, \
+    QFileDialog, QWidget  # QMainWindow, QApplication, QDialog, QWidget, QMessageBox
 import sys
 
-from UI.main_window import Ui_MainWindow
 
+from UI.main_window import Ui_MainWindow
 
 CODE_VER = "V0.1"
 
@@ -25,17 +28,43 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("VAT ROLL COMPARE LABEL TOOL" + " " + CODE_VER)
         self.showMaximized()
 
-        # 按键绑定
-        self.play_pushButton.clicked.connect(self.button_click)
-        self.pause_pushButton.clicked.connect(self.button_click)
+        '''按键绑定'''
+        # 输入媒体
+        self.import_media_pushButton.clicked.connect(self.import_media)  # 导入
+        self.start_predict_pushButton.clicked.connect(self.button_click)  # 开始推理
+        # 输出媒体
+        self.open_predict_file_pushButton.clicked.connect(self.button_click)  # 文件中显示推理视频
+        # 下方
+        self.play_pushButton.clicked.connect(self.button_click)  # 播放
+        self.pause_pushButton.clicked.connect(self.button_click)  # 暂停
+
+        '''转换控件'''
+        # 对 weight 控件进行定义
+        self.input_video_widget = QVideoWidget()
+        self.output_video_widget = QVideoWidget()
+
+        self.input_player = QMediaPlayer()  # 媒体输入的widget
+        self.input_player.setVideoOutput(self.input_video_widget)
+        # self.input_player.positionChanged.connect(self.changeSlide)  # 播放进度条
+
+        self.output_player = QMediaPlayer()  # 媒体输出的widget
+        self.output_player.setVideoOutput(self.output_video_widget)
+
+    def import_media(self):
+        self.input_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
+        self.input_player.play()  # 播放视频
 
     @pyqtSlot()
     def button_click(self):
         name = self.sender().objectName()
         if name == "play_pushButton":
             print("play")
+            self.input_player.play()
+            self.output_player.play()
+
         elif name == "pause_pushButton":
-            print("pause")
+            self.input_player.pause()
+            self.output_player.pause()
 
     @pyqtSlot()
     def closeEvent(self, *args, **kwargs):
