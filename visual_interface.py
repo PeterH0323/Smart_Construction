@@ -5,6 +5,7 @@
 # @File    : visual_interface.py
 # @Software: PyCharm
 # @Brief   :
+import time
 from pathlib import Path
 
 from PyQt5.QtCore import *
@@ -20,6 +21,32 @@ from detect_visual import YOLOPredict
 
 CODE_VER = "V0.1"
 
+PREDICT_REAL_TIME_INFO = ""
+
+
+class PredictDataHandlerThread(QThread):
+    predict_message_trigger = pyqtSignal(str)
+
+    def __init__(self):
+        super(PredictDataHandlerThread, self).__init__()
+        self.running = True
+
+    def __del__(self):
+        self.running = False
+        self.wait()
+
+    def run(self):
+        self.running = True
+        while self.running:
+            self.predict_message_trigger.emit(PREDICT_REAL_TIME_INFO)
+            time.sleep(0.1)
+
+    def thread_started(self):
+        print("PredictDataHandlerThread started")
+
+    def thread_finished(self):
+        print("PredictDataHandlerThread finished")
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None):
@@ -27,6 +54,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("VAT ROLL COMPARE LABEL TOOL" + " " + CODE_VER)
         self.showMaximized()
+
+        global PREDICT_REAL_TIME_INFO
 
         '''按键绑定'''
         # 输入媒体
@@ -49,6 +78,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 播放时长, 以 input 的时长为准
         self.video_length = 0
 
+        # 推理使用另外一线程
+        self.predict_data_handler_thread = PredictDataHandlerThread()
+        self.predict_data_handler_thread.predict_message_trigger.connect(self.add_messages)
+        self.predict_data_handler_thread.started.connect(self.predict_data_handler_thread.thread_started)
+        self.predict_data_handler_thread.finished.connect(self.predict_data_handler_thread.thread_finished)
+
         '''加载模型'''
         self.project_root = Path.cwd()
         self.parameter_agnostic_nms = False
@@ -65,6 +100,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.parameter_view_img = False
         self.parameter_weights = ['./weights/helmet_head_person_m.pt']
         self.predict_model = YOLOPredict(self.parameter_device, self.parameter_weights, self.parameter_img_size)
+        PREDICT_REAL_TIME_INFO = self.predict_model.predict_info
+
+    @pyqtSlot(str)
+    def add_messages(self, message):
+        # self.predict_info_plainTextEdit.appendPlainText(message)
+        print(message)
 
     def import_media(self):
         """
@@ -83,16 +124,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # self.output_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
 
     def predict_button_click(self):
-        predict_file = self.predict_model.detect(self.parameter_output, self.parameter_source, self.parameter_view_img,
-                                                 self.parameter_save_txt, self.parameter_img_size,
-                                                 self.parameter_augment,
-                                                 self.parameter_conf_thres, self.parameter_iou_thres,
-                                                 self.parameter_classes,
-                                                 self.parameter_agnostic_nms, self.parameter_update,
-                                                 self.predict_info_plainTextEdit)
-        # 将 str 路径转为 QUrl 并显示
-        self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(predict_file)))  # 选取视频文件
-        self.output_player.pause()  # 显示媒体
+
+        self.predict_data_handler_thread.start()
+
+        if self.parameter_source == "":
+            return
+
+        # predict_file = self.predict_model.detect(self.parameter_output, self.parameter_source, self.parameter_view_img,
+        #                                          self.parameter_save_txt, self.parameter_img_size,
+        #                                          self.parameter_augment,
+        #                                          self.parameter_conf_thres, self.parameter_iou_thres,
+        #                                          self.parameter_classes,
+        #                                          self.parameter_agnostic_nms, self.parameter_update,
+        #                                          PREDICT_REAL_TIME_INFO)
+        # # 将 str 路径转为 QUrl 并显示
+        # self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(predict_file)))  # 选取视频文件
+        # self.output_player.pause()  # 显示媒体
 
     def change_slide_bar(self, position):
         """
@@ -111,6 +158,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         :return:
         """
         name = self.sender().objectName()
+
+        if self.parameter_source == "":
+            return
+
         if name == "play_pushButton":
             print("play")
             self.input_player.play()
@@ -119,6 +170,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         elif name == "pause_pushButton":
             self.input_player.pause()
             self.output_player.pause()
+
+        # 停止线程
+        # self.predict_data_handler_thread.running = False
 
     @pyqtSlot()
     def closeEvent(self, *args, **kwargs):

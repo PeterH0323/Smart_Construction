@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2021/3/6 19:02
+# @Author  : PeterH
+# @Email   : peterhuang0323@outlook.com
+# @File    : detect_visual.py
+# @Software: PyCharm
+# @Brief   :
 import torch.backends.cudnn as cudnn
 
 from models.experimental import *
@@ -9,6 +16,7 @@ class YOLOPredict(object):
     def __init__(self, device, weights, imgsz):
         # 加载模型
         self.model, self.half, self.names, self.colors, self.device = self.load_model(device, weights, imgsz)
+        self.predict_info = "..."
 
     @staticmethod
     def load_model(device, weights, imgsz):
@@ -130,7 +138,7 @@ class YOLOPredict(object):
 
                 if info_widget is not None:
                     # QT 控件打印信息
-                    info_widget.appendPlainText('%sDone. (%.3fs)' % (s, t2 - t1))
+                    self.predict_info = '%sDone. (%.3fs)' % (s, t2 - t1)
 
                 # Stream results
                 if view_img:
