@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1217</width>
-    <height>933</height>
+    <width>1256</width>
+    <height>875</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,93 +17,83 @@
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>80</x>
-      <y>150</y>
+      <x>90</x>
+      <y>120</y>
       <width>511</width>
-      <height>491</height>
+      <height>481</height>
      </rect>
     </property>
     <property name="title">
-     <string>输入视频</string>
+     <string>输入媒体</string>
     </property>
-    <widget class="QWidget" name="input_video_widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>451</width>
-       <height>431</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>460</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>导入</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>460</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>推理</string>
-     </property>
-    </widget>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QVideoWidget" name="input_video_widget" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="import_media_pushButton">
+         <property name="text">
+          <string>导入</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="start_predict_pushButton">
+         <property name="text">
+          <string>推理</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>140</y>
-      <width>531</width>
-      <height>511</height>
+      <x>640</x>
+      <y>110</y>
+      <width>491</width>
+      <height>491</height>
      </rect>
     </property>
     <property name="title">
-     <string>输出视频</string>
+     <string>输出媒体</string>
     </property>
-    <widget class="QWidget" name="output_video_widget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>20</x>
-       <y>20</y>
-       <width>451</width>
-       <height>431</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_5">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>470</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>打开文件</string>
-     </property>
-    </widget>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QVideoWidget" name="output_video_widget" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="open_predict_file_pushButton">
+       <property name="text">
+        <string>在文件中查看</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
    <widget class="QPushButton" name="play_pushButton">
     <property name="geometry">
      <rect>
-      <x>520</x>
-      <y>700</y>
+      <x>530</x>
+      <y>670</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -115,8 +105,8 @@
    <widget class="QPushButton" name="pause_pushButton">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>700</y>
+      <x>630</x>
+      <y>670</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -128,8 +118,8 @@
    <widget class="QPlainTextEdit" name="predict_info_plainTextEdit">
     <property name="geometry">
      <rect>
-      <x>140</x>
-      <y>730</y>
+      <x>150</x>
+      <y>700</y>
       <width>951</width>
       <height>81</height>
      </rect>
@@ -138,8 +128,8 @@
    <widget class="QProgressBar" name="predict_progressBar">
     <property name="geometry">
      <rect>
-      <x>270</x>
-      <y>110</y>
+      <x>280</x>
+      <y>80</y>
       <width>118</width>
       <height>23</height>
      </rect>
@@ -151,8 +141,8 @@
    <widget class="QSlider" name="horizontalSlider">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>660</y>
+      <x>540</x>
+      <y>630</y>
       <width>160</width>
       <height>22</height>
      </rect>
@@ -164,8 +154,8 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>660</y>
+      <x>720</x>
+      <y>630</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -177,8 +167,8 @@
    <widget class="QLabel" name="author_label">
     <property name="geometry">
      <rect>
-      <x>970</x>
-      <y>90</y>
+      <x>980</x>
+      <y>60</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -190,8 +180,8 @@
    <widget class="QLabel" name="gpu_info_label">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>830</y>
+      <x>540</x>
+      <y>800</y>
       <width>271</width>
       <height>31</height>
      </rect>
@@ -206,13 +196,21 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1217</width>
+     <width>1256</width>
      <height>23</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QVideoWidget</class>
+   <extends>QWidget</extends>
+   <header>PyQt5.QtMultimediaWidgets</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

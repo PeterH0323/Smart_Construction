@@ -14,7 +14,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, \
     QFileDialog, QWidget  # QMainWindow, QApplication, QDialog, QWidget, QMessageBox
 import sys
 
-
 from UI.main_window import Ui_MainWindow
 
 CODE_VER = "V0.1"
@@ -31,31 +30,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''按键绑定'''
         # 输入媒体
         self.import_media_pushButton.clicked.connect(self.import_media)  # 导入
-        self.start_predict_pushButton.clicked.connect(self.button_click)  # 开始推理
+        # self.start_predict_pushButton.clicked.connect(self.play_pause_button_click)  # 开始推理
         # 输出媒体
-        self.open_predict_file_pushButton.clicked.connect(self.button_click)  # 文件中显示推理视频
+        # self.open_predict_file_pushButton.clicked.connect(self.play_pause_button_click)  # 文件中显示推理视频
         # 下方
-        self.play_pushButton.clicked.connect(self.button_click)  # 播放
-        self.pause_pushButton.clicked.connect(self.button_click)  # 暂停
+        self.play_pushButton.clicked.connect(self.play_pause_button_click)  # 播放
+        self.pause_pushButton.clicked.connect(self.play_pause_button_click)  # 暂停
 
-        '''转换控件'''
-        # 对 weight 控件进行定义
-        self.input_video_widget = QVideoWidget()
-        self.output_video_widget = QVideoWidget()
-
+        '''媒体流绑定输出'''
         self.input_player = QMediaPlayer()  # 媒体输入的widget
         self.input_player.setVideoOutput(self.input_video_widget)
-        # self.input_player.positionChanged.connect(self.changeSlide)  # 播放进度条
+        # self.input_player.positionChanged.connect(self.change_slide_bar)  # 播放进度条
 
         self.output_player = QMediaPlayer()  # 媒体输出的widget
         self.output_player.setVideoOutput(self.output_video_widget)
+
+        # 播放时长, 以 input 的时长为准
+        self.video_length = 0
 
     def import_media(self):
         self.input_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
         self.input_player.play()  # 播放视频
 
+
+
     @pyqtSlot()
-    def button_click(self):
+    def play_pause_button_click(self):
+        """
+        播放、暂停按钮回调事件
+        :return:
+        """
         name = self.sender().objectName()
         if name == "play_pushButton":
             print("play")
@@ -68,6 +72,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     @pyqtSlot()
     def closeEvent(self, *args, **kwargs):
+        """
+        重写关闭事件
+        :param args:
+        :param kwargs:
+        :return:
+        """
         print("Close")
 
 
