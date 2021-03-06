@@ -73,6 +73,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         self.parameter_source = QFileDialog.getOpenFileUrl()[0]
         self.input_player.setMedia(QMediaContent(self.parameter_source))  # 选取视频文件
+
+        # 设置 output 为一张图片，防止资源被占用
+        path_current = str(Path.cwd().joinpath("area_dangerous\1.jpg"))
+        self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(path_current)))
+
         self.parameter_source = self.parameter_source.toLocalFile()  # 将 Qurl 路径转为 本地路径str
         self.input_player.pause()  # 显示媒体
         # self.output_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
@@ -83,7 +88,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                  self.parameter_augment,
                                                  self.parameter_conf_thres, self.parameter_iou_thres,
                                                  self.parameter_classes,
-                                                 self.parameter_agnostic_nms, self.parameter_update)
+                                                 self.parameter_agnostic_nms, self.parameter_update,
+                                                 self.predict_info_plainTextEdit)
+        # 将 str 路径转为 QUrl 并显示
         self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(predict_file)))  # 选取视频文件
         self.output_player.pause()  # 显示媒体
 

@@ -1,5 +1,3 @@
-import argparse
-
 import torch.backends.cudnn as cudnn
 
 from models.experimental import *
@@ -43,7 +41,7 @@ class YOLOPredict(object):
         return model, half, names, colors, device
 
     def detect(self, out, source, view_img, save_txt, imgsz, augment, conf_thres, iou_thres,
-               cclasses, agnostic_nms, update, save_img=False):
+               cclasses, agnostic_nms, update, info_widget=None, save_img=False):
         """
         进行推理操作
         :param out:
@@ -57,6 +55,7 @@ class YOLOPredict(object):
         :param cclasses:
         :param agnostic_nms:
         :param update:
+        :param info_widget: QT 文本控件，用来显示推理信息
         :param save_img:
         :return:
         """
@@ -128,6 +127,10 @@ class YOLOPredict(object):
 
                 # Print time (inference + NMS)
                 print('%sDone. (%.3fs)' % (s, t2 - t1))  # 打印每张图片的推理信息
+
+                if info_widget is not None:
+                    # QT 控件打印信息
+                    info_widget.appendPlainText('%sDone. (%.3fs)' % (s, t2 - t1))
 
                 # Stream results
                 if view_img:
