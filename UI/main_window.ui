@@ -138,7 +138,7 @@
      <number>24</number>
     </property>
    </widget>
-   <widget class="QSlider" name="horizontalSlider">
+   <widget class="QSlider" name="video_horizontalSlider">
     <property name="geometry">
      <rect>
       <x>540</x>
@@ -151,7 +151,7 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="video_percent_label">
     <property name="geometry">
      <rect>
       <x>720</x>

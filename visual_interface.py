@@ -40,7 +40,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         '''媒体流绑定输出'''
         self.input_player = QMediaPlayer()  # 媒体输入的widget
         self.input_player.setVideoOutput(self.input_video_widget)
-        # self.input_player.positionChanged.connect(self.change_slide_bar)  # 播放进度条
+        self.input_player.positionChanged.connect(self.change_slide_bar)  # 播放进度条
 
         self.output_player = QMediaPlayer()  # 媒体输出的widget
         self.output_player.setVideoOutput(self.output_video_widget)
@@ -49,10 +49,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.video_length = 0
 
     def import_media(self):
+        """
+        导入媒体文件
+        :return:
+        """
         self.input_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
-        self.input_player.play()  # 播放视频
+        self.output_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
 
-
+    def change_slide_bar(self, position):
+        """
+        进度条移动
+        :param position:
+        :return:
+        """
+        self.video_length = self.input_player.duration() + 0.1
+        self.video_horizontalSlider.setValue(round((position / self.video_length) * 100))
+        self.video_percent_label.setText(str(round((position / self.video_length) * 100, 2)) + '%')
 
     @pyqtSlot()
     def play_pause_button_click(self):
