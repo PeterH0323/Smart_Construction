@@ -176,9 +176,10 @@ if __name__ == '__main__':
     parameter_weights = ['./weights/helmet_head_person_m.pt']
     with torch.no_grad():
         predict = YOLOPredict(parameter_device, parameter_weights, parameter_img_size)
-        YOLOPredict.detect(parameter_output, parameter_source, parameter_weights, parameter_view_img, parameter_save_txt,
-               parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres, parameter_classes,
-               parameter_agnostic_nms, parameter_device, parameter_update)
+        predict.detect(parameter_output, parameter_source, parameter_view_img, parameter_save_txt,
+                       parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres,
+                       parameter_classes, parameter_agnostic_nms, parameter_update)
+
         # detect(parameter_output, parameter_source, parameter_weights, parameter_view_img, parameter_save_txt,
         #        parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres, parameter_classes,
         #        parameter_agnostic_nms, parameter_device, parameter_update)
