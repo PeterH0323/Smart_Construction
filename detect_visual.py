@@ -16,7 +16,7 @@ class YOLOPredict(object):
     def __init__(self, device, weights, imgsz):
         # 加载模型
         self.model, self.half, self.names, self.colors, self.device = self.load_model(device, weights, imgsz)
-        self.predict_info = "..."
+        self.predict_info = ""
 
     @staticmethod
     def load_model(device, weights, imgsz):
@@ -49,7 +49,7 @@ class YOLOPredict(object):
         return model, half, names, colors, device
 
     def detect(self, out, source, view_img, save_txt, imgsz, augment, conf_thres, iou_thres,
-               cclasses, agnostic_nms, update, info_widget=None, save_img=False):
+               cclasses, agnostic_nms, update, save_img=False):
         """
         进行推理操作
         :param out:
@@ -136,9 +136,8 @@ class YOLOPredict(object):
                 # Print time (inference + NMS)
                 print('%sDone. (%.3fs)' % (s, t2 - t1))  # 打印每张图片的推理信息
 
-                if info_widget is not None:
-                    # QT 控件打印信息
-                    self.predict_info = '%sDone. (%.3fs)' % (s, t2 - t1)
+                # 保存推理信息
+                self.predict_info = '%sDone. (%.3fs)' % (s, t2 - t1)
 
                 # Stream results
                 if view_img:
@@ -169,6 +168,7 @@ class YOLOPredict(object):
                 os.system('open ' + save_path)
 
         print('Done. (%.3fs)' % (time.time() - t0))
+        self.predict_info = 'Done. (%.3fs)' % (time.time() - t0)
 
         return save_path
 
