@@ -9,12 +9,8 @@ import time
 from pathlib import Path
 
 from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-from PyQt5.QtMultimediaWidgets import QVideoWidget
-from PyQt5.QtWidgets import QApplication, QMainWindow, \
-    QFileDialog, QWidget  # QMainWindow, QApplication, QDialog, QWidget, QMessageBox
-import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 
 from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
@@ -25,8 +21,28 @@ CODE_VER = "V0.1"
 class PredictDataHandlerThread(QThread):
     predict_message_trigger = pyqtSignal(str)
 
-    def __init__(self, output_player):
+    def __init__(self, predict_model):
         super(PredictDataHandlerThread, self).__init__()
+        self.running = False
+        self.predict_model = predict_model
+
+    def __del__(self):
+        self.running = False
+        self.wait()
+
+    def run(self):
+        self.running = True
+        while self.running:
+            if self.predict_model.predict_info != "":
+                self.predict_message_trigger.emit(self.predict_model.predict_info)
+                self.predict_model.predict_info = ""
+            time.sleep(0.01)
+
+
+class PredictHandlerThread(QThread):
+
+    def __init__(self, output_player, predict_info_plainTextEdit):
+        super(PredictHandlerThread, self).__init__()
         self.running = False
 
         '''加载模型'''
@@ -45,46 +61,44 @@ class PredictDataHandlerThread(QThread):
         self.parameter_view_img = False
         self.parameter_weights = ['./weights/helmet_head_person_m.pt']
         self.predict_model = YOLOPredict(self.parameter_device, self.parameter_weights, self.parameter_img_size)
-
+        self.output_predict_file = ""
         # 播放插件
         self.output_player = output_player
+        self.predict_info_plainTextEdit = predict_info_plainTextEdit
+
+        # 创建显示进程
+        self.predict_data_handler_thread = PredictDataHandlerThread(self.predict_model)
+        self.predict_data_handler_thread.predict_message_trigger.connect(self.add_messages)
 
     def __del__(self):
         self.running = False
         self.wait()
 
     def run(self):
-        self.running = True
-        while self.running:
-            # if self.predict_model.predict_info != "":
-            self.predict_message_trigger.emit(self.predict_model.predict_info)
-            self.predict_model.predict_info = ""
-            time.sleep(0.01)
+        self.predict_data_handler_thread.start()
 
-    def thread_started(self):
-        print("PredictDataHandlerThread started")
+        self.output_predict_file = self.predict_model.detect(self.parameter_output,
+                                                             self.parameter_source,
+                                                             self.parameter_view_img,
+                                                             self.parameter_save_txt,
+                                                             self.parameter_img_size,
+                                                             self.parameter_augment,
+                                                             self.parameter_conf_thres,
+                                                             self.parameter_iou_thres,
+                                                             self.parameter_classes,
+                                                             self.parameter_agnostic_nms,
+                                                             self.parameter_update)
+        self.predict_data_handler_thread.running = False
 
-        output_predict_file = self.predict_model.detect(self.parameter_output,
-                                                        self.parameter_source,
-                                                        self.parameter_view_img,
-                                                        self.parameter_save_txt,
-                                                        self.parameter_img_size,
-                                                        self.parameter_augment,
-                                                        self.parameter_conf_thres,
-                                                        self.parameter_iou_thres,
-                                                        self.parameter_classes,
-                                                        self.parameter_agnostic_nms,
-                                                        self.parameter_update)
+        if self.output_predict_file != "":
+            # 将 str 路径转为 QUrl 并显示
+            self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.output_predict_file)))  # 选取视频文件
+            self.output_player.pause()  # 显示媒体
 
-        # 将 str 路径转为 QUrl 并显示
-        self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(output_predict_file)))  # 选取视频文件
-        self.output_player.pause()  # 显示媒体
-
-        # 停止线程
-        self.running = False
-
-    def thread_finished(self):
-        print("PredictDataHandlerThread finished")
+    @pyqtSlot(str)
+    def add_messages(self, message):
+        if message != "":
+            self.predict_info_plainTextEdit.appendPlainText(message)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -116,15 +130,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.video_length = 0
 
         # 推理使用另外一线程
-        self.predict_data_handler_thread = PredictDataHandlerThread(self.output_player)
-        self.predict_data_handler_thread.predict_message_trigger.connect(self.add_messages)
-        self.predict_data_handler_thread.started.connect(self.predict_data_handler_thread.thread_started)
-        self.predict_data_handler_thread.finished.connect(self.predict_data_handler_thread.thread_finished)
+        self.predict_handler_thread = PredictHandlerThread(self.output_player, self.predict_info_plainTextEdit)
+        # self.predict_handler_thread.predict_message_trigger.connect(self.add_messages)
+        # self.predict_handler_thread.started.connect(self.predict_data_handler_thread.thread_started)
+        # self.predict_handler_thread.finished.connect(self.predict_data_handler_thread.thread_finished)
 
-    @pyqtSlot(str)
-    def add_messages(self, message):
-        if message != "":
-            self.predict_info_plainTextEdit.appendPlainText(message)
+    # @pyqtSlot(str)
+    # def add_messages(self, message):
+    #     if message != "":
+    #         self.predict_info_plainTextEdit.appendPlainText(message)
 
     def import_media(self):
         """
@@ -139,12 +153,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(path_current)))
 
         # 将 QUrl 路径转为 本地路径str
-        self.predict_data_handler_thread.parameter_source = self.parameter_source.toLocalFile()
+        self.predict_handler_thread.parameter_source = self.parameter_source.toLocalFile()
         self.input_player.pause()  # 显示媒体
         # self.output_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
 
     def predict_button_click(self):
-        self.predict_data_handler_thread.start()
+        self.predict_handler_thread.start()
 
     def change_slide_bar(self, position):
         """
