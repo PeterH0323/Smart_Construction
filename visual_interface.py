@@ -53,7 +53,7 @@ class PredictHandlerThread(QThread):
     进行模型推理的线程
     """
 
-    def __init__(self, output_player, predict_info_plainTextEdit, predict_progressBar):
+    def __init__(self, output_player, predict_info_plainTextEdit, predict_progressBar, fps_label):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
@@ -78,6 +78,7 @@ class PredictHandlerThread(QThread):
         self.output_player = output_player
         self.predict_info_plainTextEdit = predict_info_plainTextEdit
         self.predict_progressBar = predict_progressBar
+        self.fps_label = fps_label
 
         # 创建显示进程
         self.predict_data_handler_thread = PredictDataHandlerThread(self.predict_model)
@@ -120,11 +121,18 @@ class PredictHandlerThread(QThread):
                 # 跳过无用字符
                 return
 
+            split_message = message.split(" ")
+
             # 设置进度条
-            percent = message.split(" ")[2][1:-1].split("/")  # 提取图片的序号
+            percent = split_message[2][1:-1].split("/")  # 提取图片的序号
             value = int((int(percent[0]) / int(percent[1])) * 100)
             value = value if (int(percent[1]) - int(percent[0])) > 2 else 100
             self.predict_progressBar.setValue(value)
+
+            # 设置 FPS
+            second_count = 1 / float(split_message[-1][1:-2])
+            self.fps_label.setText(f"--> {second_count:.1f} FPS")
+
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -158,7 +166,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 推理使用另外一线程
         self.predict_handler_thread = PredictHandlerThread(self.output_player,
                                                            self.predict_info_plainTextEdit,
-                                                           self.predict_progressBar)
+                                                           self.predict_progressBar,
+                                                           self.fps_label)
 
     def import_media(self):
         """
