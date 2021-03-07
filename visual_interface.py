@@ -8,6 +8,7 @@
 import time
 from pathlib import Path
 
+from GPUtil import GPUtil
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
@@ -16,6 +17,50 @@ from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
 
 CODE_VER = "V0.1"
+
+
+def get_gpu_info():
+    """
+    获取 GPU 信息
+    :return:
+    """
+
+    gpu_list = []
+    GPUtil.showUtilization()
+
+    # 获取多个GPU的信息，存在列表里
+    for gpu in GPUtil.getGPUs():
+        print('gpu.id:', gpu.id)
+        print('GPU总量：', gpu.memoryTotal)
+        print('GPU使用量：', gpu.memoryUsed)
+        print('gpu使用占比:', gpu.memoryUtil * 100)  # 内存使用率
+        print('gpu load:', gpu.load * 100)  # 使用率
+        # 按GPU逐个添加信息
+        gpu_list.append([gpu.id, gpu.memoryTotal, gpu.memoryUsed, gpu.memoryUtil * 100])
+
+    return gpu_list
+
+
+#
+# class GPUInfoHandlerThread(QThread):
+#     """
+#     打印GPU信息
+#     """
+#     gpu_message_trigger = pyqtSignal(str)
+#
+#     def __init__(self):
+#         super(GPUInfoHandlerThread, self).__init__()
+#         self.running = False
+#
+#     def __del__(self):
+#         self.running = False
+#         self.wait()
+#
+#     def run(self):
+#         self.running = True
+#         while self.running:
+#             self.gpu_message_trigger.emit(self.predict_model.predict_info)
+#             time.sleep(0.01)
 
 
 class PredictDataHandlerThread(QThread):
