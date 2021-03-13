@@ -1,7 +1,21 @@
 **如果帮到您请给个 star ✨✨✨，您的 star 是我最大的鼓励！**
 
 # Smart_Construction
-该项目是使用 `YOLOv5 v2.x` 的程序来训练在智能工地安全领域中头盔目标检测的应用, 先来一波演示！
+
+
+
+该项目是使用 `YOLOv5 v2.x` 的程序来训练在智能工地安全领域中头盔目标检测的应用
+## 可视化界面演示 ( 2021.3 更新 ) ：
+**注意**：如果视频导入之后无法播放，请下载并安装`LAV 解码器`， 下载链接：[LAV 解码器](https://files.1f0.de/lavf/LAVFilters-0.73.1.exe)
+
+GIF。。。
+
+
+这是使用文档:[如何使用可视化工具]()
+
+
+## 纯图片再来一波演示！
+
 ![](./doc/output_1.jpg)
 ![](./doc/output_2.jpg)
 ![](./doc/output_3.jpg)
@@ -55,6 +69,9 @@
 ```text
     Python >= 3.7
     Pytorch == 1.5.x
+    PyQt5
+    PyQtChart==5.15.3
+    GPUtil
 ```
 
 ## 官方权重
