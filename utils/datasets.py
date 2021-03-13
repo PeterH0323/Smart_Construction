@@ -72,7 +72,7 @@ def create_dataloader(path, imgsz, batch_size, stride, opt, hyp=None, augment=Fa
 
 
 class LoadImages:  # for inference
-    def __init__(self, path, img_size=640):
+    def __init__(self, path, img_size=640, visualize_flag=False):
         p = str(Path(path))  # os-agnostic
         p = os.path.abspath(p)  # absolute path
         if '*' in p:
@@ -99,6 +99,7 @@ class LoadImages:  # for inference
             self.cap = None
         assert self.nf > 0, 'No images or videos found in %s. Supported formats are:\nimages: %s\nvideos: %s' % \
                             (p, img_formats, vid_formats)
+        self.visualize_flag = visualize_flag
 
     def __iter__(self):
         self.count = 0
@@ -136,7 +137,6 @@ class LoadImages:  # for inference
             print('image %g/%g %s: ' % (self.count, self.nf, path), end='')
             info_str = 'image %g/%g %s: ' % (self.count, self.nf, path)
 
-
         # Padded resize
         img = letterbox(img0, new_shape=self.img_size)[0]
 
@@ -145,7 +145,10 @@ class LoadImages:  # for inference
         img = np.ascontiguousarray(img)
 
         # cv2.imwrite(path + '.letterbox.jpg', 255 * img.transpose((1, 2, 0))[:, :, ::-1])  # save letterbox image
-        return path, img, img0, self.cap, info_str
+        if self.visualize_flag:
+            return path, img, img0, self.cap, info_str
+        else:
+            return path, img, img0, self.cap
 
     def new_video(self, path):
         self.frame = 0

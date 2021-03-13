@@ -85,7 +85,7 @@ class YOLOPredict(object):
             dataset = LoadStreams(source, img_size=imgsz)
         else:
             save_img = True
-            dataset = LoadImages(source, img_size=imgsz)
+            dataset = LoadImages(source, img_size=imgsz, visualize_flag=True)
 
         for path, img, im0s, vid_cap, info_str, in dataset:
             img = torch.from_numpy(img).to(self.device)
