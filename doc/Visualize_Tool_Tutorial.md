@@ -3,8 +3,8 @@
 本文为可视化界面的使用教程
 
 ## 0. 前期准备
-进入代码 `visual_interface.py` , 修改模型文件的路径 `weight_path`, 执行代码
-
+进入代码 `visual_interface.py` , 修改模型文件的路径 `weight_root`, 执行代码
+s
 ## 1. 导入
  
 点击按钮 `Import` 按钮，选择 `视频` 或者 `图片` 文件，点击确定

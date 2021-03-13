@@ -12,7 +12,7 @@ from GPUtil import GPUtil
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
-from PyQt5.QtGui import QPainter, QCursor, QColor, QBrush, QIcon, QPixmap
+from PyQt5.QtGui import QColor, QBrush, QIcon, QPixmap
 from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart, QChartView, QLineSeries, QCategoryAxis
 
 from UI.main_window import Ui_MainWindow
@@ -358,9 +358,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    weight_path = [r'./weights/helmet_head_person_m.pt']  # 权重文件位置
+    weight_root = [r'./weights/helmet_head_person_m.pt']  # 权重文件位置
 
-    main_window = MainWindow(weight_path)
+    main_window = MainWindow(weight_root)
 
     # 设置窗口图标
     icon = QIcon()
