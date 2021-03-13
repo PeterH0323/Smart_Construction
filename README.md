@@ -224,7 +224,9 @@ head:
 这里选择了 `yolov5s` 模型进行训练，权重也是基于 `yolov5s.pt` 来训练
 
 ```shell script
-python train.py --img 640 --batch 16 --epochs 10 --data ./data/custom_data.yaml --cfg ./models/custom_yolov5.yaml --weights ./weights/yolov5s.pt
+python train.py --img 640 \
+                --batch 16 --epochs 10 --data ./data/custom_data.yaml \
+                --cfg ./models/custom_yolov5.yaml --weights ./weights/yolov5s.pt
 ```
 
 其中，`yolov5s.pt` 需要自行下载放在本工程的根目录即可，下载地址 [官方权重](https://drive.google.com/open?id=1Drs_Aiu7xx6S-ix95f9kNsA6ueKRpN2J)
