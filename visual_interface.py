@@ -213,6 +213,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                            self.fps_label)
 
     def chart_init(self):
+        """
+        初始化 GPU 折线图
+        :return:
+        """
         # self.gpu_info_chart._chart = QChart(title="折线图堆叠")  # 创建折线视图
         self.gpu_info_chart._chart = QChart()  # 创建折线视图
         # chart._chart.setBackgroundVisible(visible=False)      # 背景色透明
@@ -233,8 +237,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 设置X轴时间样式
         self.dtaxisX.setFormat("hh:mm:ss")
         # 设置坐标轴上的格点
-        self.dtaxisX.setTickCount(6)
-        self.vlaxisY.setTickCount(11)
+        self.dtaxisX.setTickCount(5)
+        self.vlaxisY.setTickCount(10)
         # 设置坐标轴名称
         self.dtaxisX.setTitleText("Time")
         self.vlaxisY.setTitleText("Percent")
@@ -246,10 +250,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 把曲线关联到坐标轴
         self.series.attachAxis(self.dtaxisX)
         self.series.attachAxis(self.vlaxisY)
-
+        # 生成 折线图
         self.gpu_info_chart.setChart(self.gpu_info_chart._chart)
 
     def draw_gpu_info_chart(self):
+        """
+        绘制 GPU 折线图
+        :return:
+        """
         # 获取当前时间
         time_current = QDateTime.currentDateTime()
         # 更新X轴坐标
