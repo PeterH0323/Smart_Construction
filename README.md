@@ -68,9 +68,9 @@
 首先确保自己的环境：
 
 ```text
-    Python >= 3.7
-    Pytorch == 1.5.x
-    PyQt5
+    Python>=3.7
+    Pytorch==1.5.x
+    PyQt5==5.15.3
     PyQtChart==5.15.3
     GPUtil
 ```
