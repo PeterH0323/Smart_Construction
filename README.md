@@ -12,7 +12,7 @@
 ![](./doc/visualize_tool_gif.gif)
 
 
-使用文档:[如何使用可视化工具](./doc/Visualize_Tool_Tutorial.mds)
+使用文档:[如何使用可视化工具](./doc/Visualize_Tool_Tutorial.md)
 
 
 ## 纯图片再来一波演示！
