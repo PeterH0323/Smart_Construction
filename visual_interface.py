@@ -14,7 +14,7 @@ from GPUtil import GPUtil
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
-from PyQt5.QtGui import QPainter, QCursor, QColor, QBrush
+from PyQt5.QtGui import QPainter, QCursor, QColor, QBrush, QIcon, QPixmap
 from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart, QChartView, QLineSeries, QCategoryAxis
 
 from UI.main_window import Ui_MainWindow
@@ -344,5 +344,11 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     main_window = MainWindow()
+
+    # 设置窗口图标
+    icon = QIcon()
+    icon.addPixmap(QPixmap("./UI/icon.ico"), QIcon.Normal, QIcon.Off)
+    main_window.setWindowIcon(icon)
+
     main_window.show()
     sys.exit(app.exec_())
