@@ -5,11 +5,9 @@
 # @File    : visual_interface.py
 # @Software: PyCharm
 # @Brief   :
-import datetime
-import random
 import time
+import sys
 from pathlib import Path
-
 from GPUtil import GPUtil
 from PyQt5.QtCore import *
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
@@ -20,7 +18,7 @@ from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart, QCha
 from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
 
-CODE_VER = "V0.1"
+CODE_VER = "V1.0"
 
 
 def get_gpu_info():
@@ -84,7 +82,7 @@ class PredictHandlerThread(QThread):
     进行模型推理的线程
     """
 
-    def __init__(self, output_player, predict_info_plainTextEdit, predict_progressBar, fps_label):
+    def __init__(self, output_player, weight_path, predict_info_plain_text_edit, predict_progress_bar, fps_label):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
@@ -102,13 +100,13 @@ class PredictHandlerThread(QThread):
         self.parameter_source = ''
         self.parameter_update = False
         self.parameter_view_img = False
-        self.parameter_weights = ['./weights/helmet_head_person_m.pt']  # 权重文件路径，修改这里
+        self.parameter_weights = weight_path  # 权重文件路径，修改这里
         self.predict_model = YOLOPredict(self.parameter_device, self.parameter_weights, self.parameter_img_size)
         self.output_predict_file = ""
         # 传入的QT插件
         self.output_player = output_player
-        self.predict_info_plainTextEdit = predict_info_plainTextEdit
-        self.predict_progressBar = predict_progressBar
+        self.predict_info_plainTextEdit = predict_info_plain_text_edit
+        self.predict_progressBar = predict_progress_bar
         self.fps_label = fps_label
 
         # 创建显示进程
@@ -169,7 +167,7 @@ class PredictHandlerThread(QThread):
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, parent=None):
+    def __init__(self, weight_path, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("VAT ROLL COMPARE LABEL TOOL" + " " + CODE_VER)
@@ -208,6 +206,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 推理使用另外一线程
         self.predict_handler_thread = PredictHandlerThread(self.output_player,
+                                                           weight_path,
                                                            self.predict_info_plainTextEdit,
                                                            self.predict_progressBar,
                                                            self.fps_label)
@@ -357,10 +356,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 if __name__ == '__main__':
-    import sys
-
     app = QApplication(sys.argv)
-    main_window = MainWindow()
+
+    weight_path = [r'./weights/helmet_head_person_m.pt']  # 权重文件位置
+
+    main_window = MainWindow(weight_path)
 
     # 设置窗口图标
     icon = QIcon()
