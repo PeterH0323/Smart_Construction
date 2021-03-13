@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>输入媒体</string>
+     <string>Input Media</string>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -42,7 +42,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>推理进度：</string>
+          <string>Processing:</string>
          </property>
         </widget>
        </item>
@@ -79,14 +79,14 @@
        <item>
         <widget class="QPushButton" name="import_media_pushButton">
          <property name="text">
-          <string>导入</string>
+          <string>Import</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QPushButton" name="start_predict_pushButton">
          <property name="text">
-          <string>推理</string>
+          <string>Predict</string>
          </property>
         </widget>
        </item>
@@ -104,7 +104,7 @@
      </rect>
     </property>
     <property name="title">
-     <string>输出媒体</string>
+     <string>Output Media</string>
     </property>
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
@@ -129,7 +129,7 @@
       <item>
        <widget class="QPushButton" name="open_predict_file_pushButton">
         <property name="text">
-         <string>在文件中查看</string>
+         <string>Open in Browser</string>
         </property>
        </widget>
       </item>
@@ -175,14 +175,14 @@
      <item>
       <widget class="QPushButton" name="play_pushButton">
        <property name="text">
-        <string>播放</string>
+        <string>Play</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pause_pushButton">
        <property name="text">
-        <string>暂停</string>
+        <string>Pause</string>
        </property>
       </widget>
      </item>
@@ -214,13 +214,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGraphicsView" name="graphicsView">
+   <widget class="QChartView" name="gpu_info_chart">
     <property name="geometry">
      <rect>
       <x>380</x>
       <y>760</y>
-      <width>471</width>
-      <height>91</height>
+      <width>711</width>
+      <height>161</height>
      </rect>
     </property>
    </widget>
@@ -250,7 +250,7 @@
      <item>
       <widget class="QLabel" name="gpu_info_label_2">
        <property name="text">
-        <string>推理信息</string>
+        <string>Info:</string>
        </property>
       </widget>
      </item>
@@ -278,6 +278,11 @@
    <extends>QWidget</extends>
    <header>PyQt5.QtMultimediaWidgets</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QGraphicsView</extends>
+   <header>PyQt5.QtChart</header>
   </customwidget>
  </customwidgets>
  <resources/>
