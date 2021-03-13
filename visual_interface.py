@@ -84,7 +84,7 @@ class PredictHandlerThread(QThread):
     """
 
     def __init__(self, output_player, out_file_path, weight_path, predict_info_plain_text_edit,
-                 predict_progress_bar, fps_label):
+                 predict_progress_bar, fps_label, button_dict):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
@@ -109,6 +109,7 @@ class PredictHandlerThread(QThread):
         self.predict_info_plainTextEdit = predict_info_plain_text_edit
         self.predict_progressBar = predict_progress_bar
         self.fps_label = fps_label
+        self.button_dict = button_dict
 
         # 创建显示进程
         self.predict_data_handler_thread = PredictDataHandlerThread(self.predict_model)
@@ -122,7 +123,8 @@ class PredictHandlerThread(QThread):
         self.predict_data_handler_thread.start()
 
         self.predict_progressBar.setValue(0)  # 进度条清零
-
+        for item, button in self.button_dict.items():
+            button.setEnabled(False)
         self.output_predict_file = self.predict_model.detect(self.parameter_output,
                                                              self.parameter_source,
                                                              self.parameter_view_img,
@@ -139,7 +141,8 @@ class PredictHandlerThread(QThread):
             # 将 str 路径转为 QUrl 并显示
             self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.output_predict_file)))  # 选取视频文件
             self.output_player.pause()  # 显示媒体
-
+            for item, button in self.button_dict.items():
+                button.setEnabled(True)
         # self.predict_data_handler_thread.running = False
 
     @pyqtSlot(str)
@@ -183,6 +186,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 下方
         self.play_pushButton.clicked.connect(self.play_pause_button_click)  # 播放
         self.pause_pushButton.clicked.connect(self.play_pause_button_click)  # 暂停
+        self.button_dict = dict()
+        self.button_dict.update({"import_media_pushButton": self.import_media_pushButton,
+                                 "start_predict_pushButton": self.start_predict_pushButton,
+                                 "open_predict_file_pushButton": self.open_predict_file_pushButton,
+                                 "play_pushButton": self.play_pushButton,
+                                 "pause_pushButton": self.pause_pushButton,
+                                 })
 
         '''媒体流绑定输出'''
         self.input_player = QMediaPlayer()  # 媒体输入的widget
@@ -211,7 +221,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                            weight_path,
                                                            self.predict_info_plainTextEdit,
                                                            self.predict_progressBar,
-                                                           self.fps_label)
+                                                           self.fps_label,
+                                                           self.button_dict)
         # 界面美化
         self.gen_better_gui()
 
@@ -367,7 +378,7 @@ if __name__ == '__main__':
     weight_root = [r'./weights/helmet_head_person_m.pt']  # 权重文件位置
     out_file_root = Path.cwd().joinpath(r'inference/output')
 
-    main_window = MainWindow(weight_root,out_file_root)
+    main_window = MainWindow(weight_root, out_file_root)
 
     # 设置窗口图标
     icon = QIcon()
