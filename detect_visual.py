@@ -68,9 +68,9 @@ class YOLOPredict(object):
         :return:
         """
 
-        if os.path.exists(out):
-            shutil.rmtree(out)  # delete output folder
-        os.makedirs(out)  # make new output folder
+        # if os.path.exists(out):
+        #     shutil.rmtree(out)  # delete output folder
+        os.makedirs(out, exist_ok=True)  # make new output folder
 
         # # 加载模型
         # model, half, names, colors, device = self.load_model(self.device, weights, imgsz)

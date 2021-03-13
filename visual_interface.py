@@ -5,6 +5,7 @@
 # @File    : visual_interface.py
 # @Software: PyCharm
 # @Brief   :
+import os
 import time
 import sys
 from pathlib import Path
@@ -82,12 +83,12 @@ class PredictHandlerThread(QThread):
     进行模型推理的线程
     """
 
-    def __init__(self, output_player, weight_path, predict_info_plain_text_edit, predict_progress_bar, fps_label):
+    def __init__(self, output_player, out_file_path, weight_path, predict_info_plain_text_edit,
+                 predict_progress_bar, fps_label):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
         '''加载模型'''
-        self.project_root = Path.cwd()
         self.parameter_agnostic_nms = False
         self.parameter_augment = False
         self.parameter_classes = None
@@ -95,7 +96,7 @@ class PredictHandlerThread(QThread):
         self.parameter_device = ''
         self.parameter_img_size = 640
         self.parameter_iou_thres = 0.5
-        self.parameter_output = self.project_root.joinpath(r'inference/output')
+        self.parameter_output = out_file_path
         self.parameter_save_txt = False
         self.parameter_source = ''
         self.parameter_update = False
@@ -167,7 +168,7 @@ class PredictHandlerThread(QThread):
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, weight_path, parent=None):
+    def __init__(self, weight_path, out_file_path, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("VAT ROLL COMPARE LABEL TOOL" + " " + CODE_VER)
@@ -178,7 +179,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.import_media_pushButton.clicked.connect(self.import_media)  # 导入
         self.start_predict_pushButton.clicked.connect(self.predict_button_click)  # 开始推理
         # 输出媒体
-        # self.open_predict_file_pushButton.clicked.connect(self.play_pause_button_click)  # 文件中显示推理视频
+        self.open_predict_file_pushButton.clicked.connect(self.open_file_in_browser)  # 文件中显示推理视频
         # 下方
         self.play_pushButton.clicked.connect(self.play_pause_button_click)  # 播放
         self.pause_pushButton.clicked.connect(self.play_pause_button_click)  # 暂停
@@ -203,9 +204,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         # 播放时长, 以 input 的时长为准
         self.video_length = 0
-
+        self.out_file_path = out_file_path
         # 推理使用另外一线程
         self.predict_handler_thread = PredictHandlerThread(self.output_player,
+                                                           self.out_file_path,
                                                            weight_path,
                                                            self.predict_info_plainTextEdit,
                                                            self.predict_progressBar,
@@ -280,7 +282,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.dtaxisX.setMin(QDateTime.currentDateTime().addSecs(-300 * 1))
         self.dtaxisX.setMax(QDateTime.currentDateTime().addSecs(0))
         # 当曲线上的点超出X轴的范围时，移除最早的点
-        if (self.series.count() > 149):
+        if self.series.count() > 600:
             self.series.removePoints(0, self.series.count() - 149)
         # 对 y 赋值
         # yint = random.randint(0, 100)
@@ -345,6 +347,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.output_player.pause()
 
     @pyqtSlot()
+    def open_file_in_browser(self):
+        os.system(f"start explorer {self.out_file_path}")
+
+    @pyqtSlot()
     def closeEvent(self, *args, **kwargs):
         """
         重写关闭事件
@@ -359,8 +365,9 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     weight_root = [r'./weights/helmet_head_person_m.pt']  # 权重文件位置
+    out_file_root = Path.cwd().joinpath(r'inference/output')
 
-    main_window = MainWindow(weight_root)
+    main_window = MainWindow(weight_root,out_file_root)
 
     # 设置窗口图标
     icon = QIcon()

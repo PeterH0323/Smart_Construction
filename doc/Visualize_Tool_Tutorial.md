@@ -3,8 +3,14 @@
 本文为可视化界面的使用教程
 
 ## 0. 前期准备
-进入代码 `visual_interface.py` , 修改模型文件的路径 `weight_root`, 执行代码
-s
+进入代码 `visual_interface.py` , 修改模型文件的路径 `weight_root`；
+
+执行代码，运行可视化界面
+```shell script
+python visual_interface.py
+```
+**注意**：开始的时候程序会去加载模型，需要大概等待`1~3`秒左右的时间
+
 ## 1. 导入
  
 点击按钮 `Import` 按钮，选择 `视频` 或者 `图片` 文件，点击确定
