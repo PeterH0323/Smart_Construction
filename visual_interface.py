@@ -211,6 +211,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                            self.predict_info_plainTextEdit,
                                                            self.predict_progressBar,
                                                            self.fps_label)
+        # 界面美化
+        self.gen_better_gui()
+
+    def gen_better_gui(self):
+        """
+        美化界面
+        :return:
+        """
+        # Play 按钮
+        play_icon = QIcon()
+        play_icon.addPixmap(QPixmap("./UI/icon/play.png"), QIcon.Normal, QIcon.Off)
+        self.play_pushButton.setIcon(play_icon)
+
+        # Pause 按钮
+        play_icon = QIcon()
+        play_icon.addPixmap(QPixmap("./UI/icon/pause.png"), QIcon.Normal, QIcon.Off)
+        self.pause_pushButton.setIcon(play_icon)
 
     def chart_init(self):
         """
@@ -347,7 +364,7 @@ if __name__ == '__main__':
 
     # 设置窗口图标
     icon = QIcon()
-    icon.addPixmap(QPixmap("./UI/icon.ico"), QIcon.Normal, QIcon.Off)
+    icon.addPixmap(QPixmap("UI/icon/icon.ico"), QIcon.Normal, QIcon.Off)
     main_window.setWindowIcon(icon)
 
     main_window.show()

@@ -26,7 +26,7 @@
       <property name="font">
        <font>
         <family>微软雅黑</family>
-        <pointsize>10</pointsize>
+        <pointsize>20</pointsize>
        </font>
       </property>
       <property name="text">
@@ -60,6 +60,12 @@
       </item>
       <item>
        <widget class="QLabel" name="author_label">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -68,12 +74,27 @@
         </property>
         <property name="font">
          <font>
-          <family>微软雅黑</family>
-          <pointsize>10</pointsize>
+          <family>Calibri</family>
+          <pointsize>-1</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
          </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QStackedWidget, QLabel, QPushButton, QRadioButton, QCheckBox, 
+QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {
+    background-color: #222222;
+    color: #BBBBBB;
+    font-family: &quot;Calibri&quot;;
+	font-size:13px;
+	font-weight:bold;
+}</string>
         </property>
         <property name="text">
          <string>Product by: HinGwenWoong</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -81,12 +102,6 @@
     </item>
     <item>
      <widget class="QSplitter" name="splitter">
-      <property name="font">
-       <font>
-        <family>微软雅黑</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -94,12 +109,12 @@
        <property name="minimumSize">
         <size>
          <width>500</width>
-         <height>500</height>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>16777215</width>
+         <width>1300</width>
          <height>16777215</height>
         </size>
        </property>
@@ -111,6 +126,9 @@
        </property>
        <property name="title">
         <string>Input Media</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -188,11 +206,33 @@
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QPushButton" name="import_media_pushButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <family>微软雅黑</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="statusTip">
+             <string>Import video to predict</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton{
+	background-color:#2828FF;
+	color:#ffffff;
+    border-radius: 5px;
+}
+
+QPushButton:hover{
+	color:#FFFFFF;
+	background:#9393FF;
+}
+</string>
             </property>
             <property name="text">
              <string>Import</string>
@@ -201,11 +241,33 @@
           </item>
           <item>
            <widget class="QPushButton" name="start_predict_pushButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <family>微软雅黑</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="statusTip">
+             <string>Predict the vedio</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton{
+	background-color:#16A085;
+	color:#ffffff;
+    border-radius: 5px;
+}
+
+QPushButton:hover{
+	color:#FFFFFF;
+	background:#2EE1C1;
+}
+</string>
             </property>
             <property name="text">
              <string>Predict</string>
@@ -220,7 +282,7 @@
        <property name="minimumSize">
         <size>
          <width>500</width>
-         <height>500</height>
+         <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -237,6 +299,9 @@
        </property>
        <property name="title">
         <string>Output Media</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -368,13 +433,19 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
-          <height>20</height>
+          <height>25</height>
          </size>
         </property>
        </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="play_pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -390,10 +461,20 @@
         <property name="text">
          <string>Play</string>
         </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>icon/play.png</normaloff>icon/play.png</iconset>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pause_pushButton">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
@@ -408,6 +489,10 @@
         </property>
         <property name="text">
          <string>Pause</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>icon/pause.png</normaloff>icon/pause.png</iconset>
         </property>
        </widget>
       </item>
@@ -425,7 +510,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
-          <height>20</height>
+          <height>25</height>
          </size>
         </property>
        </spacer>
@@ -435,24 +520,11 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <widget class="QLabel" name="gpu_info_label_2">
-        <property name="font">
-         <font>
-          <family>微软雅黑</family>
-          <pointsize>10</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Predict Info:</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPlainTextEdit" name="predict_info_plainTextEdit">
+       <widget class="QGroupBox" name="groupBox_3">
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>200</height>
+          <height>150</height>
          </size>
         </property>
         <property name="font">
@@ -461,6 +533,27 @@
           <pointsize>10</pointsize>
          </font>
         </property>
+        <property name="title">
+         <string>Predict Info:</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QPlainTextEdit" name="predict_info_plainTextEdit">
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -470,7 +563,7 @@
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>200</height>
+        <height>100</height>
        </size>
       </property>
       <property name="font">
