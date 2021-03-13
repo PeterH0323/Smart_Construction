@@ -138,3 +138,8 @@ weights/yolov5m.pt
 weights/pro_helmet_head_person.onnx
 weights/pro_helmet_head_person.torchscript.pt
 data/check/
+inference/output - 副本/
+inference/
+qt_chart_demos/
+weights/
+area_dangerous/bk/
