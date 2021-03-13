@@ -298,8 +298,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.dtaxisX.setMin(QDateTime.currentDateTime().addSecs(-300 * 1))
         self.dtaxisX.setMax(QDateTime.currentDateTime().addSecs(0))
         # 当曲线上的点超出X轴的范围时，移除最早的点
-        if self.series.count() > 600:
-            self.series.removePoints(0, self.series.count() - 149)
+        remove_count = 600
+        if self.series.count() > remove_count:
+            self.series.removePoints(0, self.series.count() - remove_count)
         # 对 y 赋值
         # yint = random.randint(0, 100)
         gpu_info = get_gpu_info()
