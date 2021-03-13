@@ -18,6 +18,7 @@ from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart, QCha
 
 from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
+from utils.datasets import img_formats, vid_formats
 
 CODE_VER = "V1.0"
 
@@ -141,7 +142,11 @@ class PredictHandlerThread(QThread):
             # 将 str 路径转为 QUrl 并显示
             self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.output_predict_file)))  # 选取视频文件
             self.output_player.pause()  # 显示媒体
+            image_flag = os.path.splitext(self.parameter_source)[-1].lower() in img_formats
+            # video_flag = os.path.splitext(self.parameter_source)[-1].lower() in vid_formats
             for item, button in self.button_dict.items():
+                if image_flag and item in ['play_pushButton', 'pause_pushButton']:
+                    continue
                 button.setEnabled(True)
         # self.predict_data_handler_thread.running = False
 
@@ -317,6 +322,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 将 QUrl 路径转为 本地路径str
         self.predict_handler_thread.parameter_source = self.parameter_source.toLocalFile()
         self.input_player.pause()  # 显示媒体
+
+        image_flag = os.path.splitext(self.predict_handler_thread.parameter_source)[-1].lower() in img_formats
+        for item, button in self.button_dict.items():
+            if image_flag and item in ['play_pushButton', 'pause_pushButton']:
+                button.setEnabled(False)
+            else:
+                button.setEnabled(True)
         # self.output_player.setMedia(QMediaContent(QFileDialog.getOpenFileUrl()[0]))  # 选取视频文件
 
     def predict_button_click(self):
