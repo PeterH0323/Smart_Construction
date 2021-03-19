@@ -15,7 +15,7 @@ from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5.QtGui import QColor, QBrush, QIcon, QPixmap
 from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart, QChartView, QLineSeries, QCategoryAxis
-
+import torch
 from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
 from utils.datasets import img_formats, vid_formats
@@ -126,17 +126,19 @@ class PredictHandlerThread(QThread):
         self.predict_progressBar.setValue(0)  # 进度条清零
         for item, button in self.button_dict.items():
             button.setEnabled(False)
-        self.output_predict_file = self.predict_model.detect(self.parameter_output,
-                                                             self.parameter_source,
-                                                             self.parameter_view_img,
-                                                             self.parameter_save_txt,
-                                                             self.parameter_img_size,
-                                                             self.parameter_augment,
-                                                             self.parameter_conf_thres,
-                                                             self.parameter_iou_thres,
-                                                             self.parameter_classes,
-                                                             self.parameter_agnostic_nms,
-                                                             self.parameter_update)
+
+        with torch.no_grad():
+            self.output_predict_file = self.predict_model.detect(self.parameter_output,
+                                                                 self.parameter_source,
+                                                                 self.parameter_view_img,
+                                                                 self.parameter_save_txt,
+                                                                 self.parameter_img_size,
+                                                                 self.parameter_augment,
+                                                                 self.parameter_conf_thres,
+                                                                 self.parameter_iou_thres,
+                                                                 self.parameter_classes,
+                                                                 self.parameter_agnostic_nms,
+                                                                 self.parameter_update)
 
         if self.output_predict_file != "":
             # 将 str 路径转为 QUrl 并显示
