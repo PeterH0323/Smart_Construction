@@ -14,11 +14,11 @@ from PyQt5.QtCore import QThread, pyqtSignal, QUrl, pyqtSlot, QTimer, QDateTime,
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5.QtGui import QColor, QBrush, QIcon, QPixmap
-from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart, QChartView, QLineSeries, QCategoryAxis
+from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart
 import torch
 from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
-from utils.datasets import img_formats, vid_formats
+from utils.datasets import img_formats
 
 CODE_VER = "V2.0"
 PREDICT_SHOW_TAB_INDEX = 0
