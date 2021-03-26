@@ -10,7 +10,7 @@
 :boom::boom::boom:新增可视化界面上线啦！！！！来一波演示！！！:boom::boom::boom:
 使用文档: [如何使用可视化工具](./doc/Visualize_Tool_Tutorial.md)
 
-![](./doc/visualize_tool_gif.gif)
+![](./doc/visualize_tool_gif_v2_0.gif)
 
 ## 纯图片再来一波演示！
 
