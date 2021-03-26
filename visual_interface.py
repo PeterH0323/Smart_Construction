@@ -10,7 +10,7 @@ import time
 import sys
 from pathlib import Path
 from GPUtil import GPUtil
-from PyQt5.QtCore import *
+from PyQt5.QtCore import QThread, pyqtSignal, QUrl, pyqtSlot, QTimer, QDateTime, Qt
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PyQt5.QtGui import QColor, QBrush, QIcon, QPixmap
@@ -20,7 +20,9 @@ from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
 from utils.datasets import img_formats, vid_formats
 
-CODE_VER = "V1.0"
+CODE_VER = "V2.0"
+PREDICT_SHOW_TAB_INDEX = 0
+REAL_TIME_PREDICT_TAB_INDEX = 1
 
 
 def get_gpu_info():
@@ -83,8 +85,10 @@ class PredictHandlerThread(QThread):
     """
     进行模型推理的线程
     """
-    def __init__(self, input_player, output_player, out_file_path, weight_path, predict_info_plain_text_edit,
-                 predict_progress_bar, fps_label, button_dict):
+
+    def __init__(self, input_player, output_player, out_file_path, weight_path,
+                 predict_info_plain_text_edit, predict_progress_bar, fps_label,
+                 button_dict, input_tab, output_tab, input_image_label, output_image_label):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
@@ -92,6 +96,7 @@ class PredictHandlerThread(QThread):
         self.predict_model = YOLOPredict(weight_path, out_file_path)
         self.output_predict_file = ""
         self.parameter_source = ''
+
         # 传入的QT插件
         self.input_player = input_player
         self.output_player = output_player
@@ -99,6 +104,10 @@ class PredictHandlerThread(QThread):
         self.predict_progressBar = predict_progress_bar
         self.fps_label = fps_label
         self.button_dict = button_dict
+        self.input_tab = input_tab
+        self.output_tab = output_tab
+        self.input_image_label = input_image_label
+        self.output_image_label = output_image_label
 
         # 创建显示进程
         self.predict_data_handler_thread = PredictDataHandlerThread(self.predict_model)
@@ -120,8 +129,11 @@ class PredictHandlerThread(QThread):
         qt_output = None
 
         if not image_flag:
-            qt_input = self.input_player
-            qt_output = self.output_player
+            qt_input = self.input_image_label
+            qt_output = self.output_image_label
+            # tab 设置显示第二栏
+            self.input_tab.setCurrentIndex(REAL_TIME_PREDICT_TAB_INDEX)
+            self.output_tab.setCurrentIndex(REAL_TIME_PREDICT_TAB_INDEX)
 
         with torch.no_grad():
             self.output_predict_file = self.predict_model.detect(self.parameter_source,
@@ -135,6 +147,11 @@ class PredictHandlerThread(QThread):
 
             self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.output_predict_file)))  # 选取视频文件
             self.output_player.pause()  # 显示媒体
+
+            # tab 设置显示第一栏
+            self.input_tab.setCurrentIndex(PREDICT_SHOW_TAB_INDEX)
+            self.output_tab.setCurrentIndex(PREDICT_SHOW_TAB_INDEX)
+
             # video_flag = os.path.splitext(self.parameter_source)[-1].lower() in vid_formats
             for item, button in self.button_dict.items():
                 if image_flag and item in ['play_pushButton', 'pause_pushButton']:
@@ -220,9 +237,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                            self.predict_info_plainTextEdit,
                                                            self.predict_progressBar,
                                                            self.fps_label,
-                                                           self.button_dict)
+                                                           self.button_dict,
+                                                           self.input_media_tabWidget,
+                                                           self.output_media_tabWidget,
+                                                           self.input_real_time_label,
+                                                           self.output_real_time_label
+                                                           )
         # 界面美化
         self.gen_better_gui()
+
+        self.media_source = ""
 
     def gen_better_gui(self):
         """
@@ -238,6 +262,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         play_icon = QIcon()
         play_icon.addPixmap(QPixmap("./UI/icon/pause.png"), QIcon.Normal, QIcon.Off)
         self.pause_pushButton.setIcon(play_icon)
+
+        # 隐藏 tab 标题栏
+        self.input_media_tabWidget.tabBar().hide()
+        self.output_media_tabWidget.tabBar().hide()
+        # tab 设置显示第一栏
+        self.input_media_tabWidget.setCurrentIndex(PREDICT_SHOW_TAB_INDEX)
+        self.output_media_tabWidget.setCurrentIndex(PREDICT_SHOW_TAB_INDEX)
+
+        # 设置显示图片的 label 为黑色背景
+        self.input_real_time_label.setStyleSheet("QLabel{background:black}")
+        self.output_real_time_label.setStyleSheet("QLabel{background:black}")
 
     def chart_init(self):
         """
@@ -306,15 +341,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         导入媒体文件
         :return:
         """
-        self.parameter_source = QFileDialog.getOpenFileUrl()[0]
-        self.input_player.setMedia(QMediaContent(self.parameter_source))  # 选取视频文件
+        self.media_source = QFileDialog.getOpenFileUrl()[0]
+        self.input_player.setMedia(QMediaContent(self.media_source))  # 选取视频文件
 
         # 设置 output 为一张图片，防止资源被占用
         path_current = str(Path.cwd().joinpath("area_dangerous\1.jpg"))
         self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(path_current)))
 
         # 将 QUrl 路径转为 本地路径str
-        self.predict_handler_thread.parameter_source = self.parameter_source.toLocalFile()
+        self.predict_handler_thread.parameter_source = self.media_source.toLocalFile()
         self.input_player.pause()  # 显示媒体
 
         image_flag = os.path.splitext(self.predict_handler_thread.parameter_source)[-1].lower() in img_formats
@@ -351,7 +386,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         name = self.sender().objectName()
 
-        if self.parameter_source == "":
+        if self.media_source == "":
             return
 
         if name == "play_pushButton":

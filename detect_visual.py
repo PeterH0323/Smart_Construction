@@ -8,6 +8,7 @@
 from copy import deepcopy
 from PyQt5.QtCore import QUrl
 from PyQt5.QtMultimedia import QMediaContent
+from PyQt5.QtGui import QImage, QPixmap
 
 import torch.backends.cudnn as cudnn
 
@@ -34,7 +35,6 @@ class YOLOPredict(object):
         self.iou_thres = 0.5
         self.output = out_file_path
         self.save_txt = False
-        self.source = ''
         self.update = False
         self.view_img = False
         self.weights = weights  # 权重文件路径，修改这里
@@ -43,8 +43,6 @@ class YOLOPredict(object):
         self.model, self.half, self.names, self.colors, self.device = self.load_model()
 
         self.predict_info = ""
-        self.tmp_path = Path.cwd().joinpath("inference", "tmp")
-        self.tmp_path.mkdir(exist_ok=True)
 
     def load_model(self):
         """
@@ -75,6 +73,28 @@ class YOLOPredict(object):
 
         return model, half, names, colors, device
 
+    @staticmethod
+    def show_real_time_image(image_label, img):
+        """
+        image_label 显示实时推理图片
+        :param image_label: 本次需要显示的 label 句柄
+        :param img: cv2 图片
+        :return:
+        """
+        image_label_width = image_label.width()
+        resize_factor = image_label_width / img.shape[1]
+
+        img = cv2.resize(img, (int(img.shape[1] * resize_factor), int(img.shape[0] * resize_factor)),
+                         interpolation=cv2.INTER_CUBIC)
+        img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # opencv读取的bgr格式图片转换成rgb格式
+        image = QImage(img_rgb[:],
+                       img_rgb.shape[1],
+                       img_rgb.shape[0],
+                       img_rgb.shape[1] * 3,
+                       QImage.Format_RGB888)
+        img_show = QPixmap(image)
+        image_label.setPixmap(img_show)
+
     def detect(self, source, save_img=False, qt_input=None, qt_output=None):
         """
         进行推理操作
@@ -98,11 +118,6 @@ class YOLOPredict(object):
         # if os.path.exists(out):
         #     shutil.rmtree(out)  # delete output folder
         os.makedirs(out, exist_ok=True)  # make new output folder
-        shutil.rmtree(self.tmp_path)  # delete output folder
-        self.tmp_path.mkdir(exist_ok=True)
-
-        # # 加载模型
-        # model, half, names, colors, device = self.load_model(self.device, weights, imgsz)
 
         t0 = time.time()
         # Set Data loader
@@ -174,16 +189,9 @@ class YOLOPredict(object):
                 # QT 显示
                 if qt_input is not None and qt_output is not None:
                     # 推理前的图片 origin_image, 推理后的图片 im0
+                    self.show_real_time_image(qt_input, origin_image)
+                    self.show_real_time_image(qt_output, im0)
 
-                    cv2.imwrite(str(self.tmp_path.joinpath(f"origin_{t2}.jpg")), origin_image)
-                    cv2.imwrite(str(self.tmp_path.joinpath(f"predict_{t2}.jpg")), im0)
-                    qt_input.setMedia(
-                        QMediaContent(QUrl.fromLocalFile(str(self.tmp_path.joinpath(f"origin_{t2}.jpg")))))
-                    qt_input.pause()  # 显示媒体
-
-                    qt_output.setMedia(
-                        QMediaContent(QUrl.fromLocalFile(str(self.tmp_path.joinpath(f"predict_{t2}.jpg")))))
-                    qt_output.pause()  # 显示媒体s
                 # Stream results
                 if view_img:
                     cv2.imshow(p, im0)

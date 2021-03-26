@@ -132,19 +132,47 @@ QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="QVideoWidget" name="input_video_widget" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>100</height>
-           </size>
+         <widget class="QTabWidget" name="input_media_tabWidget">
+          <property name="currentIndex">
+           <number>0</number>
           </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
+          <widget class="QWidget" name="tab">
+           <attribute name="title">
+            <string>结果</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QVideoWidget" name="input_video_widget" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_2">
+           <attribute name="title">
+            <string>实时推理</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QLabel" name="input_real_time_label">
+              <property name="text">
+               <string>HinGwenWoong</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
         <item>
@@ -305,19 +333,47 @@ QPushButton:hover{
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
-         <widget class="QVideoWidget" name="output_video_widget" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>100</height>
-           </size>
+         <widget class="QTabWidget" name="output_media_tabWidget">
+          <property name="currentIndex">
+           <number>0</number>
           </property>
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
+          <widget class="QWidget" name="tab_3">
+           <attribute name="title">
+            <string>结果</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QVideoWidget" name="output_video_widget" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>100</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>微软雅黑</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tab_4">
+           <attribute name="title">
+            <string>实时推理</string>
+           </attribute>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QLabel" name="output_real_time_label">
+              <property name="text">
+               <string>HinGwenWoong</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
          </widget>
         </item>
         <item>
