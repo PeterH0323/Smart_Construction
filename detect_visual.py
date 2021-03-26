@@ -5,6 +5,10 @@
 # @File    : detect_visual.py
 # @Software: PyCharm
 # @Brief   :
+from copy import deepcopy
+from PyQt5.QtCore import QUrl
+from PyQt5.QtMultimedia import QMediaContent
+
 import torch.backends.cudnn as cudnn
 
 from models.experimental import *
@@ -13,20 +17,43 @@ from utils.utils import *
 
 
 class YOLOPredict(object):
-    def __init__(self, device, weights, imgsz):
-        # 加载模型
-        self.model, self.half, self.names, self.colors, self.device = self.load_model(device, weights, imgsz)
-        self.predict_info = ""
+    def __init__(self, weights, out_file_path):
+        """
+        YOLO 模型初始化
+        :param weights: 权重路径
+        :param out_file_path: 推理结果存放路径
+        """
 
-    @staticmethod
-    def load_model(device, weights, imgsz):
+        '''模型参数'''
+        self.agnostic_nms = False
+        self.augment = False
+        self.classes = None
+        self.conf_thres = 0.4
+        self.device = ''
+        self.img_size = 640
+        self.iou_thres = 0.5
+        self.output = out_file_path
+        self.save_txt = False
+        self.source = ''
+        self.update = False
+        self.view_img = False
+        self.weights = weights  # 权重文件路径，修改这里
+
+        # 加载模型
+        self.model, self.half, self.names, self.colors, self.device = self.load_model()
+
+        self.predict_info = ""
+        self.tmp_path = Path.cwd().joinpath("inference", "tmp")
+        self.tmp_path.mkdir(exist_ok=True)
+
+    def load_model(self):
         """
         加载模型
-        :param device:
-        :param weights:
-        :param imgsz:
-        :return:
+        :return: 模型
         """
+        imgsz = self.img_size
+        weights = self.weights
+        device = self.device
         # Initialize
         device = torch_utils.select_device(device)
 
@@ -48,29 +75,31 @@ class YOLOPredict(object):
 
         return model, half, names, colors, device
 
-    def detect(self, out, source, view_img, save_txt, imgsz, augment, conf_thres, iou_thres,
-               cclasses, agnostic_nms, update, save_img=False):
+    def detect(self, source, save_img=False, qt_input=None, qt_output=None):
         """
         进行推理操作
-        :param out:
-        :param source:
-        :param view_img:
-        :param save_txt:
-        :param imgsz:
-        :param augment:
-        :param conf_thres:
-        :param iou_thres:
-        :param cclasses:
-        :param agnostic_nms:
-        :param update:
-        :param info_widget: QT 文本控件，用来显示推理信息
-        :param save_img:
+        :param source: 推理素材
+        :param save_img: 保存图片 flag
+        :param qt_input: QT 输入窗口
+        :param qt_output: QT 输出窗口
         :return:
         """
+        out = self.output
+        view_img = self.view_img
+        save_txt = self.save_txt
+        imgsz = self.img_size
+        augment = self.augment
+        conf_thres = self.conf_thres
+        iou_thres = self.iou_thres
+        cclasses = self.classes
+        agnostic_nms = self.agnostic_nms
+        update = self.update
 
         # if os.path.exists(out):
         #     shutil.rmtree(out)  # delete output folder
         os.makedirs(out, exist_ok=True)  # make new output folder
+        shutil.rmtree(self.tmp_path)  # delete output folder
+        self.tmp_path.mkdir(exist_ok=True)
 
         # # 加载模型
         # model, half, names, colors, device = self.load_model(self.device, weights, imgsz)
@@ -88,6 +117,10 @@ class YOLOPredict(object):
             dataset = LoadImages(source, img_size=imgsz, visualize_flag=True)
 
         for path, img, im0s, vid_cap, info_str, in dataset:
+
+            # im0s 为当前推理的图片
+            origin_image = deepcopy(im0s)
+
             img = torch.from_numpy(img).to(self.device)
             img = img.half() if self.half else img.float()  # uint8 to fp16/32
             img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -138,7 +171,19 @@ class YOLOPredict(object):
 
                 # 保存推理信息
                 self.predict_info = info_str + '%sDone. (%.3fs)' % (s, t2 - t1)
+                # QT 显示
+                if qt_input is not None and qt_output is not None:
+                    # 推理前的图片 origin_image, 推理后的图片 im0
 
+                    cv2.imwrite(str(self.tmp_path.joinpath(f"origin_{t2}.jpg")), origin_image)
+                    cv2.imwrite(str(self.tmp_path.joinpath(f"predict_{t2}.jpg")), im0)
+                    qt_input.setMedia(
+                        QMediaContent(QUrl.fromLocalFile(str(self.tmp_path.joinpath(f"origin_{t2}.jpg")))))
+                    qt_input.pause()  # 显示媒体
+
+                    qt_output.setMedia(
+                        QMediaContent(QUrl.fromLocalFile(str(self.tmp_path.joinpath(f"predict_{t2}.jpg")))))
+                    qt_output.pause()  # 显示媒体s
                 # Stream results
                 if view_img:
                     cv2.imshow(p, im0)

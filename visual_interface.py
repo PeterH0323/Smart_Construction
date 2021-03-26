@@ -83,29 +83,17 @@ class PredictHandlerThread(QThread):
     """
     进行模型推理的线程
     """
-
-    def __init__(self, output_player, out_file_path, weight_path, predict_info_plain_text_edit,
+    def __init__(self, input_player, output_player, out_file_path, weight_path, predict_info_plain_text_edit,
                  predict_progress_bar, fps_label, button_dict):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
         '''加载模型'''
-        self.parameter_agnostic_nms = False
-        self.parameter_augment = False
-        self.parameter_classes = None
-        self.parameter_conf_thres = 0.4
-        self.parameter_device = ''
-        self.parameter_img_size = 640
-        self.parameter_iou_thres = 0.5
-        self.parameter_output = out_file_path
-        self.parameter_save_txt = False
-        self.parameter_source = ''
-        self.parameter_update = False
-        self.parameter_view_img = False
-        self.parameter_weights = weight_path  # 权重文件路径，修改这里
-        self.predict_model = YOLOPredict(self.parameter_device, self.parameter_weights, self.parameter_img_size)
+        self.predict_model = YOLOPredict(weight_path, out_file_path)
         self.output_predict_file = ""
+        self.parameter_source = ''
         # 传入的QT插件
+        self.input_player = input_player
         self.output_player = output_player
         self.predict_info_plainTextEdit = predict_info_plain_text_edit
         self.predict_progressBar = predict_progress_bar
@@ -127,24 +115,26 @@ class PredictHandlerThread(QThread):
         for item, button in self.button_dict.items():
             button.setEnabled(False)
 
+        image_flag = os.path.splitext(self.parameter_source)[-1].lower() in img_formats
+        qt_input = None
+        qt_output = None
+
+        if not image_flag:
+            qt_input = self.input_player
+            qt_output = self.output_player
+
         with torch.no_grad():
-            self.output_predict_file = self.predict_model.detect(self.parameter_output,
-                                                                 self.parameter_source,
-                                                                 self.parameter_view_img,
-                                                                 self.parameter_save_txt,
-                                                                 self.parameter_img_size,
-                                                                 self.parameter_augment,
-                                                                 self.parameter_conf_thres,
-                                                                 self.parameter_iou_thres,
-                                                                 self.parameter_classes,
-                                                                 self.parameter_agnostic_nms,
-                                                                 self.parameter_update)
+            self.output_predict_file = self.predict_model.detect(self.parameter_source,
+                                                                 qt_input=qt_input,
+                                                                 qt_output=qt_output)
 
         if self.output_predict_file != "":
             # 将 str 路径转为 QUrl 并显示
+            self.input_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.parameter_source)))  # 选取视频文件
+            self.input_player.pause()  # 显示媒体
+
             self.output_player.setMedia(QMediaContent(QUrl.fromLocalFile(self.output_predict_file)))  # 选取视频文件
             self.output_player.pause()  # 显示媒体
-            image_flag = os.path.splitext(self.parameter_source)[-1].lower() in img_formats
             # video_flag = os.path.splitext(self.parameter_source)[-1].lower() in vid_formats
             for item, button in self.button_dict.items():
                 if image_flag and item in ['play_pushButton', 'pause_pushButton']:
@@ -223,7 +213,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.video_length = 0
         self.out_file_path = out_file_path
         # 推理使用另外一线程
-        self.predict_handler_thread = PredictHandlerThread(self.output_player,
+        self.predict_handler_thread = PredictHandlerThread(self.input_player,
+                                                           self.output_player,
                                                            self.out_file_path,
                                                            weight_path,
                                                            self.predict_info_plainTextEdit,
