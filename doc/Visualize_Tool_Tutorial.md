@@ -3,17 +3,17 @@
 本文为可视化界面的使用教程
 
 ## 0. 前期准备
-进入代码 `visual_interface.py` , 修改模型文件的路径 `weight_root`；
+将 权重文件 放到 `weights` 文件夹中，确保有且只有一个 `.pt` 文件；
 
 执行代码，运行可视化界面
 ```shell script
 python visual_interface.py
 ```
 
-**注意**：开始的时候程序会去加载模型，需要大概等待`1~3`秒左右的时间
+**注意**：开始的时候程序会去加载模型，需要大概等待`1~3`秒左右的时间，加载成功后，请确认 `Using weight` 是否是你的权重文件名
 
 ## 一、导入
- 
+
 点击按钮 `Import` 按钮，选择 `视频` 或者 `图片` 文件，点击确定
 
 **注意**：
@@ -42,4 +42,22 @@ python visual_interface.py
 
 您可以在最下面的折线图观察到 `GPU` 的实时使用率的变化情况
 
+# 七. 打包 exe 文件
+
+1. 执行命令进行打包（带有调试信息的）
+```shell script
+pyinstaller -D -c --icon=./UI/icon/icon.ico visual_interface.py
+```
+
+2. 执行命令进行打包（无调试信息）
+```shell script
+pyinstaller -D -w --icon=./UI/icon/icon.ico visual_interface.py
+```
+
+3. 等待打包完成
+4. 打包完成后，生成的 `exe` 位于 `dict` 文件夹中的 `visual_interface` 中
+5. 将 `weights`文件夹 放到 `dict` 文件夹中的 `visual_interface` 中，并确保 `weights`文件夹 中有且只有一个您需要的权重文件
+6. 将 `dict`中的 `model` 和 `UI`文件夹 放到 `dict` 文件夹中的 `visual_interface` 中
+7. 进入`visual_interface` 文件夹，双击 `exe` 执行程序
+8. Enjoy !
 
