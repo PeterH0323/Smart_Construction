@@ -42,7 +42,7 @@ python visual_interface.py
 
 您可以在最下面的折线图观察到 `GPU` 的实时使用率的变化情况
 
-# 七. 打包 exe 文件
+## 七. 打包 exe 文件
 
 1. 执行命令进行打包（带有调试信息的）
 ```shell script
