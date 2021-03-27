@@ -49,15 +49,15 @@ python visual_interface.py
 pyinstaller -D -c --icon=./UI/icon/icon.ico visual_interface.py
 ```
 
-2. 执行命令进行打包（无调试信息）
+或者， 执行命令进行打包（无调试信息）
 ```shell script
 pyinstaller -D -w --icon=./UI/icon/icon.ico visual_interface.py
 ```
 
-3. 等待打包完成
-4. 打包完成后，生成的 `exe` 位于 `dist` 文件夹中的 `visual_interface` 中
-5. 将 `weights`文件夹 放到 `dist` 文件夹中的 `visual_interface` 中，并确保 `weights`文件夹 中**有且只有一个**您需要的权重文件
-6. 将 `dist`中的 `model` 和 `UI`文件夹 放到 `dist` 文件夹中的 `visual_interface` 中
-7. 进入`visual_interface` 文件夹，双击 `exe` 执行程序
-8. Enjoy !
+2. 等待打包完成
+3. 打包完成后，生成的 `exe` 位于 `dist` 文件夹中的 `visual_interface` 中
+4. 将 `weights`文件夹 放到 `dist` 文件夹中的 `visual_interface` 中，并确保 `weights`文件夹 中**有且只有一个**您需要的权重文件
+5. 将 `dist`中的 `model` 和 `UI`文件夹 放到 `dist` 文件夹中的 `visual_interface` 中
+6. 进入`visual_interface` 文件夹，双击 `exe` 执行程序
+7. Enjoy !
 
