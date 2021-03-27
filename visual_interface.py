@@ -445,6 +445,9 @@ if __name__ == '__main__':
     weight_file = [item for item in weight_root.iterdir() if item.suffix == ".pt"]
     weight_root = [str(weight_file[0])]  # 权重文件位置
     out_file_root = Path.cwd().joinpath(r'inference/output')
+    out_file_root.parent.mkdir(exist_ok=True)
+    out_file_root.mkdir(exist_ok=True)
+
     real_time_show_predict = True  # 是否实时显示推理图片，有可能导致卡顿，软件卡死
 
     main_window = MainWindow(weight_root, out_file_root, real_time_show_predict)
