@@ -6,8 +6,6 @@
 # @Software: PyCharm
 # @Brief   :
 from copy import deepcopy
-from PyQt5.QtCore import QUrl
-from PyQt5.QtMultimedia import QMediaContent
 from PyQt5.QtGui import QImage, QPixmap
 
 import torch.backends.cudnn as cudnn
