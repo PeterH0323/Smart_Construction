@@ -3,21 +3,21 @@
 本文为可视化界面的使用教程
 
 ## 0. 前期准备
-将 权重文件 放到 `weights` 文件夹中，确保有且只有一个 `.pt` 文件；
+将 权重文件 放到 `weights` 文件夹中，确保**有且只有一个** `.pt` 文件；
 
 执行代码，运行可视化界面
 ```shell script
 python visual_interface.py
 ```
 
-**注意**：开始的时候程序会去加载模型，需要大概等待`1~3`秒左右的时间，加载成功后，请确认 `Using weight` 是否是你的权重文件名
+**注意**：开始的时候程序会去加载模型，需要大概等待`1~3`秒左右的时间，加载成功后，请确认中间彩色进度条下面的 `Using weight：` 是否是你的权重文件名
 
 ## 一、导入
 
 点击按钮 `Import` 按钮，选择 `视频` 或者 `图片` 文件，点击确定
 
 **注意**：
-1) 如果视频导入之后无法播放，请下载并安装`LAV 解码器`， 下载链接：[LAV 解码器](https://files.1f0.de/lavf/LAVFilters-0.73.1.exe)
+1) 如果视频导入之后无法 显示 or 播放，请下载并安装`LAV 解码器`， 下载链接：[LAV 解码器](https://files.1f0.de/lavf/LAVFilters-0.73.1.exe)
 2) 导入图片文件的话，按钮 `Paly` 和 `Pause` 会被失能
 
 ## 二、进行推理
@@ -55,9 +55,9 @@ pyinstaller -D -w --icon=./UI/icon/icon.ico visual_interface.py
 ```
 
 3. 等待打包完成
-4. 打包完成后，生成的 `exe` 位于 `dict` 文件夹中的 `visual_interface` 中
-5. 将 `weights`文件夹 放到 `dict` 文件夹中的 `visual_interface` 中，并确保 `weights`文件夹 中有且只有一个您需要的权重文件
-6. 将 `dict`中的 `model` 和 `UI`文件夹 放到 `dict` 文件夹中的 `visual_interface` 中
+4. 打包完成后，生成的 `exe` 位于 `dist` 文件夹中的 `visual_interface` 中
+5. 将 `weights`文件夹 放到 `dist` 文件夹中的 `visual_interface` 中，并确保 `weights`文件夹 中**有且只有一个**您需要的权重文件
+6. 将 `dist`中的 `model` 和 `UI`文件夹 放到 `dist` 文件夹中的 `visual_interface` 中
 7. 进入`visual_interface` 文件夹，双击 `exe` 执行程序
 8. Enjoy !
 
