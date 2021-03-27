@@ -24,7 +24,7 @@ python visual_interface.py
 
 点击按钮 `Predict` 进行推理，等待进度条跑完，进度条隔壁会显示目前推理的 `FPS` 指标
 
-**注意**：在推理过程中，所有的按钮都会被**失能**
+**注意**：在推理过程中，所有的按钮都会被**失能**；如果你的实时显示推理过程会导致软件卡死，请将 `visual_interface.py` 中的 `real_time_show_predict` 改为 `False`
 
 ## 三、对推理视频进行播放
 

@@ -118,7 +118,7 @@ class YOLOPredict(object):
         # if os.path.exists(out):
         #     shutil.rmtree(out)  # delete output folder
         os.makedirs(out, exist_ok=True)  # make new output folder
-
+        show_count = 0
         t0 = time.time()
         # Set Data loader
         vid_path, vid_writer = None, None
@@ -190,12 +190,15 @@ class YOLOPredict(object):
                 if qt_input is not None and qt_output is not None and dataset.mode == 'video':
                     video_count, vid_total = info_str.split(" ")[2][1:-1].split("/")  # 得出当前总帧数
                     fps = ((t2 - t1) / 1) * 100
-                    fps_interval = 15
+                    fps_threshold = 25  # FPS 阈值
                     show_flag = True
-                    if fps > fps_interval:  # 如果 FPS > 阀值，则跳帧处理
-                        show_unit = math.ceil(int(vid_total) / fps_interval)  # 取出多少帧显示一帧，向上取整
+                    if fps > fps_threshold:  # 如果 FPS > 阀值，则跳帧处理
+                        fps_interval = 15  # 实时显示的帧率
+                        show_unit = math.ceil(fps / fps_interval)  # 取出多少帧显示一帧，向上取整
                         if int(video_count) % show_unit != 0:  # 跳帧显示
                             show_flag = False
+                        else:
+                            show_count += 1
 
                     if show_flag:
                         # 推理前的图片 origin_image, 推理后的图片 im0
