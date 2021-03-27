@@ -6,7 +6,8 @@
 # @Software: PyCharm
 # @Brief   :
 
-# 解决 exe 编译的问题 start ======
+# 解决 exe 打包 Can't get source for 的问题 start ======
+# https://github.com/pytorch/vision/issues/1899#issuecomment-598200938
 import torch.jit
 
 
@@ -20,7 +21,7 @@ def script(obj, optimize=True, _frames_up=0, _rcb=None):
 
 torch.jit.script_method = script_method
 torch.jit.script = script
-# 解决 exe 编译的问题 end ======
+# 解决 exe 打包 Can't get source for 的问题 end ======
 
 import os
 import time
