@@ -5,6 +5,23 @@
 # @File    : visual_interface.py
 # @Software: PyCharm
 # @Brief   :
+
+# 解决 exe 编译的问题 start ======
+import torch.jit
+
+
+def script_method(fn, _rcb=None):
+    return fn
+
+
+def script(obj, optimize=True, _frames_up=0, _rcb=None):
+    return obj
+
+
+torch.jit.script_method = script_method
+torch.jit.script = script
+# 解决 exe 编译的问题 end ======
+
 import os
 import time
 import sys
@@ -32,7 +49,7 @@ def get_gpu_info():
     """
 
     gpu_list = []
-    GPUtil.showUtilization()
+    # GPUtil.showUtilization()
 
     # 获取多个GPU的信息，存在列表里
     for gpu in GPUtil.getGPUs():

@@ -306,6 +306,23 @@ python detect.py --save-txt --source 自己数据集的文件目录 --weights ./
 
 修改 `./data/gen_data/merge_data.py` 中的自己数据集标签所在的路径，执行这个python脚本，会进行 `person` 类型的合并 
 
+# 6. 打包 exe 文件
+- 执行命令进行打包（带有调试信息的）
+```shell script
+pyinstaller -D -c --icon=./UI/icon/icon.ico visual_interface.py
+```
+
+- 执行命令进行打包（无调试信息）
+```shell script
+pyinstaller -D -w --icon=./UI/icon/icon.ico visual_interface.py
+```
+
+- 等待打包完成
+- 打包完成后，生成的 `exe` 位于 `dict` 文件夹中的 `visual_interface` 中
+- 将 `weights`文件夹 放到 `dict` 文件夹中的 `visual_interface` 中，并确保 `weights`文件夹 中只有一个您需要的权重文件
+- 将 `dict`中的 `model` 和 `UI`文件夹 放到 `dict` 文件夹中的 `visual_interface` 中
+- 进入`visual_interface` 文件夹，双击 `exe` 执行程序
+- Enjoy !
 
 ---
 
