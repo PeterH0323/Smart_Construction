@@ -88,7 +88,8 @@ class PredictHandlerThread(QThread):
 
     def __init__(self, input_player, output_player, out_file_path, weight_path,
                  predict_info_plain_text_edit, predict_progress_bar, fps_label,
-                 button_dict, input_tab, output_tab, input_image_label, output_image_label):
+                 button_dict, input_tab, output_tab, input_image_label, output_image_label,
+                 real_time_show_predict_flag):
         super(PredictHandlerThread, self).__init__()
         self.running = False
 
@@ -109,6 +110,9 @@ class PredictHandlerThread(QThread):
         self.input_image_label = input_image_label
         self.output_image_label = output_image_label
 
+        # 是否实时显示推理图片
+        self.real_time_show_predict_flag = real_time_show_predict_flag
+
         # 创建显示进程
         self.predict_data_handler_thread = PredictDataHandlerThread(self.predict_model)
         self.predict_data_handler_thread.predict_message_trigger.connect(self.add_messages)
@@ -128,7 +132,7 @@ class PredictHandlerThread(QThread):
         qt_input = None
         qt_output = None
 
-        if not image_flag:
+        if not image_flag and self.real_time_show_predict_flag:
             qt_input = self.input_image_label
             qt_output = self.output_image_label
             # tab 设置显示第二栏
@@ -185,10 +189,10 @@ class PredictHandlerThread(QThread):
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, weight_path, out_file_path, parent=None):
+    def __init__(self, weight_path, out_file_path, real_time_show_predict_flag, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
-        self.setWindowTitle("VAT ROLL COMPARE LABEL TOOL" + " " + CODE_VER)
+        self.setWindowTitle("Intelligent Monitoring System of Construction Site Software " + CODE_VER)
         self.showMaximized()
 
         '''按键绑定'''
@@ -241,7 +245,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                            self.input_media_tabWidget,
                                                            self.output_media_tabWidget,
                                                            self.input_real_time_label,
-                                                           self.output_real_time_label
+                                                           self.output_real_time_label,
+                                                           real_time_show_predict_flag
                                                            )
         # 界面美化
         self.gen_better_gui()
@@ -418,8 +423,9 @@ if __name__ == '__main__':
 
     weight_root = [r'./weights/helmet_head_person_m.pt']  # 权重文件位置
     out_file_root = Path.cwd().joinpath(r'inference/output')
+    real_time_show_predict = True  # 是否实时显示推理图片，有可能导致卡顿，软件卡死
 
-    main_window = MainWindow(weight_root, out_file_root)
+    main_window = MainWindow(weight_root, out_file_root, real_time_show_predict)
 
     # 设置窗口图标
     icon = QIcon()

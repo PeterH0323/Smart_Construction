@@ -131,7 +131,7 @@ class YOLOPredict(object):
             save_img = True
             dataset = LoadImages(source, img_size=imgsz, visualize_flag=True)
 
-        for path, img, im0s, vid_cap, info_str, in dataset:
+        for path, img, im0s, vid_cap, info_str in dataset:
 
             # im0s 为当前推理的图片
             origin_image = deepcopy(im0s)
@@ -187,10 +187,20 @@ class YOLOPredict(object):
                 # 保存推理信息
                 self.predict_info = info_str + '%sDone. (%.3fs)' % (s, t2 - t1)
                 # QT 显示
-                if qt_input is not None and qt_output is not None:
-                    # 推理前的图片 origin_image, 推理后的图片 im0
-                    self.show_real_time_image(qt_input, origin_image)
-                    self.show_real_time_image(qt_output, im0)
+                if qt_input is not None and qt_output is not None and dataset.mode == 'video':
+                    video_count, vid_total = info_str.split(" ")[2][1:-1].split("/")  # 得出当前总帧数
+                    fps = ((t2 - t1) / 1) * 100
+                    fps_interval = 15
+                    show_flag = True
+                    if fps > fps_interval:  # 如果 FPS > 阀值，则跳帧处理
+                        show_unit = math.ceil(int(vid_total) / fps_interval)  # 取出多少帧显示一帧，向上取整
+                        if int(video_count) % show_unit != 0:  # 跳帧显示
+                            show_flag = False
+
+                    if show_flag:
+                        # 推理前的图片 origin_image, 推理后的图片 im0
+                        self.show_real_time_image(qt_input, origin_image)
+                        self.show_real_time_image(qt_output, im0)
 
                 # Stream results
                 if view_img:
