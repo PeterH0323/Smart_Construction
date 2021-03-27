@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
@@ -108,7 +111,7 @@ QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {
       <widget class="QGroupBox" name="groupBox">
        <property name="minimumSize">
         <size>
-         <width>500</width>
+         <width>350</width>
          <height>0</height>
         </size>
        </property>
@@ -181,12 +184,23 @@ QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {
            <widget class="QLabel" name="label">
             <property name="font">
              <font>
-              <family>微软雅黑</family>
-              <pointsize>10</pointsize>
+              <family>Calibri</family>
+              <pointsize>-1</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
              </font>
             </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel {
+    background-color: #543044;
+    color: #BBBBBB;
+    font-family: &quot;Calibri&quot;;
+	font-size:13px;
+	font-weight:bold;
+}</string>
+            </property>
             <property name="text">
-             <string>Processing:</string>
+             <string>  Processing:  </string>
             </property>
            </widget>
           </item>
@@ -198,8 +212,28 @@ QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {
               <pointsize>10</pointsize>
              </font>
             </property>
-            <property name="value">
+            <property name="styleSheet">
+             <string notr="true">QProgressBar{
+border:2px solid grey;
+border-radius:5px;
+text-align: center;
+}
+
+
+QProgressBar::chunk {
+background-color:#CD96CD;
+width:10px;
+margin:0.5px;
+}
+————————————————
+版权声明：本文为CSDN博主「杜xx」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/du_bingbing/article/details/50681719</string>
+            </property>
+            <property name="minimum">
              <number>0</number>
+            </property>
+            <property name="value">
+             <number>19</number>
             </property>
            </widget>
           </item>
@@ -231,7 +265,113 @@ QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {
          </layout>
         </item>
         <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_13">
+          <item>
+           <spacer name="horizontalSpacer_13">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QLabel" name="weight_label">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>weight path:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_12">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="real_time_checkBox">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Real Time Predict</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_11">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item>
            <widget class="QPushButton" name="import_media_pushButton">
             <property name="minimumSize">
@@ -268,6 +408,22 @@ QPushButton:hover{
            </widget>
           </item>
           <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QPushButton" name="start_predict_pushButton">
             <property name="minimumSize">
              <size>
@@ -301,6 +457,22 @@ QPushButton:hover{
              <string>Predict</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
          </layout>
         </item>
@@ -377,17 +549,72 @@ QPushButton:hover{
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="open_predict_file_pushButton">
-          <property name="font">
-           <font>
-            <family>微软雅黑</family>
-            <pointsize>10</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>Open in Browser</string>
-          </property>
-         </widget>
+         <layout class="QHBoxLayout" name="horizontalLayout_12">
+          <item>
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="open_predict_file_pushButton">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>25</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <family>微软雅黑</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton{
+	background-color:#d71345;
+	color:#ffffff;
+    border-radius: 5px;
+}
+
+QPushButton:hover{
+	color:#FFFFFF;
+	background:#c76968;
+}
+</string>
+            </property>
+            <property name="text">
+             <string>Open in Browser</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_10">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -606,6 +833,15 @@ QPushButton:hover{
              <family>微软雅黑</family>
              <pointsize>10</pointsize>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">
+QPlainTextEdit {
+    background-color: cornsilk;
+    selection-color: #0a214c; 
+    selection-background-color: #C19A6B;
+}
+</string>
            </property>
           </widget>
          </item>

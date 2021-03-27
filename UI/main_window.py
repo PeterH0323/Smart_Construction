@@ -15,6 +15,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1409, 1146)
+        MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.centralwidget)
@@ -57,7 +58,7 @@ class Ui_MainWindow(object):
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
         self.groupBox = QtWidgets.QGroupBox(self.splitter)
-        self.groupBox.setMinimumSize(QtCore.QSize(500, 0))
+        self.groupBox.setMinimumSize(QtCore.QSize(350, 0))
         self.groupBox.setMaximumSize(QtCore.QSize(1300, 16777215))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
@@ -95,9 +96,18 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.label = QtWidgets.QLabel(self.groupBox)
         font = QtGui.QFont()
-        font.setFamily("微软雅黑")
-        font.setPointSize(10)
+        font.setFamily("Calibri")
+        font.setPointSize(-1)
+        font.setBold(True)
+        font.setWeight(75)
         self.label.setFont(font)
+        self.label.setStyleSheet("QLabel {\n"
+"    background-color: #543044;\n"
+"    color: #BBBBBB;\n"
+"    font-family: \"Calibri\";\n"
+"    font-size:13px;\n"
+"    font-weight:bold;\n"
+"}")
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
         self.predict_progressBar = QtWidgets.QProgressBar(self.groupBox)
@@ -105,7 +115,23 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.predict_progressBar.setFont(font)
-        self.predict_progressBar.setProperty("value", 0)
+        self.predict_progressBar.setStyleSheet("QProgressBar{\n"
+"border:2px solid grey;\n"
+"border-radius:5px;\n"
+"text-align: center;\n"
+"}\n"
+"\n"
+"\n"
+"QProgressBar::chunk {\n"
+"background-color:#CD96CD;\n"
+"width:10px;\n"
+"margin:0.5px;\n"
+"}\n"
+"————————————————\n"
+"版权声明：本文为CSDN博主「杜xx」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。\n"
+"原文链接：https://blog.csdn.net/du_bingbing/article/details/50681719")
+        self.predict_progressBar.setMinimum(0)
+        self.predict_progressBar.setProperty("value", 19)
         self.predict_progressBar.setObjectName("predict_progressBar")
         self.horizontalLayout_2.addWidget(self.predict_progressBar)
         self.fps_label = QtWidgets.QLabel(self.groupBox)
@@ -118,8 +144,30 @@ class Ui_MainWindow(object):
         self.fps_label.setObjectName("fps_label")
         self.horizontalLayout_2.addWidget(self.fps_label)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem1)
+        self.weight_label = QtWidgets.QLabel(self.groupBox)
+        self.weight_label.setMinimumSize(QtCore.QSize(0, 25))
+        self.weight_label.setStyleSheet("")
+        self.weight_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.weight_label.setObjectName("weight_label")
+        self.horizontalLayout_13.addWidget(self.weight_label)
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem2)
+        self.real_time_checkBox = QtWidgets.QCheckBox(self.groupBox)
+        self.real_time_checkBox.setMinimumSize(QtCore.QSize(0, 25))
+        self.real_time_checkBox.setMaximumSize(QtCore.QSize(130, 16777215))
+        self.real_time_checkBox.setObjectName("real_time_checkBox")
+        self.horizontalLayout_13.addWidget(self.real_time_checkBox)
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem3)
+        self.verticalLayout.addLayout(self.horizontalLayout_13)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem4 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem4)
         self.import_media_pushButton = QtWidgets.QPushButton(self.groupBox)
         self.import_media_pushButton.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
@@ -139,6 +187,8 @@ class Ui_MainWindow(object):
 "")
         self.import_media_pushButton.setObjectName("import_media_pushButton")
         self.horizontalLayout.addWidget(self.import_media_pushButton)
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem5)
         self.start_predict_pushButton = QtWidgets.QPushButton(self.groupBox)
         self.start_predict_pushButton.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
@@ -158,6 +208,8 @@ class Ui_MainWindow(object):
 "")
         self.start_predict_pushButton.setObjectName("start_predict_pushButton")
         self.horizontalLayout.addWidget(self.start_predict_pushButton)
+        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem6)
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.groupBox_2 = QtWidgets.QGroupBox(self.splitter)
         self.groupBox_2.setMinimumSize(QtCore.QSize(500, 0))
@@ -194,18 +246,37 @@ class Ui_MainWindow(object):
         self.horizontalLayout_11.addWidget(self.output_real_time_label)
         self.output_media_tabWidget.addTab(self.tab_4, "")
         self.verticalLayout_2.addWidget(self.output_media_tabWidget)
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
+        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_12.addItem(spacerItem7)
         self.open_predict_file_pushButton = QtWidgets.QPushButton(self.groupBox_2)
+        self.open_predict_file_pushButton.setMinimumSize(QtCore.QSize(0, 25))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.open_predict_file_pushButton.setFont(font)
+        self.open_predict_file_pushButton.setStyleSheet("QPushButton{\n"
+"    background-color:#d71345;\n"
+"    color:#ffffff;\n"
+"    border-radius: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:hover{\n"
+"    color:#FFFFFF;\n"
+"    background:#c76968;\n"
+"}\n"
+"")
         self.open_predict_file_pushButton.setObjectName("open_predict_file_pushButton")
-        self.verticalLayout_2.addWidget(self.open_predict_file_pushButton)
+        self.horizontalLayout_12.addWidget(self.open_predict_file_pushButton)
+        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_12.addItem(spacerItem8)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_12)
         self.verticalLayout_3.addWidget(self.splitter)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem1)
+        spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem9)
         self.video_horizontalSlider = QtWidgets.QSlider(self.centralwidget)
         self.video_horizontalSlider.setMaximumSize(QtCore.QSize(16777215, 35))
         font = QtGui.QFont()
@@ -223,13 +294,13 @@ class Ui_MainWindow(object):
         self.video_percent_label.setFont(font)
         self.video_percent_label.setObjectName("video_percent_label")
         self.horizontalLayout_4.addWidget(self.video_percent_label)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem2)
+        spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem10)
         self.verticalLayout_3.addLayout(self.horizontalLayout_4)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        spacerItem3 = QtWidgets.QSpacerItem(40, 25, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem3)
+        spacerItem11 = QtWidgets.QSpacerItem(40, 25, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem11)
         self.play_pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.play_pushButton.setMinimumSize(QtCore.QSize(0, 25))
         self.play_pushButton.setMaximumSize(QtCore.QSize(16777215, 35))
@@ -254,8 +325,8 @@ class Ui_MainWindow(object):
         self.pause_pushButton.setIcon(icon1)
         self.pause_pushButton.setObjectName("pause_pushButton")
         self.horizontalLayout_3.addWidget(self.pause_pushButton)
-        spacerItem4 = QtWidgets.QSpacerItem(40, 25, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem4)
+        spacerItem12 = QtWidgets.QSpacerItem(40, 25, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem12)
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_5 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
@@ -274,6 +345,13 @@ class Ui_MainWindow(object):
         font.setFamily("微软雅黑")
         font.setPointSize(10)
         self.predict_info_plainTextEdit.setFont(font)
+        self.predict_info_plainTextEdit.setStyleSheet("\n"
+"QPlainTextEdit {\n"
+"    background-color: cornsilk;\n"
+"    selection-color: #0a214c; \n"
+"    selection-background-color: #C19A6B;\n"
+"}\n"
+"")
         self.predict_info_plainTextEdit.setObjectName("predict_info_plainTextEdit")
         self.horizontalLayout_6.addWidget(self.predict_info_plainTextEdit)
         self.horizontalLayout_5.addWidget(self.groupBox_3)
@@ -309,8 +387,10 @@ class Ui_MainWindow(object):
         self.input_media_tabWidget.setTabText(self.input_media_tabWidget.indexOf(self.tab), _translate("MainWindow", "结果"))
         self.input_real_time_label.setText(_translate("MainWindow", "HinGwenWoong"))
         self.input_media_tabWidget.setTabText(self.input_media_tabWidget.indexOf(self.tab_2), _translate("MainWindow", "实时推理"))
-        self.label.setText(_translate("MainWindow", "Processing:"))
+        self.label.setText(_translate("MainWindow", "  Processing:  "))
         self.fps_label.setText(_translate("MainWindow", "(FPS)"))
+        self.weight_label.setText(_translate("MainWindow", "weight path:"))
+        self.real_time_checkBox.setText(_translate("MainWindow", "Real Time Predict"))
         self.import_media_pushButton.setStatusTip(_translate("MainWindow", "Import video to predict"))
         self.import_media_pushButton.setText(_translate("MainWindow", "Import"))
         self.start_predict_pushButton.setStatusTip(_translate("MainWindow", "Predict the vedio"))

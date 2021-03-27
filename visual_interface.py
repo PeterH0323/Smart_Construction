@@ -189,7 +189,7 @@ class PredictHandlerThread(QThread):
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, weight_path, out_file_path, real_time_show_predict_flag, parent=None):
+    def __init__(self, weight_path, out_file_path, real_time_show_predict_flag: bool, parent=None):
         super(MainWindow, self).__init__(parent)
         self.setupUi(self)
         self.setWindowTitle("Intelligent Monitoring System of Construction Site Software " + CODE_VER)
@@ -210,6 +210,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                  "open_predict_file_pushButton": self.open_predict_file_pushButton,
                                  "play_pushButton": self.play_pushButton,
                                  "pause_pushButton": self.pause_pushButton,
+                                 "real_time_checkBox": self.real_time_checkBox
                                  })
 
         '''媒体流绑定输出'''
@@ -228,7 +229,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 使用QTimer，0.5秒触发一次，更新数据
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.draw_gpu_info_chart)
-        self.timer.start(500)
+        self.timer.start(1000)
 
         # 播放时长, 以 input 的时长为准
         self.video_length = 0
@@ -248,10 +249,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                            self.output_real_time_label,
                                                            real_time_show_predict_flag
                                                            )
+        self.weight_label.setText(f" Using weight : ****** {Path(weight_path[0]).name} ******")
         # 界面美化
         self.gen_better_gui()
 
-        self.media_source = ""
+        self.media_source = ""  # 推理媒体的路径
+
+        self.predict_progressBar.setValue(0)  # 进度条归零
+
+        '''check box 绑定'''
+        self.real_time_checkBox.stateChanged.connect(self.real_time_checkbox_state_changed)
+        self.real_time_checkBox.setChecked(real_time_show_predict_flag)
+        self.real_time_check_state = self.real_time_checkBox.isChecked()
 
     def gen_better_gui(self):
         """
@@ -278,6 +287,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         # 设置显示图片的 label 为黑色背景
         self.input_real_time_label.setStyleSheet("QLabel{background:black}")
         self.output_real_time_label.setStyleSheet("QLabel{background:black}")
+
+    def real_time_checkbox_state_changed(self):
+        """
+        切换是否实时显示推理图片
+        :return:
+        """
+        self.real_time_check_state = self.real_time_checkBox.isChecked()
+        self.predict_handler_thread.real_time_show_predict_flag = self.real_time_check_state
 
     def chart_init(self):
         """
@@ -421,7 +438,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
-    weight_root = [r'./weights/helmet_head_person_m.pt']  # 权重文件位置
+    weight_root = Path.cwd().joinpath("weights")
+    if not weight_root.exists():
+        raise FileNotFoundError("weights not found !!!")
+
+    weight_file = [item for item in weight_root.iterdir() if item.suffix == ".pt"]
+    weight_root = [str(weight_file[0])]  # 权重文件位置
     out_file_root = Path.cwd().joinpath(r'inference/output')
     real_time_show_predict = True  # 是否实时显示推理图片，有可能导致卡顿，软件卡死
 
@@ -429,7 +451,7 @@ if __name__ == '__main__':
 
     # 设置窗口图标
     icon = QIcon()
-    icon.addPixmap(QPixmap("UI/icon/icon.ico"), QIcon.Normal, QIcon.Off)
+    icon.addPixmap(QPixmap("./UI/icon/icon.ico"), QIcon.Normal, QIcon.Off)
     main_window.setWindowIcon(icon)
 
     main_window.show()
