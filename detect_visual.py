@@ -238,25 +238,26 @@ class YOLOPredict(object):
 
 
 if __name__ == '__main__':
-    parameter_agnostic_nms = False
-    parameter_augment = False
-    parameter_classes = None
-    parameter_conf_thres = 0.4
-    parameter_device = ''
-    parameter_img_size = 640
-    parameter_iou_thres = 0.5
-    parameter_output = 'inference/output'
-    parameter_save_txt = False
-    parameter_source = './area_dangerous'
-    parameter_update = False
-    parameter_view_img = False
-    parameter_weights = ['./weights/helmet_head_person_m.pt']
-    predict = YOLOPredict(parameter_device, parameter_weights, parameter_img_size)
+    print("This is not for run, may be you want to run 'detect.py' or 'visual_interface.py', pls check your file name. Thx ! ")
+#     parameter_agnostic_nms = False
+#     parameter_augment = False
+#     parameter_classes = None
+#     parameter_conf_thres = 0.4
+#     parameter_device = ''
+#     parameter_img_size = 640
+#     parameter_iou_thres = 0.5
+#     parameter_output = 'inference/output'
+#     parameter_save_txt = False
+#     parameter_source = './area_dangerous'
+#     parameter_update = False
+#     parameter_view_img = False
+#     parameter_weights = ['./weights/helmet_head_person_m.pt']
+#     predict = YOLOPredict(parameter_device, parameter_weights, parameter_img_size)
 
-    # with torch.no_grad():
-    predict.detect(parameter_output, parameter_source, parameter_view_img, parameter_save_txt,
-                   parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres,
-                   parameter_classes, parameter_agnostic_nms, parameter_update)
+#     # with torch.no_grad():
+#     predict.detect(parameter_output, parameter_source, parameter_view_img, parameter_save_txt,
+#                    parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres,
+#                    parameter_classes, parameter_agnostic_nms, parameter_update)
 
     # detect(parameter_output, parameter_source, parameter_weights, parameter_view_img, parameter_save_txt,
     #        parameter_img_size, parameter_augment, parameter_conf_thres, parameter_iou_thres, parameter_classes,
