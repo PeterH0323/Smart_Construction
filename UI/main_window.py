@@ -9,7 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from PyQt5.QtChart import QChartView
+from PyQt5.QtMultimediaWidgets import QVideoWidget
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -43,13 +44,13 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.author_label.setFont(font)
         self.author_label.setStyleSheet("QStackedWidget, QLabel, QPushButton, QRadioButton, QCheckBox, \n"
-"QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {\n"
-"    background-color: #222222;\n"
-"    color: #BBBBBB;\n"
-"    font-family: \"Calibri\";\n"
-"    font-size:13px;\n"
-"    font-weight:bold;\n"
-"}")
+                                        "QGroupBox, QStatusBar, QToolButton, QComboBox, QDialog {\n"
+                                        "    background-color: #222222;\n"
+                                        "    color: #BBBBBB;\n"
+                                        "    font-family: \"Calibri\";\n"
+                                        "    font-size:13px;\n"
+                                        "    font-weight:bold;\n"
+                                        "}")
         self.author_label.setAlignment(QtCore.Qt.AlignCenter)
         self.author_label.setObjectName("author_label")
         self.horizontalLayout_7.addWidget(self.author_label)
@@ -102,12 +103,12 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.label.setFont(font)
         self.label.setStyleSheet("QLabel {\n"
-"    background-color: #543044;\n"
-"    color: #BBBBBB;\n"
-"    font-family: \"Calibri\";\n"
-"    font-size:13px;\n"
-"    font-weight:bold;\n"
-"}")
+                                 "    background-color: #543044;\n"
+                                 "    color: #BBBBBB;\n"
+                                 "    font-family: \"Calibri\";\n"
+                                 "    font-size:13px;\n"
+                                 "    font-weight:bold;\n"
+                                 "}")
         self.label.setObjectName("label")
         self.horizontalLayout_2.addWidget(self.label)
         self.predict_progressBar = QtWidgets.QProgressBar(self.groupBox)
@@ -116,20 +117,17 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.predict_progressBar.setFont(font)
         self.predict_progressBar.setStyleSheet("QProgressBar{\n"
-"border:2px solid grey;\n"
-"border-radius:5px;\n"
-"text-align: center;\n"
-"}\n"
-"\n"
-"\n"
-"QProgressBar::chunk {\n"
-"background-color:#CD96CD;\n"
-"width:10px;\n"
-"margin:0.5px;\n"
-"}\n"
-"————————————————\n"
-"版权声明：本文为CSDN博主「杜xx」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。\n"
-"原文链接：https://blog.csdn.net/du_bingbing/article/details/50681719")
+                                               "border:2px solid grey;\n"
+                                               "border-radius:5px;\n"
+                                               "text-align: center;\n"
+                                               "}\n"
+                                               "\n"
+                                               "\n"
+                                               "QProgressBar::chunk {\n"
+                                               "background-color:#CD96CD;\n"
+                                               "width:10px;\n"
+                                               "margin:0.5px;\n"
+                                               "}")
         self.predict_progressBar.setMinimum(0)
         self.predict_progressBar.setProperty("value", 19)
         self.predict_progressBar.setObjectName("predict_progressBar")
@@ -181,16 +179,16 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.import_media_pushButton.setFont(font)
         self.import_media_pushButton.setStyleSheet("QPushButton{\n"
-"    background-color:#2828FF;\n"
-"    color:#ffffff;\n"
-"    border-radius: 5px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"    color:#FFFFFF;\n"
-"    background:#9393FF;\n"
-"}\n"
-"")
+                                                   "    background-color:#2828FF;\n"
+                                                   "    color:#ffffff;\n"
+                                                   "    border-radius: 5px;\n"
+                                                   "}\n"
+                                                   "\n"
+                                                   "QPushButton:hover{\n"
+                                                   "    color:#FFFFFF;\n"
+                                                   "    background:#9393FF;\n"
+                                                   "}\n"
+                                                   "")
         self.import_media_pushButton.setObjectName("import_media_pushButton")
         self.horizontalLayout.addWidget(self.import_media_pushButton)
         spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
@@ -202,16 +200,16 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.start_predict_pushButton.setFont(font)
         self.start_predict_pushButton.setStyleSheet("QPushButton{\n"
-"    background-color:#16A085;\n"
-"    color:#ffffff;\n"
-"    border-radius: 5px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"    color:#FFFFFF;\n"
-"    background:#2EE1C1;\n"
-"}\n"
-"")
+                                                    "    background-color:#16A085;\n"
+                                                    "    color:#ffffff;\n"
+                                                    "    border-radius: 5px;\n"
+                                                    "}\n"
+                                                    "\n"
+                                                    "QPushButton:hover{\n"
+                                                    "    color:#FFFFFF;\n"
+                                                    "    background:#2EE1C1;\n"
+                                                    "}\n"
+                                                    "")
         self.start_predict_pushButton.setObjectName("start_predict_pushButton")
         self.horizontalLayout.addWidget(self.start_predict_pushButton)
         spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
@@ -263,16 +261,16 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.open_predict_file_pushButton.setFont(font)
         self.open_predict_file_pushButton.setStyleSheet("QPushButton{\n"
-"    background-color:#d71345;\n"
-"    color:#ffffff;\n"
-"    border-radius: 5px;\n"
-"}\n"
-"\n"
-"QPushButton:hover{\n"
-"    color:#FFFFFF;\n"
-"    background:#c76968;\n"
-"}\n"
-"")
+                                                        "    background-color:#d71345;\n"
+                                                        "    color:#ffffff;\n"
+                                                        "    border-radius: 5px;\n"
+                                                        "}\n"
+                                                        "\n"
+                                                        "QPushButton:hover{\n"
+                                                        "    color:#FFFFFF;\n"
+                                                        "    background:#c76968;\n"
+                                                        "}\n"
+                                                        "")
         self.open_predict_file_pushButton.setObjectName("open_predict_file_pushButton")
         self.horizontalLayout_12.addWidget(self.open_predict_file_pushButton)
         spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
@@ -315,7 +313,8 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.play_pushButton.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icon/play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("C:/Users/PeterH/.designer/backup/icon/play.png"), QtGui.QIcon.Normal,
+                       QtGui.QIcon.Off)
         self.play_pushButton.setIcon(icon)
         self.play_pushButton.setObjectName("play_pushButton")
         self.horizontalLayout_3.addWidget(self.play_pushButton)
@@ -327,7 +326,8 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.pause_pushButton.setFont(font)
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("icon/pause.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("C:/Users/PeterH/.designer/backup/icon/pause.png"), QtGui.QIcon.Normal,
+                        QtGui.QIcon.Off)
         self.pause_pushButton.setIcon(icon1)
         self.pause_pushButton.setObjectName("pause_pushButton")
         self.horizontalLayout_3.addWidget(self.pause_pushButton)
@@ -352,12 +352,12 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.predict_info_plainTextEdit.setFont(font)
         self.predict_info_plainTextEdit.setStyleSheet("\n"
-"QPlainTextEdit {\n"
-"    background-color: cornsilk;\n"
-"    selection-color: #0a214c; \n"
-"    selection-background-color: #C19A6B;\n"
-"}\n"
-"")
+                                                      "QPlainTextEdit {\n"
+                                                      "    background-color: cornsilk;\n"
+                                                      "    selection-color: #0a214c; \n"
+                                                      "    selection-background-color: #C19A6B;\n"
+                                                      "}\n"
+                                                      "")
         self.predict_info_plainTextEdit.setObjectName("predict_info_plainTextEdit")
         self.horizontalLayout_6.addWidget(self.predict_info_plainTextEdit)
         self.horizontalLayout_5.addWidget(self.groupBox_3)
@@ -390,9 +390,11 @@ class Ui_MainWindow(object):
         self.author_label_2.setText(_translate("MainWindow", "Intelligent Monitoring System of Construction Site"))
         self.author_label.setText(_translate("MainWindow", "Product by: HinGwenWoong"))
         self.groupBox.setTitle(_translate("MainWindow", "Input Media"))
-        self.input_media_tabWidget.setTabText(self.input_media_tabWidget.indexOf(self.tab), _translate("MainWindow", "结果"))
+        self.input_media_tabWidget.setTabText(self.input_media_tabWidget.indexOf(self.tab),
+                                              _translate("MainWindow", "结果"))
         self.input_real_time_label.setText(_translate("MainWindow", "HinGwenWoong"))
-        self.input_media_tabWidget.setTabText(self.input_media_tabWidget.indexOf(self.tab_2), _translate("MainWindow", "实时推理"))
+        self.input_media_tabWidget.setTabText(self.input_media_tabWidget.indexOf(self.tab_2),
+                                              _translate("MainWindow", "实时推理"))
         self.label.setText(_translate("MainWindow", "  Processing:  "))
         self.fps_label.setText(_translate("MainWindow", "(FPS)"))
         self.weight_label.setText(_translate("MainWindow", "weight path:"))
@@ -402,13 +404,15 @@ class Ui_MainWindow(object):
         self.start_predict_pushButton.setStatusTip(_translate("MainWindow", "Predict the vedio"))
         self.start_predict_pushButton.setText(_translate("MainWindow", "Predict"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Output Media"))
-        self.output_media_tabWidget.setTabText(self.output_media_tabWidget.indexOf(self.tab_3), _translate("MainWindow", "结果"))
+        self.output_media_tabWidget.setTabText(self.output_media_tabWidget.indexOf(self.tab_3),
+                                               _translate("MainWindow", "结果"))
         self.output_real_time_label.setText(_translate("MainWindow", "HinGwenWoong"))
-        self.output_media_tabWidget.setTabText(self.output_media_tabWidget.indexOf(self.tab_4), _translate("MainWindow", "实时推理"))
+        self.output_media_tabWidget.setTabText(self.output_media_tabWidget.indexOf(self.tab_4),
+                                               _translate("MainWindow", "实时推理"))
         self.open_predict_file_pushButton.setText(_translate("MainWindow", "Open in Browser"))
         self.video_percent_label.setText(_translate("MainWindow", "0 %"))
         self.play_pushButton.setText(_translate("MainWindow", "Play"))
         self.pause_pushButton.setText(_translate("MainWindow", "Pause"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Predict Info:"))
-from PyQt5.QtChart import QChartView
-from PyQt5.QtMultimediaWidgets import QVideoWidget
+
+
