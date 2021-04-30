@@ -75,7 +75,7 @@
 
 或者使用我的环境（推荐）
 ```shell script
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 ## 官方权重
