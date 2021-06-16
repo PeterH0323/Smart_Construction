@@ -4,9 +4,6 @@
 
 **如果帮到您请给个 star :star2::star2::star2:，您的 star:star2: 是我最大的鼓励！**
 
-### 星标趋势
-[![Stargazers](https://starchart.cc/PeterH0323/Smart_Construction.svg)](https://starchart.cc/PeterH0323/Smart_Construction)
-
 该项目是使用 `YOLOv5 v2.x` 的程序来训练在智能工地安全领域中头盔目标检测的应用
 
 ## 可视化界面演示（2021.3 上新！）：
