@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 # @Time    : 2020/7/29 20:29
 # @Author  : PeterH
 # @Email   : peterhuang0323@outlook.com
@@ -6,171 +8,144 @@
 # @Software: PyCharm
 # @Brief   : 生成测试、验证、训练的图片和标签
 
+
+import argparse
 import os
+import pathlib
 import shutil
-from pathlib import Path
-from shutil import copyfile
+
+import numpy as np
 
 from PIL import Image, ImageDraw
-from xml.dom.minidom import parse
-import numpy as np
 from tqdm import tqdm
-
-FILE_ROOT = Path(r"E:\AI_Project\AI_Learning\Dataset")
-
-# 原始数据集
-IMAGE_SET_ROOT = FILE_ROOT.joinpath(r"VOC2028\ImageSets\Main")  # 图片区分文件的路径
-IMAGE_PATH = FILE_ROOT.joinpath(r"VOC2028\JPEGImages")  # 图片的位置
-ANNOTATIONS_PATH = FILE_ROOT.joinpath(r"VOC2028\Annotations")  # 数据集标签文件的位置
-LABELS_ROOT = FILE_ROOT.joinpath(r"VOC2028\Labels")  # 进行归一化之后的标签位置
-
-# YOLO 需要的数据集形式的新数据集
-DEST_IMAGES_PATH = Path(r"Safety_Helmet_Train_dataset\score\images")  # 区分训练集、测试集、验证集的图片目标路径
-DEST_LABELS_PATH = Path(r"Safety_Helmet_Train_dataset\score\labels")  # 区分训练集、测试集、验证集的标签文件目标路径
+from xml.dom.minidom import parse
 
 
-def cord_converter(size, box):
+def convert_box(size, box):
     """
     将标注的 xml 文件标注转换为 darknet 形的坐标
     :param size: 图片的尺寸： [w,h]
     :param box: anchor box 的坐标 [左上角x,左上角y,右下角x,右下角y,]
     :return: 转换后的 [x,y,w,h]
     """
-
-    x1 = int(box[0])
-    y1 = int(box[1])
-    x2 = int(box[2])
-    y2 = int(box[3])
-
-    dw = np.float32(1. / int(size[0]))
-    dh = np.float32(1. / int(size[1]))
-
-    w = x2 - x1
-    h = y2 - y1
-    x = x1 + (w / 2)
-    y = y1 + (h / 2)
-
-    x = x * dw
-    w = w * dw
-    y = y * dh
-    h = h * dh
-    return [x, y, w, h]
+    box = np.asarray(box, dtype=float)
+    box[2:] -= box[:2]
+    box[:2] += box[2:] / 2
+    box = box.reshape(-1, 2) / np.asarray(size, dtype=float)
+    return box.reshape(-1).tolist()
 
 
-def save_label_file(img_jpg_file_name, size, img_box):
-    """
-    保存标签的解析文件
-    :param img_jpg_file_name:
-    :param size:
-    :param img_box:
-    :return:
-    """
-    save_file_name = LABELS_ROOT.joinpath(img_jpg_file_name).with_suffix('.txt')
-    with open(save_file_name, "a+") as f:
-        for box in img_box:
-            if box[0] == 'person':  # 数据集 xml 中的 person 指的是头
-                cls_num = 1
-            elif box[0] == 'hat':
-                cls_num = 2
-            else:
-                continue
-            new_box = cord_converter(size, box[1:])  # 转换坐标
-            f.write(f"{cls_num} {new_box[0]} {new_box[1]} {new_box[2]} {new_box[3]}\n")
-
-
-def test_dataset_box_feature(file_name, point_array):
+def test_dataset_box_feature(file_path, boxes):
     """
     使用样本数据测试数据集的建议框
-    :param file_name: 图片文件名
-    :param point_array: 全部的点 [建议框sx1,sy1,sx2,sy2]
+    :param file_path: 图片路径
+    :param boxes: 全部的点 [[name, x1, y1, x2, y2]]
     :return: None
     """
-    im = Image.open(IMAGE_PATH.joinpath(file_name).with_suffix(".jpg"))
-    im_draw = ImageDraw.Draw(im)
-    for box in point_array:
-        x1 = box[1]
-        y1 = box[2]
-        x2 = box[3]
-        y2 = box[4]
-        im_draw.rectangle((x1, y1, x2, y2), outline='red')
-
-    im.show()
+    img = Image.open(file_path)
+    img_draw = ImageDraw.Draw(img)
+    for box in boxes:
+        img_draw.rectangle(box[1:], outline='red')
+    img.show()
 
 
-def get_xml_data(img_xml_file: Path):
+def parse_annotation_data(annotation_path):
     """
-    获取 xml 数据
-    :param img_xml_file: 图片路径
-    :return:
+    解析 xml 数据
+    :param annotation_path: xml 文件路径
+    :return: [w, h], [x1, y1, x2, y2]
     """
-    dom = parse(str(img_xml_file))
-    xml_root = dom.documentElement
-    img_name = xml_root.getElementsByTagName("filename")[0].childNodes[0].data
+    xml_root = parse(annotation_path).documentElement
     img_size = xml_root.getElementsByTagName("size")[0]
     objects = xml_root.getElementsByTagName("object")
-    img_w = img_size.getElementsByTagName("width")[0].childNodes[0].data
-    img_h = img_size.getElementsByTagName("height")[0].childNodes[0].data
-    img_c = img_size.getElementsByTagName("depth")[0].childNodes[0].data
-    img_box = []
-    for box in objects:
-        cls_name = box.getElementsByTagName("name")[0].childNodes[0].data
-        x1 = int(box.getElementsByTagName("xmin")[0].childNodes[0].data)
-        y1 = int(box.getElementsByTagName("ymin")[0].childNodes[0].data)
-        x2 = int(box.getElementsByTagName("xmax")[0].childNodes[0].data)
-        y2 = int(box.getElementsByTagName("ymax")[0].childNodes[0].data)
-        img_box.append([cls_name, x1, y1, x2, y2])
+    size = [
+        img_size.getElementsByTagName("width")[0].childNodes[0].data,
+        img_size.getElementsByTagName("height")[0].childNodes[0].data
+    ]
+    img_boxes = [
+        [
+            box.getElementsByTagName("name")[0].childNodes[0].data,
+            int(box.getElementsByTagName("xmin")[0].childNodes[0].data),
+            int(box.getElementsByTagName("ymin")[0].childNodes[0].data),
+            int(box.getElementsByTagName("xmax")[0].childNodes[0].data),
+            int(box.getElementsByTagName("ymax")[0].childNodes[0].data),
+        ]
+        for box in objects
+    ]
+    return size, img_boxes
 
-    # test_dataset_box_feature(img_xml_file.name, img_box)
-    save_label_file(img_xml_file.name, [img_w, img_h], img_box)
 
+class VocToYolo(object):
 
-def copy_data(img_set_source, img_labels_root, imgs_source, dataset_type):
-    """
-    将标签文件和图片复制到最终数据集文件夹中
-    :param img_set_source: 原数据集图片总路径
-    :param img_labels_root: 生成的 txt 标签总路径
-    :param imgs_source:
-    :param dataset_type: 生成数据集的种类
-    :return:
-    """
-    file_name = img_set_source.joinpath(dataset_type).with_suffix(".txt")  # 获取对应数据集种类的图片
+    def __init__(self, voc_root, target_root):
+        self.voc_root = pathlib.Path(voc_root)
+        self.target_root = pathlib.Path(target_root)
+        self.image_set_root = self.voc_root.joinpath('ImageSets', 'Main')  # 图片区分文件的路径
+        self.jpg_image_root = self.voc_root.joinpath('JPEGImages')  # 图片的位置
+        self.annotation_root = self.voc_root.joinpath('Annotations')  # 数据集标签文件的位置
 
-    # 判断目标图片文件夹和标签文件夹是否存在，不存在则创建
-    os.makedirs(FILE_ROOT.joinpath(DEST_IMAGES_PATH, dataset_type), exist_ok=True)
-    os.makedirs(FILE_ROOT.joinpath(DEST_LABELS_PATH, dataset_type), exist_ok=True)
+        self.label_root = self.voc_root.joinpath('Labels')  # 进行归一化之后的标签位置
+        self.label_map = {'person': 1, 'hat': 2}  # VOC 数据集与目标数据集类别映射关系
 
-    with open(file_name, encoding="UTF-8") as f:
-        for img_name in tqdm(f.read().splitlines()):
-            img_sor_file = imgs_source.joinpath(img_name).with_suffix('.jpg')
-            label_sor_file = img_labels_root.joinpath(img_name).with_suffix('.txt')
+        self.target_image_root = self.target_root.joinpath('images')  # 区分训练集、测试集、验证集的图片目标路径
+        self.target_label_root = self.target_root.joinpath('labels')  # 区分训练集、测试集、验证集的标签文件目标路径
 
+    def save_label_file(self, file_name, size, boxes):
+        """
+        保存标签的解析文件
+        :param file_name:
+        :param size:
+        :param boxes:
+        """
+        lines = [' '.join(map(str, [self.label_map[box[0]], *convert_box(size, box[1:])])) for box in boxes if box[0] in self.label_map]
+        with open(self.label_root.joinpath(file_name).with_suffix('.txt'), mode='w') as f:
+            f.write('\n'.join(lines))
+
+    def copy_data(self, dataset_type):
+        """
+        :param dataset_type: 生成数据集的种类
+        :return:
+        """
+
+        target_image_root = self.target_image_root.joinpath(dataset_type)
+        target_label_root = self.target_label_root.joinpath(dataset_type)
+
+        target_image_root.mkdir(parents=True, exist_ok=True)
+        target_label_root.mkdir(parents=True, exist_ok=True)
+
+        with open(self.image_set_root.joinpath(dataset_type).with_suffix(".txt"), encoding="UTF-8") as f:
+            lines = f.read().splitlines()
+        for img_name in tqdm(lines):
             # 复制图片
-            dict_file = FILE_ROOT.joinpath(DEST_IMAGES_PATH, dataset_type, img_name).with_suffix('.jpg')
-            copyfile(img_sor_file, dict_file)
-
+            src = self.jpg_image_root.joinpath(img_name).with_suffix('.jpg')
+            dst = target_image_root.joinpath(img_name).with_suffix('.jpg')
+            shutil.copyfile(src, dst)
             # 复制 label
-            dict_file = FILE_ROOT.joinpath(DEST_LABELS_PATH, dataset_type, img_name).with_suffix('.txt')
-            copyfile(label_sor_file, dict_file)
+            src = self.label_root.joinpath(img_name).with_suffix('.txt')
+            dst = target_label_root.joinpath(img_name).with_suffix('.txt')
+            shutil.copyfile(src, dst)
+
+    def run(self):
+        # 清空标签文件夹
+        if self.label_root.exists():
+            shutil.rmtree(self.label_root)
+        self.label_root.mkdir(exist_ok=True)
+
+        # 生成标签
+        with tqdm(total=len(os.listdir(self.annotation_root))) as p_bar:
+            for file in self.annotation_root.iterdir():
+                size, img_boxes = parse_annotation_data(str(file))
+                self.save_label_file(file.name, size, img_boxes)
+                p_bar.update(1)
+
+        # 将文件进行 train、val、test 的区分
+        for dataset_input_type in ["train", "val", "test"]:
+            print(f"Copying data {dataset_input_type}, pls wait...")
+            self.copy_data(dataset_input_type)
 
 
 if __name__ == '__main__':
-    root = ANNOTATIONS_PATH  # 数据集 xml 标签的位置
-
-    if LABELS_ROOT.exists():
-        # 清空标签文件夹
-        print("Cleaning Label dir for safety generating label, pls wait...")
-        shutil.rmtree(LABELS_ROOT)
-        print("Cleaning Label dir done!")
-    LABELS_ROOT.mkdir(exist_ok=True)  # 建立 Label 文件夹
-
-    # 生成标签
-    print("Generating Label files...")
-    with tqdm(total=len(os.listdir(root))) as p_bar:
-        for file in root.iterdir():
-            p_bar.update(1)
-            get_xml_data(file)
-
-    # 将文件进行 train、val、test 的区分
-    for dataset_input_type in ["train", "val", "test"]:
-        print(f"Copying data {dataset_input_type}, pls wait...")
-        copy_data(IMAGE_SET_ROOT, LABELS_ROOT, IMAGE_PATH, dataset_input_type)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--voc-root', type=str, default='../datasets/VOC2028')
+    parser.add_argument('--target-root', type=str, default='../datasets/person-head-helmet')
+    VocToYolo(**vars(parser.parse_args())).run()
