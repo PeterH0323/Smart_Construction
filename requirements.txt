@@ -1,55 +1,32 @@
-absl-py==0.12.0
-altgraph==0.17
-cachetools==4.2.1
-certifi==2020.12.5
-chardet==4.0.0
-cycler==0.10.0
-future==0.18.2
-google-auth==1.28.1
-google-auth-oauthlib==0.4.4
-GPUtil==1.4.0
-grpcio==1.37.0
-idna==2.10
-importlib-metadata==3.7.3
-kiwisolver==1.3.1
-Markdown==3.3.4
-matplotlib==3.3.4
-mkl-fft==1.3.0
-mkl-random==1.1.1
-mkl-service==2.3.0
-numpy==1.19.2
-oauthlib==3.1.0
-olefile==0.46
-opencv-python==4.5.1.48
-Pillow==8.1.2
-pefile==2019.4.18
-protobuf==3.15.8
-pyasn1==0.4.8
-pyasn1-modules==0.2.8
-pyinstaller==4.2
-pyinstaller-hooks-contrib==2021.1
-pyparsing==2.4.7
-PyQt5==5.15.4
-PyQt5-Qt5==5.15.2
-PyQt5-sip==12.8.1
-PyQtChart==5.15.4
-PyQtChart-Qt5==5.15.2
-python-dateutil==2.8.1
-pywin32-ctypes==0.2.0
-PyYAML==5.4.1
-requests==2.25.1
-requests-oauthlib==1.3.0
-rsa==4.7.2
-scipy==1.6.1
-six==1.15.0
-tensorboard==2.4.1
-tensorboard-plugin-wit==1.8.0
-torch==1.5.1
-torchvision==0.6.1
-tornado==6.1
-tqdm==4.59.0
-typing-extensions==3.7.4.3
-urllib3==1.26.4
-Werkzeug==1.0.1
-wincertstore==0.2
-zipp==3.4.1
+# pip install -r requirements.txt
+
+# base ----------------------------------------
+matplotlib>=3.2.2
+numpy>=1.18.5
+opencv-python>=4.1.2
+Pillow>=8.0.0
+PyYAML>=5.3.1
+scipy>=1.4.1
+torch>=1.7.0
+torchvision>=0.8.1
+tqdm>=4.41.0
+
+# logging -------------------------------------
+tensorboard>=2.4.1
+# wandb
+
+# plotting ------------------------------------
+seaborn>=0.11.0
+pandas
+
+# export --------------------------------------
+# coremltools>=4.1
+# onnx>=1.9.0
+# scikit-learn==0.19.2  # for coreml quantization
+# tensorflow==2.4.1  # for TFLite export
+
+# extras --------------------------------------
+# Cython  # for pycocotools https://github.com/cocodataset/cocoapi/issues/172
+# pycocotools>=2.0  # COCO mAP
+# albumentations>=1.0.3
+thop  # FLOPs computation

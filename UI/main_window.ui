@@ -753,7 +753,7 @@ QPushButton:hover{
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>icon/play.png</normaloff>icon/play.png</iconset>
+          <normaloff>C:/Users/PeterH/.designer/backup/icon/play.png</normaloff>C:/Users/PeterH/.designer/backup/icon/play.png</iconset>
         </property>
        </widget>
       </item>
@@ -782,7 +782,7 @@ QPushButton:hover{
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>icon/pause.png</normaloff>icon/pause.png</iconset>
+          <normaloff>C:/Users/PeterH/.designer/backup/icon/pause.png</normaloff>C:/Users/PeterH/.designer/backup/icon/pause.png</iconset>
         </property>
        </widget>
       </item>
