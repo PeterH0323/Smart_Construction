@@ -52,6 +52,7 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
         hide_labels=False,  # hide labels
         hide_conf=False,  # hide confidences
         half=False,  # use FP16 half-precision inference
+        dangerous_area=False,  # detect dangerous area person flag
         ):
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     webcam = source.isnumeric() or source.endswith('.txt') or source.lower().startswith(
@@ -203,7 +204,13 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
                     if save_img or save_crop or view_img:  # Add bbox to image
                         c = int(cls)  # integer class
                         label = None if hide_labels else (names[c] if hide_conf else f'{names[c]} {conf:.2f}')
-                        annotator.box_label(xyxy, label, color=colors(c, True))
+                        if dangerous_area and names[c] == 'person':
+                            from utils.dangerous_area_tools import person_in_poly_area_dangerous
+                            if person_in_poly_area_dangerous(xyxy, Path(p).name):
+                                # 返回 1 表明是在危险区域，框住人
+                                annotator.box_label(xyxy, label, color=colors(c, True))
+                        else:
+                            annotator.box_label(xyxy, label, color=colors(c, True))
                         if save_crop:
                             save_one_box(xyxy, imc, file=save_dir / 'crops' / names[c] / f'{p.stem}.jpg', BGR=True)
 
@@ -218,6 +225,11 @@ def run(weights='yolov5s.pt',  # model.pt path(s)
 
             # Save results (image with detections)
             if save_img:
+
+                if dangerous_area:
+                    from utils.dangerous_area_tools import draw_poly_area_dangerous
+                    draw_poly_area_dangerous(im0, Path(p).name)  # 画上危险区域框
+
                 if dataset.mode == 'image':
                     cv2.imwrite(save_path, im0)
                 else:  # 'video' or 'stream'
@@ -271,6 +283,7 @@ def parse_opt():
     parser.add_argument('--hide-labels', default=False, action='store_true', help='hide labels')
     parser.add_argument('--hide-conf', default=False, action='store_true', help='hide confidences')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
+    parser.add_argument('--dangerous_area', action='store_true', help='detect dangerous area person flag')
     opt = parser.parse_args()
     opt.imgsz *= 2 if len(opt.imgsz) == 1 else 1  # expand
     return opt

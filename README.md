@@ -262,7 +262,7 @@ python detect.py --source 图片路径 --weights ./weights/helmet_head_person_s.
 
 运行命令：
 ```shell script
-python area_detect.py --source ./area_dangerous --weights ./weights/helmet_head_person_s.pt
+python detect.py --source ./area_dangerous --weights ./weights/helmet_head_person_s.pt --dangerous_area
 ```
 
 ## 3.3 效果：危险区域会使用 *红色框* 标出来，同时，危险区域里面的人体也会被框出来，危险区域外的人体不会被框选出来
