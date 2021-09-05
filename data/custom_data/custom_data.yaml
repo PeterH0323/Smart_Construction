@@ -1,0 +1,11 @@
+# Custom data for safety helmet
+
+
+# train and val data as 1) directory: path/images/, 2) file: path/images.txt, or 3) list: [path1/images/, path2/images/]
+train: /data/Dataset/Safety_Helmet_Train_dataset/score/images/train
+val: /data/Dataset/Safety_Helmet_Train_dataset/score/images/val
+# number of classes
+nc: 3
+
+# class names
+names: ['person', 'head', 'helmet']
