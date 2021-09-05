@@ -36,9 +36,9 @@ from PyQt5.QtChart import QDateTimeAxis, QValueAxis, QSplineSeries, QChart
 import torch
 from UI.main_window import Ui_MainWindow
 from detect_visual import YOLOPredict
-from utils.datasets import img_formats
+from utils.datasets import IMG_FORMATS
 
-CODE_VER = "V2.0"
+CODE_VER = "V5.0"
 PREDICT_SHOW_TAB_INDEX = 0
 REAL_TIME_PREDICT_TAB_INDEX = 1
 
@@ -146,7 +146,7 @@ class PredictHandlerThread(QThread):
         for item, button in self.button_dict.items():
             button.setEnabled(False)
 
-        image_flag = os.path.splitext(self.parameter_source)[-1].lower() in img_formats
+        image_flag = os.path.splitext(self.parameter_source)[-1].lower() in IMG_FORMATS
         qt_input = None
         qt_output = None
 
@@ -392,7 +392,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.predict_handler_thread.parameter_source = self.media_source.toLocalFile()
         self.input_player.pause()  # 显示媒体
 
-        image_flag = os.path.splitext(self.predict_handler_thread.parameter_source)[-1].lower() in img_formats
+        image_flag = os.path.splitext(self.predict_handler_thread.parameter_source)[-1].lower() in IMG_FORMATS
         for item, button in self.button_dict.items():
             if image_flag and item in ['play_pushButton', 'pause_pushButton']:
                 button.setEnabled(False)

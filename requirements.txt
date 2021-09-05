@@ -25,6 +25,11 @@ pandas
 # scikit-learn==0.19.2  # for coreml quantization
 # tensorflow==2.4.1  # for TFLite export
 
+# interface tool --------------------------------------
+PyQtChart==5.15.4
+GPUtil==1.4.0
+PyQt5==5.15.4
+
 # extras --------------------------------------
 # Cython  # for pycocotools https://github.com/cocodataset/cocoapi/issues/172
 # pycocotools>=2.0  # COCO mAP

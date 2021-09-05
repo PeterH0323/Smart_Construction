@@ -5,8 +5,7 @@
 # @File    : detect_visual.py
 # @Software: PyCharm
 # @Brief   :
-
-
+import math
 import sys
 import time
 from pathlib import Path
@@ -16,7 +15,6 @@ from PyQt5.QtGui import QImage, QPixmap
 import cv2
 import torch
 import torch.backends.cudnn as cudnn
-
 
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
@@ -54,9 +52,6 @@ class YOLOPredict(object):
         self.augment = False  # augmented inference
         self.visualize = False  # visualize features
         self.update = False  # update all models
-        self.project = 'runs/detect'  # save results to project/name
-        self.name = 'exp'  # save results to project/name
-        self.exist_ok = False  # existing project/name ok, do not increment
         self.line_thickness = 3  # bounding box thickness (pixels)
         self.hide_labels = False  # hide labels
         self.hide_conf = False  # hide confidences
@@ -69,9 +64,9 @@ class YOLOPredict(object):
         self.model = ""
 
         # Directories
-        self.save_dir = increment_path(Path(self.project) / self.name, exist_ok=self.exist_ok)  # increment run
+        self.save_dir = Path(out_file_path)
+        self.save_dir.mkdir(parents=True, exist_ok=True)  # make directory
         (self.save_dir / 'labels' if self.save_txt else self.save_dir).mkdir(parents=True, exist_ok=True)  # make dir
-        self.output = out_file_path
 
         # Initialize
         set_logging()
@@ -152,6 +147,8 @@ class YOLOPredict(object):
 
         imgsz = check_img_size(self.imgsz, s=self.stride)  # check image size
         ascii = is_ascii(self.names)  # names are ascii (use PIL for UTF-8)
+        save_path = ""
+        show_count = 0
 
         # Dataloader
         if webcam:
@@ -160,7 +157,7 @@ class YOLOPredict(object):
             dataset = LoadStreams(source, img_size=imgsz, stride=self.stride, auto=self.pt)
             bs = len(dataset)  # batch_size
         else:
-            dataset = LoadImages(source, img_size=imgsz, stride=self.stride, auto=self.pt)
+            dataset = LoadImages(source, img_size=imgsz, stride=self.stride, auto=self.pt, visualize_flag=True)
             bs = 1  # batch_size
         vid_path, vid_writer = [None] * bs, [None] * bs
 
@@ -168,7 +165,11 @@ class YOLOPredict(object):
         if self.pt and self.device.type != 'cpu':
             self.model(torch.zeros(1, 3, *imgsz).to(self.device).type_as(next(self.model.parameters())))  # run once
         t0 = time.time()
-        for path, img, im0s, vid_cap in dataset:
+        for path, img, im0s, vid_cap, info_str in dataset:
+
+            # im0s 为当前推理的图片
+            origin_image = deepcopy(im0s)
+            
             img = torch.from_numpy(img).to(self.device)
             img = img.half() if self.half else img.float()  # uint8 to fp16/32
             img = img / 255.0  # 0 - 255 to 0.0 - 1.0
@@ -237,6 +238,27 @@ class YOLOPredict(object):
                 # Print time (inference + NMS)
                 print(f'{s}Done. ({t2 - t1:.3f}s)')
 
+                # 保存推理信息
+                self.predict_info = info_str + '%sDone. (%.3fs)' % (s, t2 - t1)
+                # QT 显示
+                if qt_input is not None and qt_output is not None and dataset.mode == 'video':
+                    video_count, vid_total = info_str.split(" ")[2][1:-1].split("/")  # 得出当前总帧数
+                    fps = ((t2 - t1) / 1) * 100
+                    fps_threshold = 25  # FPS 阈值
+                    show_flag = True
+                    if fps > fps_threshold:  # 如果 FPS > 阀值，则跳帧处理
+                        fps_interval = 15  # 实时显示的帧率
+                        show_unit = math.ceil(fps / fps_interval)  # 取出多少帧显示一帧，向上取整
+                        if int(video_count) % show_unit != 0:  # 跳帧显示
+                            show_flag = False
+                        else:
+                            show_count += 1
+
+                    if show_flag:
+                        # 推理前的图片 origin_image, 推理后的图片 im0
+                        self.show_real_time_image(qt_input, origin_image)
+                        self.show_real_time_image(qt_output, im0)
+
                 # Stream results
                 im0 = annotator.result()
                 if self.view_img:
@@ -270,13 +292,14 @@ class YOLOPredict(object):
             strip_optimizer(self.weights)  # update model (to fix SourceChangeWarning)
 
         print(f'Done. ({time.time() - t0:.3f}s)')
+        self.predict_info = f'Done. ({time.time() - t0:.3f}s)'
 
-        return self.save_dir
+        return save_path
 
 
 if __name__ == "__main__":
     check_requirements(exclude=('tensorboard', 'thop'))
-    yolo_handle = YOLOPredict(r'./weight/best.pt', "")
+    yolo_handle = YOLOPredict(r'./weight/best.pt', r'inference/output')
     yolo_handle.detect(r'data/images')
     yolo_handle.detect(r'data/video')
 
