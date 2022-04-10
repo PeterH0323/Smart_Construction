@@ -12,14 +12,23 @@
 :boom::boom::boom:新增可视化界面上线啦！！！！来一波演示！！！:boom::boom::boom:
 使用文档: [如何使用可视化工具](./doc/Visualize_Tool_Tutorial.md)
 
-![](./doc/visualize_tool_gif_v2_1.gif)
+![]()
+
+<p align="center">
+  <img alt="tool_gif" src="./doc/visualize_tool_gif_v2_1.gif" width="55%">
+</p>
 
 ## 纯图片再来一波演示！
 
-![](./doc/output_1.jpg)
-![](./doc/output_2.jpg)
-![](./doc/output_3.jpg)
-![](./doc/output_4.jpg)
+<p align="center">
+  <img alt="output_1" src="./doc/output_1.jpg" width="45%">
+  <img alt="output_2" src="./doc/output_2.jpg" width="45%">
+</p>
+<p align="center">
+  <img alt="output_3" src="./doc/output_3.jpg" width="45%">
+  <img alt="output_4" src="./doc/output_4.jpg" width="45%">
+</p>
+
 
 ## 指标
 ### yolov5s 为基础训练，`epoch = 50`
@@ -274,10 +283,14 @@ python detect.py --source 图片路径 --weights ./weights/helmet_head_person_s.
 python area_detect.py --source ./area_dangerous --weights ./weights/helmet_head_person_s.pt
 ```
 
-## 3.3 效果：危险区域会使用 *红色框* 标出来，同时，危险区域里面的人体也会被框出来，危险区域外的人体不会被框选出来
+## 3.3 效果：
 
-![](./doc/area_output_1.jpg)
-![](./doc/area_output_2.jpg)
+**危险区域会使用 *红色框* 标出来，同时，危险区域里面的人体也会被框出来，危险区域外的人体不会被框选出来**
+
+<p align="center">
+  <img alt="area_output_1" src="./doc/area_output_1.jpg" width="45%">
+  <img alt="area_output_2" src="./doc/area_output_2.jpg" width="45%">
+</p>
 
 
 # 4. 生成 ONNX
@@ -312,11 +325,14 @@ python detect.py --save-txt --source 自己数据集的文件目录 --weights ./
 
 **如果帮到您请给个 star ✨✨✨，您的 star 是我最大的鼓励！**
 
-**如果能帮到您的项目快速落地，可以 buy me a coffee ☕**
+**如果能帮到您的项目快速落地，可以请我喝杯奶茶☕**
 
-![](./doc/BuyMeACoffee.jpg)
+<div align=center>
+<img src="./doc/BuyMeACoffee.jpg" width="500"/>
+</div>
 
+也可以加我的 WeChat 和我一起探讨更多的可能！**请备注：`Github Smart_Construction`**
 
-也可以加我的 WeChat 和我一起探讨更多的可能！
-
-![](./doc/WeChat.jpg)
+<div align=center>
+<img src="./doc/WeChat.jpg" width="300"/>
+</div>
