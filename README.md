@@ -12,8 +12,6 @@
 :boom::boom::boom:新增可视化界面上线啦！！！！来一波演示！！！:boom::boom::boom:
 使用文档: [如何使用可视化工具](./doc/Visualize_Tool_Tutorial.md)
 
-![]()
-
 <p align="center">
   <img alt="tool_gif" src="./doc/visualize_tool_gif_v2_1.gif" width="55%">
 </p>
