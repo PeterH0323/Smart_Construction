@@ -329,7 +329,7 @@ python detect.py --save-txt --source 自己数据集的文件目录 --weights ./
 <img src="./doc/BuyMeACoffee.jpg" width="500"/>
 </div>
 
-也可以加我的 WeChat 和我一起探讨更多的可能！**请备注：`Github Smart_Construction`**
+也可以加我的 WeChat 和我一起探讨更多的可能！**请备注：`Github Smart_Construction`，仅限论文or项目合作，毕业设计/课设咨询需要收费，毕业设计、竞赛等咨询环境怎么配置，或者询问怎么操作的大佬们请绕道**
 
 <div align=center>
 <img src="./doc/WeChat.jpg" width="300"/>
