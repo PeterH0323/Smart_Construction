@@ -337,8 +337,6 @@ python detect.py --save-txt --source 自己数据集的文件目录 --weights ./
 
 **3、毕业设计、竞赛等咨询环境怎么配置，或者询问怎么操作的大佬们请先看文档，遇到问题请先百度或者学习相关基础，实在不懂了的话，请询问周边大佬，相关操作本人在README写得很清楚了，不想再回答相关问题**
 
-
-
 <div align=center>
 <img src="./doc/WeChat.jpg" width="300"/>
 </div>
