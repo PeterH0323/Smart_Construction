@@ -1,7 +1,7 @@
 absl-py==0.12.0
 altgraph==0.17
 cachetools==4.2.1
-certifi==2020.12.5
+certifi==2023.7.22
 chardet==4.0.0
 cycler==0.10.0
 future==0.18.2
